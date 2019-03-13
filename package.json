@@ -1,0 +1,82 @@
+{
+  "name": "@formalizer/formalizer-core",
+  "version": "1.0.0",
+  "description": "Core for the formalizer framework",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IgorSzyporyn/formalizer-core.git"
+  },
+  "author": "Igor Szyporyn Jørgensen <igor.szyporyn@gmail.com> (https://twitter.com/IgorSzyporyn)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/IgorSzyporyn/formalizer-core/issues"
+  },
+  "homepage": "https://github.com/IgorSzyporyn/formalizer-core#readme",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/formalizer-core.es6.js",
+  "typings": "dist/index.d.ts",
+  "size-limit": [
+    {
+      "path": "./dist/index.js",
+      "limit": "40.2 kB"
+    },
+    {
+      "path": "./dist/formalizer-core.es6.js",
+      "limit": "40.2 kB"
+    },
+    {
+      "path": "./dist/formalizer-core.umd.production.js",
+      "limit": "40 kB"
+    }
+  ],
+  "engines": {
+    "node": ">=8.10.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.15.1",
+    "jest": "^24.5.0",
+    "jest-cli": "^24.5.0",
+    "jest-haste-map": "^24.5.0",
+    "jest-resolve": "^24.5.0",
+    "lint-staged": "^8.1.5",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.16.4",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.6.0",
+    "rollup-plugin-commonjs": "^9.2.1",
+    "rollup-plugin-filesize": "^6.0.1",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-plugin-replace": "^2.1.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-uglify": "^6.0.2",
+    "size-limit": "^0.21.1",
+    "tsc-watch": "^2.1.2",
+    "tslint": "^5.13.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {},
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "prettier --config ./.prettierrc --write",
+      "git add"
+    ]
+  },
+  "scripts": {
+    "test": "jest --env=jsdom",
+    "test:watch": "npm run test -- --watch",
+    "dev": "rimraf dist && mkdir dist && cp ./index.js ./dist/index.js && NODE_ENV=development rollup -w -c | tsc -w -p tsconfig.base.json",
+    "prebuild": "rimraf dist && rimraf compiled",
+    "build:dirty": "cross-env NODE_ENV=production tsc -p tsconfig.base.json  && rollup -c && cp ./index.js ./dist/index.js",
+    "build": "cross-env NODE_ENV=production tsc -p tsconfig.base.json  && rollup -c && rimraf compiled && cp ./index.js ./dist/index.js",
+    "prepublish": "npm run build",
+    "format": "prettier --config ./.prettierrc --write 'src/**/*' 'test/**/*' 'README.md'",
+    "precommit": "lint-staged",
+    "size": "size-limit"
+  }
+}
