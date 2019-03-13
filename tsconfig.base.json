@@ -23,13 +23,7 @@
     "stripInternal": true,
     "outDir": "compiled",
     "target": "es5",
-    "baseUrl": "./src",
-    "paths": {
-      "models": ["./models"],
-      "models/*": ["./models/*"],
-      "utils": ["./utils"],
-      "utils/*": ["./utils/*"]
-    }
+    "baseUrl": "./src"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
