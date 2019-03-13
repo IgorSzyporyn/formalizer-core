@@ -1,22 +1,23 @@
 {
-  "name": "@formalizer/formalizer-core",
+  "name": "@formalizer/core",
+  "displayName": "core",
   "version": "1.0.0",
   "description": "Core for the formalizer framework",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IgorSzyporyn/formalizer-core.git"
+    "url": "git+https://github.com/IgorSzyporyn/core.git"
   },
   "author": "Igor Szyporyn Jørgensen <igor.szyporyn@gmail.com> (https://twitter.com/IgorSzyporyn)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/IgorSzyporyn/formalizer-core/issues"
+    "url": "https://github.com/IgorSzyporyn/core/issues"
   },
-  "homepage": "https://github.com/IgorSzyporyn/formalizer-core#readme",
+  "homepage": "https://github.com/IgorSzyporyn/core#readme",
   "files": [
     "dist"
   ],
   "main": "dist/index.js",
-  "module": "dist/formalizer-core.es6.js",
+  "module": "dist/core.es6.js",
   "typings": "dist/index.d.ts",
   "size-limit": [
     {
@@ -24,11 +25,11 @@
       "limit": "40.2 kB"
     },
     {
-      "path": "./dist/formalizer-core.es6.js",
+      "path": "./dist/core.es6.js",
       "limit": "40.2 kB"
     },
     {
-      "path": "./dist/formalizer-core.umd.production.js",
+      "path": "./dist/core.umd.production.js",
       "limit": "40 kB"
     }
   ],

@@ -1,53 +1,56 @@
-import commonjs from 'rollup-plugin-commonjs'
-import filesize from 'rollup-plugin-filesize'
-import replace from 'rollup-plugin-replace'
-import resolve from 'rollup-plugin-node-resolve'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import { uglify } from 'rollup-plugin-uglify'
-import pkg from './package.json'
+import commonjs from "rollup-plugin-commonjs";
+import filesize from "rollup-plugin-filesize";
+import replace from "rollup-plugin-replace";
+import resolve from "rollup-plugin-node-resolve";
+import sourceMaps from "rollup-plugin-sourcemaps";
+import { uglify } from "rollup-plugin-uglify";
+import pkg from "./package.json";
 
-const input = './compiled/index.js'
-const external = ['react', 'react-native']
+const input = "./compiled/index.js";
+const external = ["react", "react-native"];
 
 const buildUmd = ({ env }) => ({
   input,
   external,
   output: {
-    name: 'formalizer-core',
-    format: 'umd',
+    name: "core",
+    format: "umd",
     sourcemap: true,
-    file: env === 'production' ? `./dist/formalizer-core.umd.${env}.js` : `./dist/formalizer-core.umd.${env}.js`,
-    exports: 'named',
+    file:
+      env === "production"
+        ? `./dist/core.umd.${env}.js`
+        : `./dist/core.umd.${env}.js`,
+    exports: "named"
   },
 
   plugins: [
     resolve(),
     replace({
-      exclude: 'node_modules/**',
-      'process.env.NODE_ENV': JSON.stringify(env),
+      exclude: "node_modules/**",
+      "process.env.NODE_ENV": JSON.stringify(env)
     }),
     commonjs({
       include: /node_modules/,
-      namedExports: {},
+      namedExports: {}
     }),
     sourceMaps(),
-    env === 'production' && filesize(),
-    env === 'production' &&
+    env === "production" && filesize(),
+    env === "production" &&
       uglify({
         output: {
-          comments: false,
+          comments: false
         },
         compress: {
           keep_infinity: true,
-          pure_getters: true,
+          pure_getters: true
         },
         nameCache: null,
         toplevel: false,
         ie8: false,
-        warnings: false,
-      }),
-  ],
-})
+        warnings: false
+      })
+  ]
+});
 
 const buildCjs = ({ env }) => ({
   input,
@@ -55,33 +58,33 @@ const buildCjs = ({ env }) => ({
   output: [
     {
       file: `./dist/${pkg.displayName}.cjs.${env}.js`,
-      format: 'cjs',
-      sourcemap: true,
-    },
+      format: "cjs",
+      sourcemap: true
+    }
   ],
   plugins: [
     resolve(),
     replace({
-      exclude: 'node_modules/**',
-      'process.env.NODE_ENV': JSON.stringify(env),
+      exclude: "node_modules/**",
+      "process.env.NODE_ENV": JSON.stringify(env)
     }),
     sourceMaps(),
-    filesize(),
-  ],
-})
+    filesize()
+  ]
+});
 
 export default [
   buildUmd({
-    env: 'production',
+    env: "production"
   }),
   buildUmd({
-    env: 'development',
+    env: "development"
   }),
   buildCjs({
-    env: 'production',
+    env: "production"
   }),
   buildCjs({
-    env: 'development',
+    env: "development"
   }),
   {
     input,
@@ -89,15 +92,15 @@ export default [
     output: [
       {
         file: pkg.module,
-        format: 'es',
-        sourcemap: true,
+        format: "es",
+        sourcemap: true
       },
       {
         file: pkg.main,
-        format: 'cjs',
-        sourcemap: true,
-      },
+        format: "cjs",
+        sourcemap: true
+      }
     ],
-    plugins: [resolve(), sourceMaps(), filesize()],
-  },
-]
+    plugins: [resolve(), sourceMaps(), filesize()]
+  }
+];
