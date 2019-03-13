@@ -1,6 +1,5 @@
 {
   "name": "@formalizer/core",
-  "displayName": "core",
   "version": "1.0.0",
   "description": "Core for the formalizer framework",
   "repository": {

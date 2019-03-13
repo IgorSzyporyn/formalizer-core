@@ -57,7 +57,7 @@ const buildCjs = ({ env }) => ({
   external: external.concat(Object.keys(pkg.dependencies)),
   output: [
     {
-      file: `./dist/${pkg.displayName}.cjs.${env}.js`,
+      file: `./dist/core.cjs.${env}.js`,
       format: "cjs",
       sourcemap: true
     }
