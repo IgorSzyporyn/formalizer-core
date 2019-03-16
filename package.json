@@ -12,31 +12,22 @@
     "url": "https://github.com/IgorSzyporyn/core/issues"
   },
   "homepage": "https://github.com/IgorSzyporyn/core#readme",
-  "files": [
-    "dist"
-  ],
-  "main": "dist/index.js",
-  "module": "dist/core.es6.js",
-  "typings": "dist/index.d.ts",
-  "size-limit": [
-    {
-      "path": "./dist/index.js",
-      "limit": "40.2 kB"
-    },
-    {
-      "path": "./dist/core.es6.js",
-      "limit": "40.2 kB"
-    },
-    {
-      "path": "./dist/core.umd.production.js",
-      "limit": "40 kB"
-    }
-  ],
   "engines": {
     "node": ">=8.10.0"
   },
+  "main": "dist/index.js",
+  "module": "dist/core.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
+    "@babel/core": "^7.3.4",
     "@types/jest": "^24.0.11",
+    "babel-plugin-annotate-pure-calls": "^0.4.0",
+    "babel-plugin-dev-expression": "^0.2.1",
+    "babel-plugin-transform-rename-import": "^2.3.0",
+    "cp-cli": "^2.0.0",
     "cross-env": "^5.2.0",
     "eslint": "^5.15.1",
     "jest": "^24.5.0",
@@ -48,35 +39,77 @@
     "prettier": "^1.16.4",
     "rimraf": "^2.6.3",
     "rollup": "^1.6.0",
+    "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.1",
-    "rollup-plugin-filesize": "^6.0.1",
     "rollup-plugin-node-resolve": "^4.0.1",
     "rollup-plugin-replace": "^2.1.0",
+    "rollup-plugin-size-snapshot": "^0.8.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-uglify": "^6.0.2",
+    "rollup-plugin-terser": "^4.0.4",
     "size-limit": "^0.21.1",
+    "ts-jest": "^24.0.0",
     "tsc-watch": "^2.1.2",
-    "tslint": "^5.13.1",
+    "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.3.3333"
   },
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "lodash-es": "^4.17.11"
+  },
+  "scripts": {
+    "test": "jest --env=jsdom",
+    "test:watch": "npm run test -- --watch",
+    "start": "rimraf dist && mkdir dist && cp-cli ./index.js ./dist/index.js && cross-env NODE_ENV=development rollup -w -c | tsc -w -p tsconfig.base.json",
+    "prebuild": "rimraf dist && rimraf compiled",
+    "build": "cross-env NODE_ENV=production tsc -p tsconfig.base.json  && rollup -c && rimraf compiled && cp-cli ./index.js ./dist/index.js",
+    "prepublish": "npm run build",
+    "format": "prettier --config ./.prettierrc --write 'src/**/*' 'test/**/*' 'README.md'",
+    "precommit": "lint-staged",
+    "size": "size-limit"
+  },
   "lint-staged": {
     "**/*.{ts,tsx}": [
       "prettier --config ./.prettierrc --write",
       "git add"
     ]
   },
-  "scripts": {
-    "test": "jest --env=jsdom",
-    "test:watch": "npm run test -- --watch",
-    "dev": "rimraf dist && mkdir dist && cp ./index.js ./dist/index.js && NODE_ENV=development rollup -w -c | tsc -w -p tsconfig.base.json",
-    "prebuild": "rimraf dist && rimraf compiled",
-    "build:dirty": "cross-env NODE_ENV=production tsc -p tsconfig.base.json  && rollup -c && cp ./index.js ./dist/index.js",
-    "build": "cross-env NODE_ENV=production tsc -p tsconfig.base.json  && rollup -c && rimraf compiled && cp ./index.js ./dist/index.js",
-    "prepublish": "npm run build",
-    "format": "prettier --config ./.prettierrc --write 'src/**/*' 'test/**/*' 'README.md'",
-    "precommit": "lint-staged",
-    "size": "size-limit"
-  }
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}"
+    ],
+    "setupFilesAfterEnv": [
+      "react-testing-library/cleanup-after-each.js",
+      "<rootDir>/test/setupTests.ts"
+    ],
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": [
+      "<rootDir>/test/**/?(*.)(spec|test).ts?(x)"
+    ],
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
+  },
+  "size-limit": [
+    {
+      "path": "./dist/index.js",
+      "limit": "14 kB"
+    },
+    {
+      "path": "./dist/core.esm.js",
+      "limit": "14 kB"
+    },
+    {
+      "path": "./dist/core.umd.production.js",
+      "limit": "14 kB"
+    }
+  ]
 }

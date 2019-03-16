@@ -1,5 +1,11 @@
-export interface FieldModel {
+import { FieldDependencies, ValueTypes } from '../types'
+
+export interface FieldProps {
   type: string
   name: string
-  title: string
+  value?: ValueTypes
+  fields?: FieldProps[]
+  dependencies?: FieldDependencies[]
+  disabled?: boolean
+  label?: string
 }
