@@ -1,5 +1,5 @@
 import { FieldProps } from './field'
-import { XValueTypes, XValue } from './xvalue'
+import { XValueTypes } from './xvalue'
 import { XFieldAddListener } from '../types'
 
 type FieldPropPicks = Pick<
@@ -10,13 +10,10 @@ type FieldPropPicks = Pick<
 export type XFieldProps<ExtraProps = {}> = FieldPropPicks & {
   name?: string
   valueType: XValueTypes
-  xValue?: XValue
   fields?: XFieldProps<ExtraProps>[]
-  extraProps?: ExtraProps
+  extraProps: ExtraProps
 
   // Internally used props
   $id?: string
   addListener?: XFieldAddListener<ExtraProps>
 }
-
-export const internalXFieldProps = ['$id', 'addListener']

@@ -1,14 +1,17 @@
-import { FieldProps, XFieldMap, XFieldProps, xFieldMap } from './models'
+import { FieldProps, XFieldProps } from './models'
 import {
   FormalizerOptions,
   RegisterExtraProps,
-  XFieldsRefMap,
+  XFieldRefMap,
   ValueTypes,
+  XFieldMap,
 } from './types'
 import { xFieldsToRefMap } from './utils/xFieldsToRefMap'
 import { fieldsToXFields } from './utils/fieldsToXFields'
-import { registerXTypeError } from './utils/registerXTypeError'
+import { xFieldErrorMessage } from './utils/xFieldErrorMessage'
 import { enhanceXFieldWithDependencies } from './utils/xFieldDependencies'
+import { enhanceXFieldWithObjectValues } from './utils/xFieldObjectValues'
+import deepmerge from 'deepmerge'
 
 export class formalizer<ExtraProps = {}> {
   public xFieldMap: XFieldMap<ExtraProps> = {}
@@ -17,14 +20,10 @@ export class formalizer<ExtraProps = {}> {
 
   public fields: FieldProps[] = []
   public xFields: XFieldProps<ExtraProps>[] = []
-  public xFieldsRefMap: XFieldsRefMap<ExtraProps> = {}
+  public xFieldRefMap: XFieldRefMap<ExtraProps> = {}
   public values: ValueTypes = {}
 
   constructor(options?: FormalizerOptions<ExtraProps>) {
-    // Fetch and register the core xFieldMap
-    const coreXFieldMap = xFieldMap<ExtraProps>()
-    this.registerXFieldMap(coreXFieldMap)
-
     // Then initialize the config options
     this.initConfig(options)
   }
@@ -39,8 +38,9 @@ export class formalizer<ExtraProps = {}> {
     if (fields) {
       this.fields = fields
       this.initXFields(fields, registerExtraProps)
-      this.xFieldsRefMap = this.initXFieldsRefMap()
+      this.xFieldRefMap = this.initXFieldRefMap()
       this.initDependencies()
+      this.initObjectFields()
     }
 
     this.initValues()
@@ -63,54 +63,90 @@ export class formalizer<ExtraProps = {}> {
     this.xFields = xFields
   }
 
-  private initXFieldsRefMap = (xFields?: XFieldProps<ExtraProps>[]) => {
-    const xFieldsRefMap = xFieldsToRefMap<ExtraProps>(xFields || this.xFields)
+  private initXFieldRefMap = (xFields?: XFieldProps<ExtraProps>[]) => {
+    const xFieldRefMap = xFieldsToRefMap<ExtraProps>(xFields || this.xFields)
 
-    return xFieldsRefMap
+    return xFieldRefMap
   }
 
   private initDependencies = () => {
-    const { xFieldsRefMap } = this
+    const { xFieldRefMap } = this
 
-    Object.keys(xFieldsRefMap).forEach(key => {
-      const xField = xFieldsRefMap[key]
+    Object.keys(xFieldRefMap).forEach(key => {
+      const xField = xFieldRefMap[key]
 
       if (xField.dependencies) {
-        enhanceXFieldWithDependencies<ExtraProps>(xField, xFieldsRefMap)
+        enhanceXFieldWithDependencies<ExtraProps>(xField, xFieldRefMap)
       }
+    })
+  }
+
+  private initObjectFields = () => {
+    const { xFieldRefMap } = this
+
+    Object.keys(xFieldRefMap).forEach(key => {
+      const xField = xFieldRefMap[key]
+
+      enhanceXFieldWithObjectValues<ExtraProps>(xField)
     })
   }
 
   private initValues = () => {}
 
-  private registerXFieldMap = (applicantMap: XFieldMap<ExtraProps>) => {
-    const { registerXType } = this
+  private registerXFieldMap = (
+    applicantMaps: XFieldMap<ExtraProps> | XFieldMap<ExtraProps>[]
+  ) => {
+    const { registerXField } = this
 
-    Object.keys(applicantMap).forEach(key => {
-      const xType = applicantMap[key]
+    let maps: XFieldMap<ExtraProps>[] = []
 
-      if (xType.type === key) {
-        registerXType(xType)
-      } else {
-        registerXTypeError(key, 'because the key did not match the type')
-      }
+    if (!Array.isArray(applicantMaps)) {
+      maps = [applicantMaps]
+    } else {
+      maps = applicantMaps
+    }
+
+    maps.forEach(applicantMap => {
+      Object.keys(applicantMap).forEach(key => {
+        const xField = applicantMap[key]
+
+        if (xField.type === key) {
+          registerXField(xField)
+        } else {
+          xFieldErrorMessage(
+            key,
+            `because the xField key <${key}> did not match the xField type <${
+              xField.type
+            }>`
+          )
+        }
+      })
     })
   }
 
-  private registerXType = (xType: XFieldProps<ExtraProps>) => {
+  private registerXField = (xField: XFieldProps<ExtraProps>) => {
     const { xFieldMap } = this
 
-    if (xType.type && xType.valueType && !xFieldMap[xType.type]) {
-      this.xFieldMap[xType.type] = xType
+    if (xField.type && xField.valueType && !xFieldMap[xField.type]) {
+      // Straight up register where xField
+      this.xFieldMap[xField.type] = xField
+    } else if (xField.type && xField.valueType && xFieldMap[xField.type]) {
+      // Register already existing xField by deepmerging
+      this.xFieldMap[xField.type] = deepmerge(
+        this.xFieldMap[xField.type],
+        xField
+      )
     } else {
-      let errorMessage = ' because something went wrong'
-      if (xType.type && xFieldMap[xType.type]) {
-        errorMessage = 'since it already exists'
-      } else if (!xType.valueType) {
+      let errorMessage = 'because something went wrong'
+      if (!xField.type) {
+        errorMessage = 'because the xField it is missing the property "type"'
+      } else if (xField.type && xFieldMap[xField.type]) {
+        errorMessage = 'since the xtype already exists'
+      } else if (!xField.valueType) {
         errorMessage = 'because it is missing the property "valueType"'
       }
 
-      registerXTypeError(xType.type, errorMessage)
+      xFieldErrorMessage(xField.type, errorMessage)
     }
   }
 }

@@ -1,9 +1,13 @@
-import { FieldProps, XFieldMap, XFieldProps } from '../models'
+import { FieldProps, XFieldProps } from './models'
 
+export interface XFieldMap<ExtraProps = {}> {
+  [key: string]: XFieldProps<ExtraProps>
+}
 export interface FormalizerOptions<ExtraProps = {}> {
   fields?: FieldProps[]
-  xFieldMap?: XFieldMap<ExtraProps>
+  xFieldMap?: XFieldMap<ExtraProps> | XFieldMap<ExtraProps>[]
   registerExtraProps?: RegisterExtraProps<ExtraProps>
+  valuesAsString?: boolean
 }
 
 export type FormalizerOnChange<ExtraProps = {}> = (
@@ -31,7 +35,7 @@ export type OnXFieldChangeProps<U = {}> = {
 
 export type OnXFieldChange<U = {}> = (props: OnXFieldChangeProps<U>) => void
 
-export interface XFieldsRefMap<ExtraProps = {}> {
+export interface XFieldRefMap<ExtraProps = {}> {
   [key: string]: XFieldProps<ExtraProps>
 }
 
@@ -63,11 +67,14 @@ export type XFieldAddListener<ExtraProps = {}> = (
   callback: XFieldListenerCallback<ExtraProps>
 ) => void
 
+export interface ObjectValue {
+  [key: string]: ValueTypes
+}
+
 export type ValueTypes =
   | string
   | number
   | boolean
-  | null
-  | Object
+  | ObjectValue
   | []
   | undefined

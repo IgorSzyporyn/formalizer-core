@@ -24,6 +24,8 @@
   "devDependencies": {
     "@babel/core": "^7.3.4",
     "@types/jest": "^24.0.11",
+    "@types/lodash": "^4.14.123",
+    "@types/lodash-es": "^4.17.3",
     "babel-plugin-annotate-pure-calls": "^0.4.0",
     "babel-plugin-dev-expression": "^0.2.1",
     "babel-plugin-transform-rename-import": "^2.3.0",
@@ -54,13 +56,14 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
+    "deepmerge": "^3.2.0",
     "lodash": "^4.17.11",
     "lodash-es": "^4.17.11"
   },
   "scripts": {
     "test": "jest --env=jsdom",
     "test:watch": "npm run test -- --watch",
-    "start": "rimraf dist && mkdir dist && cp-cli ./index.js ./dist/index.js && cross-env NODE_ENV=development rollup -w -c | tsc -w -p tsconfig.base.json",
+    "start": "rimraf dist && rimraf compiled && mkdir dist && cp-cli ./index.js ./dist/index.js && cross-env NODE_ENV=development rollup -w -c | tsc -w -p tsconfig.base.json",
     "prebuild": "rimraf dist && rimraf compiled",
     "build": "cross-env NODE_ENV=production tsc -p tsconfig.base.json  && rollup -c && rimraf compiled && cp-cli ./index.js ./dist/index.js",
     "prepublish": "npm run build",

@@ -1,9 +1,9 @@
 import { XFieldProps } from '../models'
-import { XFieldsRefMap } from '../types'
+import { XFieldRefMap } from '../types'
 
 export const xFieldsToRefMap = <ExtraProps>(
   xFields: XFieldProps<ExtraProps>[],
-  refMap: XFieldsRefMap<ExtraProps> = {}
+  refMap: XFieldRefMap<ExtraProps> = {}
 ) => {
   let xFieldRefMap = { ...refMap }
 

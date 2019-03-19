@@ -2,9 +2,9 @@ export type XValueTypes =
   | 'string'
   | 'number'
   | 'boolean'
-  | 'null'
   | 'array'
   | 'object'
+  | 'none'
 
 export interface XValue {
   type: XValueTypes

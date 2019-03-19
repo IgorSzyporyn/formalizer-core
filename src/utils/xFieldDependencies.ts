@@ -1,13 +1,16 @@
 import { XFieldProps } from '../models'
-import { XFieldsRefMap } from '../types'
+import { XFieldRefMap } from '../types'
 
 export function enhanceXFieldWithDependencies<ExtraProps>(
   xField: XFieldProps<ExtraProps>,
-  refMap: XFieldsRefMap<ExtraProps>
+  refMap: XFieldRefMap<ExtraProps>
 ) {
   xField.dependencies!.forEach(dependency => {
     const depXField = refMap[dependency.name]
-    depXField.addListener && depXField.addListener(field => {})
+    depXField.addListener &&
+      depXField.addListener(field => {
+        console.log(field)
+      })
   })
 
   return xField
