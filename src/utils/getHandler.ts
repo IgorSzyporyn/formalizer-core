@@ -7,8 +7,6 @@ export function getHandler<U>(onChange?: OnXFieldChange<U>) {
     set(xField: XFieldProps<U>, propName: SafeXFieldKeys<U>, setValue: any) {
       const value = sanitizeValue(xField, setValue)
 
-      xField[propName] = value
-
       // If valueType is object we need to go through all first level fields
       // and assign a possible key value from our value object store
       if (xField.valueType === 'object' && xField.fields) {
@@ -18,6 +16,8 @@ export function getHandler<U>(onChange?: OnXFieldChange<U>) {
           }
         })
       }
+
+      xField[propName] = value
 
       onChange && onChange({ propName, value, xField })
 

@@ -3,7 +3,7 @@ import isString from 'lodash/isString'
 import isNumber from 'lodash/isNumber'
 import isArray from 'lodash/isArray'
 import isObject from 'lodash/isObject'
-import { ValueTypes } from '../types'
+import { ValueTypes, ObjectValue } from '../types'
 import { errorMsg } from './messages'
 import { XFieldProps } from '../models'
 import { isEmpty } from 'lodash-es'
@@ -62,6 +62,8 @@ export function sanitizeValue<ExtraProps = {}>(
           value = emptyValue
         }
 
+        // We can't safely convert this value - set back to original and
+        // display an error message
         if (!isString(value) && value !== undefined) {
           value = setValue
           errorMsg(
@@ -71,7 +73,7 @@ export function sanitizeValue<ExtraProps = {}>(
           )
         }
       } else if (setValue === '') {
-        value = undefined
+        value = emptyValue
       }
       break
     case 'number':
@@ -92,8 +94,8 @@ export function sanitizeValue<ExtraProps = {}>(
           value = emptyValue
         }
 
-        // If this conversion did not yield a number
-        // then fall back to original
+        // We can't safely convert this value - set back to original and
+        // display an error message
         if (!isNumber(value) && value !== undefined) {
           value = setValue
           errorMsg(
@@ -118,8 +120,8 @@ export function sanitizeValue<ExtraProps = {}>(
           value = emptyValue
         }
 
-        // If this conversion did not yield a boolean
-        // then fall back to original
+        // We can't safely convert this value - set back to original and
+        // display an error message
         if (!isBoolean(value) && value !== undefined) {
           value = setValue
           errorMsg(
@@ -144,8 +146,8 @@ export function sanitizeValue<ExtraProps = {}>(
           value = emptyValue
         }
 
-        // If this conversion did not yield an object
-        // then fall back to original
+        // We can't safely convert this value - set back to original and
+        // display an error message
         if (!isObject(value) && value !== undefined) {
           value = setValue
           errorMsg(
@@ -154,10 +156,26 @@ export function sanitizeValue<ExtraProps = {}>(
             }`
           )
         }
-      } else {
-        if (isEmpty(value)) {
-          value = emptyValue
-        }
+      } else if (isEmpty(value)) {
+        value = emptyValue
+      }
+
+      // Populated value object will need to have its potential children
+      // examined and gone through recursivly through fields, and have
+      // those values sanitized and brought back up
+      if (xField.fields) {
+        value = value || {}
+
+        xField.fields.forEach(childField => {
+          if (childField.name) {
+            const parentsChildValue = value[childField.name] as ObjectValue
+            const childValue = sanitizeValue(childField, parentsChildValue)
+
+            if (childValue !== undefined) {
+              value[childField.name] = childValue
+            }
+          }
+        })
       }
       break
     case 'array':
@@ -174,8 +192,8 @@ export function sanitizeValue<ExtraProps = {}>(
           value = emptyValue
         }
 
-        // If this conversion did not yield an object
-        // then fall back to original
+        // We can't safely convert this value - set back to original and
+        // display an error message
         if (!isArray(value) && value !== undefined) {
           value = setValue
           errorMsg(
