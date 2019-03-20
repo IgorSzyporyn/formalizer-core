@@ -1,5 +1,5 @@
 import { OnXFieldChange, SafeXFieldKeys } from '../types'
-import { isEqual } from 'lodash-es'
+import { isEqual } from 'lodash'
 import { XFieldProps } from '../models'
 import { sanitizeValue } from './value'
 

@@ -10,10 +10,6 @@ export interface FormalizerOptions<ExtraProps = {}> {
   valuesAsString?: boolean
 }
 
-export type FormalizerOnChange<ExtraProps = {}> = (
-  xField: XFieldProps<ExtraProps>
-) => void
-
 export type RegisterExtraProps<ExtraProps> = (
   xField: XFieldProps<ExtraProps>
 ) => ExtraProps
@@ -76,5 +72,6 @@ export type ValueTypes =
   | number
   | boolean
   | ObjectValue
-  | []
+  | any[]
   | undefined
+  | null

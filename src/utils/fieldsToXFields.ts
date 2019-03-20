@@ -4,7 +4,7 @@ import { enhanceXFieldWithListener } from './xFieldListener'
 import { RegisterExtraProps, XFieldMap } from '../types'
 import deepmerge from 'deepmerge'
 
-function fieldToXField<ExtraProps = {}>({
+export function fieldToXField<ExtraProps = {}>({
   field,
   xFieldMap,
   registerExtraProps,

@@ -5,7 +5,7 @@ import {
   isNumber,
   isString,
   isBoolean,
-} from 'lodash-es'
+} from 'lodash'
 import { ValueTypes, ObjectValue } from '../types'
 import { errorMsg } from './messages'
 import { XFieldProps } from '../models'
@@ -110,9 +110,12 @@ export function sanitizeValue<ExtraProps = {}>(
       break
     case 'boolean':
       if (!isBoolean(setValue)) {
-        // We only try to convert from string
         if (isString(setValue)) {
           value = stringToValue(setValue)
+        }
+
+        if (isNumber(setValue)) {
+          value = setValue > 0 ? true : false
         }
 
         // If value is undefined we make a check for an emptyValue and set,
@@ -127,7 +130,7 @@ export function sanitizeValue<ExtraProps = {}>(
         if (!isBoolean(value) && value !== undefined) {
           value = setValue
           errorMsg(
-            `Tried to set non convertable value as boolean on xField: ${
+            `Tried to set non convertable value ${value} as boolean on xField: ${
               xField.$id
             }`
           )

@@ -61,7 +61,7 @@
     "lodash-es": "^4.17.11"
   },
   "scripts": {
-    "test": "jest --env=jsdom",
+    "test": "jest",
     "test:watch": "npm run test -- --watch",
     "start": "rimraf dist && rimraf compiled && mkdir dist && cp-cli ./index.js ./dist/index.js && cross-env NODE_ENV=development rollup -w -c | tsc -w -p tsconfig.base.json",
     "prebuild": "rimraf dist && rimraf compiled",
@@ -81,15 +81,11 @@
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}"
     ],
-    "setupFilesAfterEnv": [
-      "react-testing-library/cleanup-after-each.js",
-      "<rootDir>/test/setupTests.ts"
-    ],
     "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      ".(ts|tsx)": "ts-jest"
     },
     "testMatch": [
-      "<rootDir>/test/**/?(*.)(spec|test).ts?(x)"
+      "<rootDir>/**/?(*.)(spec|test).ts?(x)"
     ],
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"

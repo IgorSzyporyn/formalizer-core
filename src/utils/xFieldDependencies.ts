@@ -1,6 +1,6 @@
 import { XFieldProps } from '../models'
 import { XFieldRefMap } from '../types'
-import { isEqual } from 'lodash-es'
+import { isEqual } from 'lodash'
 
 export function enhanceXFieldWithDependencies<ExtraProps>(
   xField: XFieldProps<ExtraProps> & { [key: string]: any },
