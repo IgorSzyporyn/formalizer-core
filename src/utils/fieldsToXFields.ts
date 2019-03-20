@@ -47,6 +47,10 @@ function fieldToXField<ExtraProps = {}>({
     $id,
   }
 
+  if (xField.value === undefined && xField.emptyValue !== undefined) {
+    xField.value = xField.emptyValue
+  }
+
   // If a registerExtraProps function was sent along then we
   // need to give that a chance to return some additional
   // extraProps to extend with

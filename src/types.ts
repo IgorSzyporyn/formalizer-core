@@ -43,11 +43,14 @@ export type FieldDependencyDisabledTypes = 'disabled' | 'hidden'
 
 export interface FieldDependencies {
   name: string
-  propName: SafeXFieldKeys
-  value?: any
-  anyOf?: []
-  allOf?: []
-  noneOf?: []
+  matchProp: SafeXFieldKeys
+  matchValue?: any
+  matchAnyOf?: []
+  matchAllOf?: []
+  matchNoneOf?: []
+  targetProp: string
+  targetSuccesValue?: any
+  targetFailureValue?: any
   disabledType?: FieldDependencyDisabledTypes
 }
 

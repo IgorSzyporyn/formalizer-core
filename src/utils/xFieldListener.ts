@@ -1,5 +1,5 @@
 import { XFieldProps } from '../models'
-import { getHandler } from './getHandler'
+import { getProxyHandler } from './proxyHandler'
 import { XFieldListenerCallback } from '../types'
 
 export function enhanceXFieldWithListener<ExtraProps>(
@@ -11,7 +11,7 @@ export function enhanceXFieldWithListener<ExtraProps>(
     listeners.push(callback)
   }
 
-  const handler = getHandler<ExtraProps>(({ propName, value, xField }) => {
+  const handler = getProxyHandler<ExtraProps>(({ propName, value, xField }) => {
     listeners.forEach(listener => {
       listener({ propName, value, xField })
     })

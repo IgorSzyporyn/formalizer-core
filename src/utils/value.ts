@@ -1,12 +1,14 @@
-import isBoolean from 'lodash/isBoolean'
-import isString from 'lodash/isString'
-import isNumber from 'lodash/isNumber'
-import isArray from 'lodash/isArray'
-import isObject from 'lodash/isObject'
+import {
+  isEmpty,
+  isObject,
+  isArray,
+  isNumber,
+  isString,
+  isBoolean,
+} from 'lodash-es'
 import { ValueTypes, ObjectValue } from '../types'
 import { errorMsg } from './messages'
 import { XFieldProps } from '../models'
-import { isEmpty } from 'lodash-es'
 
 export function stringToValue(stringValue?: string): ValueTypes {
   let value
@@ -156,8 +158,6 @@ export function sanitizeValue<ExtraProps = {}>(
             }`
           )
         }
-      } else if (isEmpty(value)) {
-        value = emptyValue
       }
 
       // Populated value object will need to have its potential children
@@ -173,9 +173,15 @@ export function sanitizeValue<ExtraProps = {}>(
 
             if (childValue !== undefined) {
               value[childField.name] = childValue
+            } else {
+              delete value[childField.name]
             }
           }
         })
+      }
+
+      if (isObject(value) && isEmpty(value)) {
+        value = emptyValue
       }
       break
     case 'array':
