@@ -1,10 +1,15 @@
 {
+  "extends": ["tslint:latest", "tslint-config-prettier"],
   "defaultSeverity": "error",
+  "jsRules": {},
   "rules": {
     "deprecation": true,
     "file-name-casing": false,
     "no-unnecessary-callback-wrapper": false,
     "no-unnecessary-generics": false,
-    "semicolon": [true, "always", "ignore-bound-class-methods"]
+    "semicolon": [true, "never", "ignore-bound-class-methods"]
+  },
+  "linterOptions": {
+    "exclude": ["src/**/*.test.ts"]
   }
 }
