@@ -6,11 +6,11 @@ export type XValueTypes =
   | 'object'
   | 'none'
 
-export interface XValue {
+export interface IXValue {
   type: XValueTypes
   value: string
 }
 
-export interface XValues {
-  [key: string]: XValue
+export interface IXValues {
+  [key: string]: IXValue
 }

@@ -68,7 +68,7 @@
     "prebuild": "rimraf dist && rimraf compiled",
     "build": "cross-env NODE_ENV=production tsc -p tsconfig.base.json  && rollup -c && rimraf compiled && cp-cli ./index.js ./dist/index.js",
     "prepublish": "npm run build",
-    "lint": "tslint --config ./tslint.json --project '.'",
+    "lint": "tslint --config ./tslint.json --project '.' --format stylish",
     "test": "jest",
     "test:watch": "npm run test -- --watch",
     "format": "prettier --config ./.prettierrc --write 'src/**/*' 'README.md'",
@@ -87,7 +87,7 @@
       "git add"
     ],
     "src/**/*.ts": [
-      "tslint --config ./tslint.json",
+      "tslint --config ./tslint.json --format stylish",
       "jest --findRelatedTests"
     ]
   },

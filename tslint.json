@@ -3,10 +3,10 @@
   "defaultSeverity": "error",
   "rules": {
     "deprecation": true,
-    "file-name-casing": false,
     "no-unnecessary-callback-wrapper": false,
     "no-unnecessary-generics": false,
-    "semicolon": [true, "never", "ignore-bound-class-methods"]
+    "semicolon": [true, "never", "ignore-bound-class-methods"],
+    "no-this-assignment": false
   },
   "linterOptions": {
     "exclude": ["src/**/*.test.ts"]

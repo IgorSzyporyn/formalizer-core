@@ -1,8 +1,8 @@
-import { FieldProps, XFieldProps } from '../models'
+import deepmerge from 'deepmerge'
+import { IFieldProps, XFieldProps } from '../models'
+import { IXFieldMap, RegisterExtraProps } from '../types'
 import { warningMsg } from './messages'
 import { enhanceXFieldWithListener } from './xFieldListener'
-import { RegisterExtraProps, XFieldMap } from '../types'
-import deepmerge from 'deepmerge'
 
 export function fieldToXField<ExtraProps = {}>({
   field,
@@ -10,8 +10,8 @@ export function fieldToXField<ExtraProps = {}>({
   registerExtraProps,
   parent,
 }: {
-  field: FieldProps
-  xFieldMap: XFieldMap<ExtraProps>
+  field: IFieldProps
+  xFieldMap: IXFieldMap<ExtraProps>
   registerExtraProps?: RegisterExtraProps<ExtraProps>
   parent?: XFieldProps<ExtraProps>
 }): XFieldProps<ExtraProps> {
@@ -76,9 +76,9 @@ export function fieldToXField<ExtraProps = {}>({
   if (field.fields) {
     const xFields = fieldsToXFields<ExtraProps>({
       fields: field.fields,
-      xFieldMap,
-      registerExtraProps,
       parent: xField,
+      registerExtraProps,
+      xFieldMap,
     })
 
     if (xFields) {
@@ -95,18 +95,18 @@ export function fieldsToXFields<ExtraProps = {}>({
   registerExtraProps,
   parent,
 }: {
-  fields: FieldProps[]
-  xFieldMap: XFieldMap<ExtraProps>
+  fields: IFieldProps[]
+  xFieldMap: IXFieldMap<ExtraProps>
   registerExtraProps?: RegisterExtraProps<ExtraProps>
   parent?: XFieldProps<ExtraProps>
-}): XFieldProps<ExtraProps>[] {
+}): Array<XFieldProps<ExtraProps>> {
   return fields
     .map(field =>
       fieldToXField<ExtraProps>({
         field,
-        xFieldMap,
-        registerExtraProps,
         parent,
+        registerExtraProps,
+        xFieldMap,
       })
     )
     .filter(f => f)

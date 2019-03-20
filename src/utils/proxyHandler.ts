@@ -1,6 +1,6 @@
-import { OnXFieldChange, SafeXFieldKeys } from '../types'
 import { isEqual } from 'lodash'
 import { XFieldProps } from '../models'
+import { OnXFieldChange, SafeXFieldKeys } from '../types'
 import { sanitizeValue } from './value'
 
 export function getProxyHandler<U>(onChange?: OnXFieldChange<U>) {
@@ -33,7 +33,9 @@ export function getProxyHandler<U>(onChange?: OnXFieldChange<U>) {
 
       xField[propName] = value
 
-      onChange && onChange({ propName, value, xField })
+      if (onChange) {
+        onChange({ propName, value, xField })
+      }
 
       return true
     },

@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash'
 import { XFieldProps } from '../models'
-import { ObjectValue } from '../types'
+import { IObjectValue } from '../types'
 
 export function enhanceXFieldWithObjectValues<E>(xField: XFieldProps<E>) {
   if (xField.valueType === 'object') {
@@ -16,7 +16,7 @@ export function enhanceXFieldWithObjectValues<E>(xField: XFieldProps<E>) {
       xField.fields.forEach(field => {
         if (field.name && field.value !== undefined) {
           xField.value = {
-            ...(xField.value as ObjectValue),
+            ...(xField.value as IObjectValue),
             [field.name]: field.value,
           }
         }
@@ -26,13 +26,13 @@ export function enhanceXFieldWithObjectValues<E>(xField: XFieldProps<E>) {
         // we need to update the key value in our xField value object
         if (field.addListener) {
           field.addListener(({ propName, value }) => {
-            let objectValue = xField.value as ObjectValue
+            let objectValue = xField.value as IObjectValue
 
             if (propName === 'value' && field.name) {
               // If our parent value is undefined and we have a value to set
               // we have to initialize objectValue as empty object
               if (objectValue === undefined && value !== undefined) {
-                objectValue = (xField.emptyValue as ObjectValue) || {}
+                objectValue = (xField.emptyValue as IObjectValue) || {}
               }
 
               if (value !== undefined) {

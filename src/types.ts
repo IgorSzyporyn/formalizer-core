@@ -1,11 +1,11 @@
-import { FieldProps, XFieldProps } from './models'
+import { IFieldProps, XFieldProps } from './models'
 
-export interface XFieldMap<ExtraProps = {}> {
+export interface IXFieldMap<ExtraProps = {}> {
   [key: string]: XFieldProps<ExtraProps>
 }
-export interface FormalizerOptions<ExtraProps = {}> {
-  fields?: FieldProps[]
-  xFieldMap?: XFieldMap<ExtraProps> | XFieldMap<ExtraProps>[]
+export interface IFormalizerOptions<ExtraProps = {}> {
+  fields?: IFieldProps[]
+  xFieldMap?: IXFieldMap<ExtraProps> | Array<IXFieldMap<ExtraProps>>
   registerExtraProps?: RegisterExtraProps<ExtraProps>
   valuesAsString?: boolean
 }
@@ -21,21 +21,21 @@ export type SafeXFieldProps<U = {}> = Pick<
 
 export type SafeXFieldKeys<U = {}> = keyof SafeXFieldProps<U>
 
-export type FieldKeys = keyof FieldProps
+export type FieldKeys = keyof IFieldProps
 
-export type OnXFieldChangeProps<U = {}> = {
+export interface IOnXFieldChangeProps<U = {}> {
   propName: SafeXFieldKeys<U>
   value: any
   xField: XFieldProps<U>
 }
 
-export type OnXFieldChange<U = {}> = (props: OnXFieldChangeProps<U>) => void
+export type OnXFieldChange<U = {}> = (props: IOnXFieldChangeProps<U>) => void
 
-export interface XFieldRefMap<ExtraProps = {}> {
+export interface IXFieldRefMap<ExtraProps = {}> {
   [key: string]: XFieldProps<ExtraProps>
 }
 
-export interface FieldDependencies {
+export interface IFieldDependencies {
   name: string
   matchProp: SafeXFieldKeys
   matchValue?: any
@@ -47,7 +47,7 @@ export interface FieldDependencies {
   failureValue?: any
 }
 
-export type XFieldListenerCallbackProps<ExtraProps = {}> = {
+export interface IXFieldListenerCallbackProps<ExtraProps = {}> {
   propName: SafeXFieldKeys<ExtraProps>
   value: any
   xField: XFieldProps<ExtraProps>
@@ -57,13 +57,13 @@ export type XFieldListenerCallback<ExtraProps = {}> = ({
   propName,
   value,
   xField,
-}: XFieldListenerCallbackProps<ExtraProps>) => void
+}: IXFieldListenerCallbackProps<ExtraProps>) => void
 
 export type XFieldAddListener<ExtraProps = {}> = (
   callback: XFieldListenerCallback<ExtraProps>
 ) => void
 
-export interface ObjectValue {
+export interface IObjectValue {
   [key: string]: ValueTypes
 }
 
@@ -71,7 +71,7 @@ export type ValueTypes =
   | string
   | number
   | boolean
-  | ObjectValue
+  | IObjectValue
   | any[]
   | undefined
   | null

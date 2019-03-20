@@ -1,14 +1,14 @@
 import {
-  isEmpty,
-  isObject,
   isArray,
-  isNumber,
-  isString,
   isBoolean,
+  isEmpty,
+  isNumber,
+  isObject,
+  isString,
 } from 'lodash'
-import { ValueTypes, ObjectValue } from '../types'
-import { errorMsg } from './messages'
 import { XFieldProps } from '../models'
+import { IObjectValue, ValueTypes } from '../types'
+import { errorMsg } from './messages'
 
 export function stringToValue(stringValue?: string): ValueTypes {
   let value
@@ -16,6 +16,7 @@ export function stringToValue(stringValue?: string): ValueTypes {
   if (stringValue) {
     try {
       value = JSON.parse(stringValue)
+      // tslint:disable-next-line no-empty
     } catch (e) {}
   }
 
@@ -32,6 +33,7 @@ export function valueToString(value: ValueTypes) {
   if (typeof value !== 'string') {
     try {
       stringValue = JSON.stringify(value)
+      // tslint:disable-next-line no-empty
     } catch (e) {}
   } else {
     stringValue = value
@@ -171,7 +173,7 @@ export function sanitizeValue<ExtraProps = {}>(
 
         xField.fields.forEach(childField => {
           if (childField.name) {
-            const parentsChildValue = value[childField.name] as ObjectValue
+            const parentsChildValue = value[childField.name] as IObjectValue
             const childValue = sanitizeValue(childField, parentsChildValue)
 
             if (childValue !== undefined) {

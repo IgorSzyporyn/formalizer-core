@@ -1,10 +1,10 @@
 import { XFieldProps } from '../models'
-import { XFieldRefMap } from '../types'
+import { IXFieldRefMap } from '../types'
 import { errorMsg } from './messages'
 
 export const xFieldsToRefMap = <ExtraProps>(
-  xFields: XFieldProps<ExtraProps>[],
-  refMap: XFieldRefMap<ExtraProps> = {}
+  xFields: Array<XFieldProps<ExtraProps>>,
+  refMap: IXFieldRefMap<ExtraProps> = {}
 ) => {
   let xFieldRefMap = { ...refMap }
 

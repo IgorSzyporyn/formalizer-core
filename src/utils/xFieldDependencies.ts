@@ -1,15 +1,15 @@
-import { XFieldProps } from '../models'
-import { XFieldRefMap } from '../types'
 import { isEqual } from 'lodash'
+import { XFieldProps } from '../models'
+import { IXFieldRefMap } from '../types'
 
 export function enhanceXFieldWithDependencies<ExtraProps>(
   xField: XFieldProps<ExtraProps> & { [key: string]: any },
-  refMap: XFieldRefMap<ExtraProps>
+  refMap: IXFieldRefMap<ExtraProps>
 ) {
   xField.dependencies!.forEach(dependency => {
     const depXField = refMap[dependency.name]
 
-    depXField.addListener &&
+    if (depXField.addListener) {
       depXField.addListener(({ propName, value }) => {
         const {
           matchProp,
@@ -38,16 +38,16 @@ export function enhanceXFieldWithDependencies<ExtraProps>(
 
             success = count === matchAllOf.length
           } else if (matchNoneOf) {
-            if (value && value.includes) {
-              success = matchNoneOf.every(item => !value.includes(item))
-            } else {
-              success = true
-            }
+            success =
+              value && value.includes
+                ? matchNoneOf.every(item => !value.includes(item))
+                : true
           }
 
           xField[targetProp] = success ? successValue : failureValue
         }
       })
+    }
   })
 
   return xField
