@@ -1,6 +1,6 @@
-import { fieldsToXFields, fieldToXField } from './fieldsToXFields'
-import { IXFieldMap } from '../types';
-import { IFieldProps, XFieldProps } from '../models';
+import { fieldsToXFields, fieldToXField } from '../fieldsToXFields'
+import { IXFieldMap } from '../../types';
+import { IFieldProps, XFieldProps } from '../../models';
 
 const config: {
   fields: IFieldProps[]

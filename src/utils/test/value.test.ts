@@ -1,5 +1,5 @@
-import { valueToString, stringToValue, sanitizeValue } from './value'
-import { XFieldProps } from '../models';
+import { valueToString, stringToValue, sanitizeValue } from '../value'
+import { XFieldProps } from '../../models';
 
 describe('valueToString = (ValueTypes) => string', () => {
   test.each([

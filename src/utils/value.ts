@@ -10,6 +10,7 @@ import { XFieldProps } from '../models'
 import { IObjectValue, ValueTypes } from '../types'
 import { errorMsg } from './messages'
 
+//
 export function stringToValue(stringValue?: string): ValueTypes {
   let value
 
