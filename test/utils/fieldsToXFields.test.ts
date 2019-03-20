@@ -1,33 +1,24 @@
-import { IFieldProps, XFieldProps } from '../src/models'
-import { IXFieldMap } from '../src/types'
-import { fieldsToXFields, fieldToXField } from '../src/utils/fieldsToXFields'
+import {Formalizer} from '../../src/formalizer'
+import { fieldToXField, fieldsToXFields } from '../../src/utils/fieldsToXFields'
 
-const config: {
-  fields: IFieldProps[]
-  xFieldMap: IXFieldMap
-  xFields: XFieldProps[]
-} = {
-  fields: [
-    { type: 'text', name: 'a', fields: [{ type: 'text', name: 'd'}]},
-    { type: 'text', name: 'b'},
-    { type: 'text', name: 'c'}
-  ],
-  xFieldMap: {
-    text: {
-      extraProps: {},
-      type: 'text',
-      valueType: 'string',
-    }
-  },
-  xFields: []
-}
+let formalizer: Formalizer
+
+beforeAll(() => {
+  formalizer = new Formalizer({
+    fields: [
+      { type: 'string', name: 'a', fields: [{ type: 'string', name: 'd'}]},
+      { type: 'string', name: 'b'},
+      { type: 'string', name: 'c'}
+    ]
+  })
+})
 
 describe(
   'fieldsToXFields = ({ fields: FieldProps[], ...}) => XFieldProps[]',
   () => {
     test('should return array with 3 items when converting 3 fields', () => {
     expect(fieldsToXFields(
-      {fields: config.fields, xFieldMap: config.xFieldMap})
+      {fields: formalizer.fields, xFieldMap: formalizer.xFieldMap})
     )
       .toHaveLength(3)
   })
@@ -36,7 +27,7 @@ describe(
     `a converted field array item should have the property %s`,
     (a) => {
       expect(fieldsToXFields(
-        {fields: config.fields, xFieldMap: config.xFieldMap})[0]
+        {fields: formalizer.fields, xFieldMap: formalizer.xFieldMap})[0]
       )
         .toHaveProperty(a)
   })
@@ -46,8 +37,11 @@ describe(
     `a converted field array item nested in another item should have the property %s`,
     (a) => {
       expect(fieldsToXFields(
-        {fields: config.fields, xFieldMap: config.xFieldMap})[0].fields![0]
-      )
+        {
+          fields: formalizer.fields,
+          xFieldMap: formalizer.xFieldMap
+        }
+      )[0].fields![0])
         .toHaveProperty(a)
   })
 })
@@ -57,7 +51,7 @@ describe('fieldToXField = ({ field: FieldProps, ...}) => XFieldProps', () => {
     `a converted field should have the property %s`,
     (a) => {
       expect(fieldToXField(
-        {field: config.fields[0], xFieldMap: config.xFieldMap})
+        {field: formalizer.fields[0], xFieldMap: formalizer.xFieldMap})
       )
         .toHaveProperty(a)
   })

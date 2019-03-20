@@ -1,3 +1,4 @@
 export * from './field'
-export * from './xfield'
+export * from './xField'
+export * from './xFieldMap'
 export * from './xvalue'

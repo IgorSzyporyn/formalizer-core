@@ -1,6 +1,6 @@
 // tslint:disable no-object-literal-type-assertion
-import { XFieldProps } from '../src/models'
-import { sanitizeValue, stringToValue, valueToString } from '../src/utils/value'
+import { XFieldProps } from '../../src/models'
+import { sanitizeValue, stringToValue, valueToString } from '../../src/utils/value'
 
 describe('valueToString = (ValueTypes) => string', () => {
   test.each([

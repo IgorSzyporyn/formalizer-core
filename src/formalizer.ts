@@ -1,5 +1,6 @@
 import deepmerge from 'deepmerge'
-import { IFieldProps, XFieldProps } from './models'
+import { isArray } from 'lodash'
+import { IFieldProps, XFieldProps, xFieldMap as xFieldCoreMap } from './models'
 import {
   IFormalizerOptions,
   IXFieldMap,
@@ -23,35 +24,28 @@ export class Formalizer<ExtraProps = {}> {
   public xFieldRefMap: IXFieldRefMap<ExtraProps> = {}
   public values: ValueTypes = {}
 
-  constructor(options?: IFormalizerOptions<ExtraProps>) {
-    // Then initialize the config options
-    this.initConfig(options)
+  protected formalizer = '1.0.0'
+
+  constructor(options: IFormalizerOptions<ExtraProps> = {}) {
+    const { xFieldMap, fields, registerExtraProps } = options
+
+    this.registerXFieldMap(xFieldMap)
+
+    this.initFields(fields)
+    this.initXFields(fields, registerExtraProps)
+    this.initXFieldRefMap()
+    this.initXFieldDependencies()
+    this.initObjectXFields()
   }
 
-  private initConfig = (config: IFormalizerOptions<ExtraProps> = {}) => {
-    const { xFieldMap, fields, registerExtraProps } = config
-
-    if (xFieldMap) {
-      this.registerXFieldMap(xFieldMap)
-    }
-
-    if (fields) {
-      this.fields = fields
-      this.initXFields(fields, registerExtraProps)
-      this.xFieldRefMap = this.initXFieldRefMap()
-      this.initDependencies()
-      this.initObjectFields()
-    }
+  private initFields = (fields: IFieldProps[] = []) => {
+    this.fields = fields
   }
 
   private initXFields = (
-    fields: IFieldProps[],
+    fields: IFieldProps[] = [],
     registerExtraProps?: RegisterExtraProps<ExtraProps>
   ) => {
-    // Convert the "regular" field to a xField with
-    // value type safety via valueType property,
-    // adds the xValue object and empower it with the
-    // ability to add a listener for xField changes
     const xFields = fieldsToXFields<ExtraProps>({
       fields,
       registerExtraProps,
@@ -64,10 +58,10 @@ export class Formalizer<ExtraProps = {}> {
   private initXFieldRefMap = (xFields?: Array<XFieldProps<ExtraProps>>) => {
     const xFieldRefMap = xFieldsToRefMap<ExtraProps>(xFields || this.xFields)
 
-    return xFieldRefMap
+    this.xFieldRefMap = xFieldRefMap
   }
 
-  private initDependencies = () => {
+  private initXFieldDependencies = () => {
     const { xFieldRefMap } = this
 
     Object.keys(xFieldRefMap).forEach(key => {
@@ -79,7 +73,7 @@ export class Formalizer<ExtraProps = {}> {
     })
   }
 
-  private initObjectFields = () => {
+  private initObjectXFields = () => {
     const { xFieldRefMap } = this
 
     Object.keys(xFieldRefMap).forEach(key => {
@@ -90,13 +84,21 @@ export class Formalizer<ExtraProps = {}> {
   }
 
   private registerXFieldMap = (
-    applicantMaps: IXFieldMap<ExtraProps> | Array<IXFieldMap<ExtraProps>>
+    applicantMaps?: IXFieldMap<ExtraProps> | Array<IXFieldMap<ExtraProps>>
   ) => {
     const { registerXField } = this
 
-    const maps: Array<IXFieldMap<ExtraProps>> = !Array.isArray(applicantMaps)
-      ? [applicantMaps]
-      : applicantMaps
+    const applicants = applicantMaps
+      ? isArray(applicantMaps)
+        ? applicantMaps
+        : [applicantMaps]
+      : []
+
+    const coreMaps: Array<IXFieldMap<ExtraProps>> = [
+      xFieldCoreMap as IXFieldMap<ExtraProps>,
+    ]
+
+    const maps = coreMaps.concat(applicants)
 
     maps.forEach(applicantMap => {
       Object.keys(applicantMap).forEach(key => {
