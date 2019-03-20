@@ -71,7 +71,6 @@
     "test": "jest",
     "test:watch": "npm run test -- --watch",
     "format": "prettier --config ./.prettierrc --write 'src/**/*' 'README.md'",
-    "dtslint": "dtslint types",
     "size": "size-limit"
   },
   "husky": {
@@ -82,17 +81,18 @@
     }
   },
   "lint-staged": {
-    "src/**/*.ts": [
-      "yarn prettier --config ./.prettierrc --write 'src/**/*'",
+    "./src/**/*.ts": [
+      "yarn format",
+      "yarn test",
       "git add"
     ]
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.{ts}"
+      "src/**/*.ts"
     ],
     "transform": {
-      ".(ts|tsx)": "ts-jest"
+      ".ts": "ts-jest"
     },
     "testMatch": [
       "<rootDir>/**/?(*.)(spec|test).ts"
