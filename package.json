@@ -80,13 +80,6 @@
       "post-commit": "git update-index --again"
     }
   },
-  "lint-staged": {
-    "./src/**/*.ts": [
-      "yarn format",
-      "yarn test",
-      "git add"
-    ]
-  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.ts"
