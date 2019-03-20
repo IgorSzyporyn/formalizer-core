@@ -39,19 +39,16 @@ export interface XFieldRefMap<ExtraProps = {}> {
   [key: string]: XFieldProps<ExtraProps>
 }
 
-export type FieldDependencyDisabledTypes = 'disabled' | 'hidden'
-
 export interface FieldDependencies {
   name: string
   matchProp: SafeXFieldKeys
   matchValue?: any
-  matchAnyOf?: []
-  matchAllOf?: []
-  matchNoneOf?: []
+  matchAnyOf?: any[]
+  matchAllOf?: any[]
+  matchNoneOf?: any[]
   targetProp: string
-  targetSuccesValue?: any
-  targetFailureValue?: any
-  disabledType?: FieldDependencyDisabledTypes
+  successValue?: any
+  failureValue?: any
 }
 
 export type XFieldListenerCallbackProps<ExtraProps = {}> = {

@@ -1,5 +1,6 @@
 import { XFieldProps } from '../models'
 import { XFieldRefMap } from '../types'
+import { isEqual } from 'lodash-es'
 
 export function enhanceXFieldWithDependencies<ExtraProps>(
   xField: XFieldProps<ExtraProps> & { [key: string]: any },
@@ -7,6 +8,7 @@ export function enhanceXFieldWithDependencies<ExtraProps>(
 ) {
   xField.dependencies!.forEach(dependency => {
     const depXField = refMap[dependency.name]
+
     depXField.addListener &&
       depXField.addListener(({ propName, value }) => {
         const {
@@ -16,18 +18,34 @@ export function enhanceXFieldWithDependencies<ExtraProps>(
           matchAnyOf,
           matchNoneOf,
           targetProp,
-          targetSuccesValue,
-          targetFailureValue,
+          successValue,
+          failureValue,
         } = dependency
 
         if (propName === matchProp) {
+          let success = false
+
           if (matchValue !== undefined) {
-            xField[targetProp] =
-              matchValue === value ? targetSuccesValue : targetFailureValue
-          } else if (matchAnyOf) {
-            // Check for anyOf key - which means to match
-            // value any value in dependency anyOf array
+            success = isEqual(matchValue, value)
+          } else if (matchAnyOf && value && value.includes) {
+            success = matchAnyOf.some(item => value.includes(item))
+          } else if (matchAllOf && value && value.includes) {
+            let count = 0
+
+            matchAllOf.forEach(item => {
+              count = value.includes(item) ? count + 1 : count
+            })
+
+            success = count === matchAllOf.length
+          } else if (matchNoneOf) {
+            if (value && value.includes) {
+              success = matchNoneOf.every(item => !value.includes(item))
+            } else {
+              success = true
+            }
           }
+
+          xField[targetProp] = success ? successValue : failureValue
         }
       })
   })

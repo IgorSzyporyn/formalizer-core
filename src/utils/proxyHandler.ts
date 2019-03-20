@@ -1,4 +1,5 @@
 import { OnXFieldChange, SafeXFieldKeys } from '../types'
+import { isEqual } from 'lodash-es'
 import { XFieldProps } from '../models'
 import { sanitizeValue } from './value'
 
@@ -10,19 +11,21 @@ export function getProxyHandler<U>(onChange?: OnXFieldChange<U>) {
       if (propName === 'value') {
         value = sanitizeValue(xField, setValue)
 
-        // fields with object values needs to set child values also
+        // Fields with object values needs to set child values also
         if (xField.valueType === 'object' && xField.fields) {
           xField.fields.forEach(field => {
-            // If value is an object we can look for a new value through
-            // key - if it is undefined, then we need to set undefined
+            // To prevent a recursive chain of calls up and down between
+            // child and parent we need some specific logic here
             if (value) {
-              if (value[field.name!] !== field.value) {
+              // If parent has value - then only change if there is a
+              // difference between the values
+              if (!isEqual(value[field.name!], field.value)) {
                 field.value = value[field.name!]
               }
-            } else {
-              if (field.value !== undefined) {
-                field.value = undefined
-              }
+            } else if (field.value !== undefined) {
+              // Our parents value is undefined, so this field must set
+              // its value to undefined
+              field.value = undefined
             }
           })
         }
