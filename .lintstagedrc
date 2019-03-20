@@ -1,4 +1,10 @@
 {
-  "src/**/*.ts": ["prettier --write", "git add"],
-  "*.{ts,js,json,md}": ["prettier --write", "git add"]
+  "src/**/*.{ts,js,json}": [
+    "prettier --config ./.prettierrc --write",
+    "git add"
+  ],
+  "src/**/*.ts": [
+    "tslint --config ./tslint.json",
+    "cross-env NODE_ENV=test jest --bail --findRelatedTests"
+  ]
 }
