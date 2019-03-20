@@ -1,6 +1,6 @@
+import { isEmpty } from 'lodash'
 import { XFieldProps } from '../models'
 import { ObjectValue } from '../types'
-import isEmpty from 'lodash/isEmpty'
 
 export function enhanceXFieldWithObjectValues<E>(xField: XFieldProps<E>) {
   if (xField.valueType === 'object') {
@@ -20,6 +20,7 @@ export function enhanceXFieldWithObjectValues<E>(xField: XFieldProps<E>) {
             [field.name]: field.value,
           }
         }
+        // For test
 
         // Make sure we listen in on the childs value changes as
         // we need to update the key value in our xField value object

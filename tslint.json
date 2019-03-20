@@ -1,7 +1,6 @@
 {
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "defaultSeverity": "error",
-  "jsRules": {},
   "rules": {
     "deprecation": true,
     "file-name-casing": false,

@@ -1,7 +1,0 @@
-{
-  "**/*.{ts,json}": ["prettier --config ./.prettierrc --write", "git add"],
-  "**/*.ts": [
-    "tslint --config ./tslint.json",
-    "cross-env NODE_ENV=test jest --bail --findRelatedTests"
-  ]
-}
