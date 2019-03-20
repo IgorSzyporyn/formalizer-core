@@ -1,5 +1,6 @@
-import { valueToString, stringToValue, sanitizeValue } from '../value'
-import { XFieldProps } from '../../models';
+// tslint:disable no-object-literal-type-assertion
+import { XFieldProps } from '../src/models'
+import { sanitizeValue, stringToValue, valueToString } from '../src/utils/value'
 
 describe('valueToString = (ValueTypes) => string', () => {
   test.each([
@@ -11,8 +12,8 @@ describe('valueToString = (ValueTypes) => string', () => {
     [[1,'foo',false], "[1,\"foo\",false]"]
   ])(
     'should convert %p => %p',
-    (a, expected) => {
-      expect(valueToString(a)).toEqual(expected);
+    (a: any, expected) => {
+      expect(valueToString(a)).toEqual(expected)
     },
   )
 })
@@ -27,8 +28,8 @@ describe('stringToValue = (string) => ValueTypes', () => {
     ["[1,\"foo\",false]", [1,'foo',false]]
   ])(
     'should convert %p => %p',
-    (a, expected) => {
-      expect(stringToValue(a)).toEqual(expected);
+    (a: any, expected) => {
+      expect(stringToValue(a)).toEqual(expected)
     },
   )
 })
@@ -47,8 +48,9 @@ describe('sanitizeValue = (XFieldProps, ValueTypes) => ValueTypes', () => {
       [[1,'foo',false], "[1,\"foo\",false]"]
     ])(
       'should sanitize %p => %p',
-      (a, expected) => {
-        expect(sanitizeValue(({ valueType: 'string'} as XFieldProps), a)).toEqual(expected);
+      (a: any, expected) => {
+        expect(sanitizeValue(({ valueType: 'string'} as XFieldProps), a))
+          .toEqual(expected)
       },
     )
   })
@@ -60,8 +62,11 @@ describe('sanitizeValue = (XFieldProps, ValueTypes) => ValueTypes', () => {
       ["Hello World", "Hello World"],
     ])(
       'should sanitize %p => %p',
-      (a, expected) => {
-        expect(sanitizeValue(({ valueType: 'string', emptyValue: ''} as XFieldProps), a)).toEqual(expected);
+      (a, expected) => { 
+        expect(sanitizeValue(
+          ({ valueType: 'string', emptyValue: ''} as XFieldProps), a
+        ))
+          .toEqual(expected)
       },
     )
   })
@@ -75,7 +80,10 @@ describe('sanitizeValue = (XFieldProps, ValueTypes) => ValueTypes', () => {
     ])(
       'should sanitize %p => %p',
       (a, expected) => {
-        expect(sanitizeValue(({ valueType: 'number'} as XFieldProps), a)).toEqual(expected);
+        expect(sanitizeValue(
+          ({ valueType: 'number'} as XFieldProps), a)
+        )
+          .toEqual(expected)
       },
     )
   })
@@ -88,7 +96,10 @@ describe('sanitizeValue = (XFieldProps, ValueTypes) => ValueTypes', () => {
     ])(
       'should sanitize %p => %p',
       (a, expected) => {
-        expect(sanitizeValue(({ valueType: 'number', emptyValue: 0} as XFieldProps), a)).toEqual(expected);
+        expect(sanitizeValue(
+          ({ valueType: 'number', emptyValue: 0} as XFieldProps), a)
+        )
+          .toEqual(expected)
       },
     )
   })
@@ -104,8 +115,11 @@ describe('sanitizeValue = (XFieldProps, ValueTypes) => ValueTypes', () => {
       [1, true],
     ])(
       'should sanitize %p => %p',
-      (a, expected) => {
-        expect(sanitizeValue(({ valueType: 'boolean'} as XFieldProps), a)).toEqual(expected);
+      (a: any, expected) => {
+        expect(sanitizeValue(
+          ({ valueType: 'boolean'} as XFieldProps), a)
+        )
+          .toEqual(expected)
       },
     )
   })
@@ -118,8 +132,11 @@ describe('sanitizeValue = (XFieldProps, ValueTypes) => ValueTypes', () => {
       [true, true]
     ])(
       'should sanitize %p => %p',
-      (a, expected) => {
-        expect(sanitizeValue(({ valueType: 'boolean', emptyValue: false} as XFieldProps), a)).toEqual(expected);
+      (a: any, expected) => {
+        expect(sanitizeValue(
+          ({ valueType: 'boolean', emptyValue: false} as XFieldProps), a)
+        )
+          .toEqual(expected)
       },
     )
   })

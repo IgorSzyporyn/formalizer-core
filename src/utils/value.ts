@@ -10,7 +10,6 @@ import { XFieldProps } from '../models'
 import { IObjectValue, ValueTypes } from '../types'
 import { errorMsg } from './messages'
 
-//
 export function stringToValue(stringValue?: string): ValueTypes {
   let value
 
@@ -133,6 +132,7 @@ export function sanitizeValue<ExtraProps = {}>(
         if (!isBoolean(value) && value !== undefined) {
           value = setValue
           errorMsg(
+            // tslint:disable-next-line max-line-length
             `Tried to set non convertable value ${value} as boolean on xField: ${
               xField.$id
             }`
