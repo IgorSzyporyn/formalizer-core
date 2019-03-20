@@ -82,31 +82,29 @@
     }
   },
   "lint-staged": {
-    "**/*.{ts,tsx}": [
-      "prettier --config ./.prettierrc --write",
+    "**/*.{ts}": [
+      "format",
       "git add"
     ],
     "src/**/*.ts": [
-      "tslint",
-      "jest --findRelatedTests"
+      "test"
     ]
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
+      "src/**/*.{ts}"
     ],
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },
     "testMatch": [
-      "<rootDir>/**/?(*.)(spec|test).ts?(x)"
+      "<rootDir>/**/?(*.)(spec|test).ts"
     ],
     "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+      "[/\\\\]node_modules[/\\\\].+\\.(js)$"
     ],
     "moduleFileExtensions": [
       "ts",
-      "tsx",
       "js",
       "json"
     ]
