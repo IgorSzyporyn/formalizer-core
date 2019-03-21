@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge'
-import { IFieldProps, XFieldProps } from '../models'
+import { IFieldProps, IXFieldProps } from '../models'
 import { IXFieldMap, RegisterExtraProps } from '../types'
 import { warningMsg } from './messages'
 import { enhanceXFieldWithListener } from './xFieldListener'
@@ -13,8 +13,8 @@ export function fieldToXField<ExtraProps = {}>({
   field: IFieldProps
   xFieldMap: IXFieldMap<ExtraProps>
   registerExtraProps?: RegisterExtraProps<ExtraProps>
-  parent?: XFieldProps<ExtraProps>
-}): XFieldProps<ExtraProps> {
+  parent?: IXFieldProps<ExtraProps>
+}): IXFieldProps<ExtraProps> {
   if (!xFieldMap[field.type]) {
     warningMsg(
       `Error creating the field "${field.name}" because the field type "${
@@ -41,7 +41,7 @@ export function fieldToXField<ExtraProps = {}>({
   }
 
   // Merge with the xFieldMap model and add the created $id
-  let xField: XFieldProps<ExtraProps> = {
+  let xField: IXFieldProps<ExtraProps> = {
     ...xFieldMap[field.type],
     ...fieldProps,
     $id,
@@ -98,8 +98,8 @@ export function fieldsToXFields<ExtraProps = {}>({
   fields: IFieldProps[]
   xFieldMap: IXFieldMap<ExtraProps>
   registerExtraProps?: RegisterExtraProps<ExtraProps>
-  parent?: XFieldProps<ExtraProps>
-}): Array<XFieldProps<ExtraProps>> {
+  parent?: IXFieldProps<ExtraProps>
+}): Array<IXFieldProps<ExtraProps>> {
   return fields
     .map(field =>
       fieldToXField<ExtraProps>({

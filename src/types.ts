@@ -1,22 +1,24 @@
-import { IFieldProps, XFieldProps } from './models'
+import { IFieldProps, IXFieldProps } from './models'
 
-export interface IXFieldMap<ExtraProps = {}> {
-  [key: string]: XFieldProps<ExtraProps>
-}
 export interface IFormalizerOptions<ExtraProps = {}> {
   fields?: IFieldProps[]
   xFieldMap?: IXFieldMap<ExtraProps> | Array<IXFieldMap<ExtraProps>>
   registerExtraProps?: RegisterExtraProps<ExtraProps>
   valuesAsString?: boolean
+  values?: IObjectValue
+}
+
+export interface IXFieldMap<ExtraProps = {}> {
+  [key: string]: IXFieldProps<ExtraProps>
 }
 
 export type RegisterExtraProps<ExtraProps> = (
-  xField: XFieldProps<ExtraProps>
+  xField: IXFieldProps<ExtraProps>
 ) => ExtraProps
 
 export type SafeXFieldProps<U = {}> = Pick<
-  XFieldProps<U>,
-  Exclude<keyof XFieldProps<U>, 'addListener'>
+  IXFieldProps<U>,
+  Exclude<keyof IXFieldProps<U>, 'addListener'>
 >
 
 export type SafeXFieldKeys<U = {}> = keyof SafeXFieldProps<U>
@@ -26,13 +28,17 @@ export type FieldKeys = keyof IFieldProps
 export interface IOnXFieldChangeProps<U = {}> {
   propName: SafeXFieldKeys<U>
   value: any
-  xField: XFieldProps<U>
+  xField: IXFieldProps<U>
 }
 
 export type OnXFieldChange<U = {}> = (props: IOnXFieldChangeProps<U>) => void
 
 export interface IXFieldRefMap<ExtraProps = {}> {
-  [key: string]: XFieldProps<ExtraProps>
+  [key: string]: IXFieldProps<ExtraProps>
+}
+
+export interface IValueRefMap {
+  [key: string]: ValueTypes
 }
 
 export interface IFieldDependencies {
@@ -50,7 +56,7 @@ export interface IFieldDependencies {
 export interface IXFieldListenerCallbackProps<ExtraProps = {}> {
   propName: SafeXFieldKeys<ExtraProps>
   value: any
-  xField: XFieldProps<ExtraProps>
+  xField: IXFieldProps<ExtraProps>
 }
 
 export type XFieldListenerCallback<ExtraProps = {}> = ({

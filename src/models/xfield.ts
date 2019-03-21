@@ -2,18 +2,16 @@ import { XFieldAddListener } from '../types'
 import { IFieldProps } from './field'
 import { XValueTypes } from './xvalue'
 
-type FieldPropPicks = Pick<
-  IFieldProps,
-  Exclude<keyof IFieldProps, 'name' | 'fields'>
->
+export interface IFieldPropPicks
+  extends Pick<IFieldProps, Exclude<keyof IFieldProps, 'name' | 'fields'>> {}
 
-export type XFieldProps<ExtraProps = {}> = FieldPropPicks & {
+export interface IXFieldProps<IExtraProps = {}> extends IFieldPropPicks {
   name?: string
   valueType: XValueTypes
-  fields?: Array<XFieldProps<ExtraProps>>
-  extraProps: ExtraProps
+  fields?: Array<IXFieldProps<IExtraProps>>
+  extraProps: IExtraProps
 
   // Internally used props
   $id?: string
-  addListener?: XFieldAddListener<ExtraProps>
+  addListener?: XFieldAddListener<IExtraProps>
 }

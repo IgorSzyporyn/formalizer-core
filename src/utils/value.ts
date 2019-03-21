@@ -6,7 +6,7 @@ import {
   isObject,
   isString,
 } from 'lodash'
-import { XFieldProps } from '../models'
+import { IXFieldProps } from '../models'
 import { IObjectValue, ValueTypes } from '../types'
 import { errorMsg } from './messages'
 
@@ -43,7 +43,7 @@ export function valueToString(value: ValueTypes) {
 }
 
 export function sanitizeValue<ExtraProps = {}>(
-  xField: XFieldProps<ExtraProps>,
+  xField: IXFieldProps<ExtraProps>,
   setValue: any
 ) {
   const { emptyValue } = xField

@@ -1,8 +1,8 @@
 import { isEmpty } from 'lodash'
-import { XFieldProps } from '../models'
+import { IXFieldProps } from '../models'
 import { IObjectValue } from '../types'
 
-export function enhanceXFieldWithObjectValues<E>(xField: XFieldProps<E>) {
+export function enhanceXFieldWithObjectValues<E>(xField: IXFieldProps<E>) {
   if (xField.valueType === 'object') {
     // Check if value is set - if not initialize it as an empty array
     if (!xField.value) {

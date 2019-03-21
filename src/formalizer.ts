@@ -1,146 +1,79 @@
 import deepmerge from 'deepmerge'
-import { isArray } from 'lodash'
-import { IFieldProps, XFieldProps, xFieldMap as xFieldCoreMap } from './models'
+import { IFieldProps, IXFieldProps, xFieldMap as xFieldCoreMap } from './models'
 import {
   IFormalizerOptions,
+  IObjectValue,
+  IValueRefMap,
   IXFieldMap,
   IXFieldRefMap,
-  RegisterExtraProps,
-  ValueTypes,
 } from './types'
-import { fieldsToXFields } from './utils/fieldsToXFields'
-import { enhanceXFieldWithDependencies } from './utils/xFieldDependencies'
-import { xFieldErrorMessage } from './utils/xFieldErrorMessage'
-import { enhanceXFieldWithObjectValues } from './utils/xFieldObjectValues'
-import { xFieldsToRefMap } from './utils/xFieldsToRefMap'
+import {
+  initObjectXFields,
+  initXFieldDependencies,
+  initXFieldMap,
+  initXFieldRefMap,
+  initXFields,
+} from './utils/initialize'
 
 export class Formalizer<ExtraProps = {}> {
-  public xFieldMap: IXFieldMap<ExtraProps> = {}
+  public static xFieldCoreMap: IXFieldMap = xFieldCoreMap
+
+  public static registerXFieldCoreMap = <E>(xFieldMap: IXFieldMap<E>) => {
+    Formalizer.xFieldCoreMap = deepmerge(Formalizer.xFieldCoreMap, xFieldMap)
+  }
 
   public config: IFormalizerOptions<ExtraProps> = {}
 
   public fields: IFieldProps[] = []
-  public xFields: Array<XFieldProps<ExtraProps>> = []
+  public xFields: Array<IXFieldProps<ExtraProps>> = []
+  public xFieldMap: IXFieldMap<ExtraProps> = {}
   public xFieldRefMap: IXFieldRefMap<ExtraProps> = {}
-  public values: ValueTypes = {}
+
+  public values: IObjectValue = {}
+  public valuesRefMap: IValueRefMap = {}
 
   protected formalizer = '1.0.0'
 
   constructor(options: IFormalizerOptions<ExtraProps> = {}) {
-    const { xFieldMap, fields, registerExtraProps } = options
+    const { registerExtraProps } = options
+    const config = (this.config = options)
 
-    this.registerXFieldMap(xFieldMap)
+    // Initialize the given fields from options and safeguard
+    const fields = (this.fields = options.fields || [])
 
-    this.initFields(fields)
-    this.initXFields(fields, registerExtraProps)
-    this.initXFieldRefMap()
-    this.initXFieldDependencies()
-    this.initObjectXFields()
-  }
+    // Initialize the xFieldMap with core as safeguard
+    // for ability to handle the core types
+    // string, number, boolean, object and array
+    const xFieldMap = (this.xFieldMap = initXFieldMap({
+      applicantMaps: config.xFieldMap,
+      xFieldCoreMap: Formalizer.xFieldCoreMap,
+    }))
 
-  private initFields = (fields: IFieldProps[] = []) => {
-    this.fields = fields
-  }
-
-  private initXFields = (
-    fields: IFieldProps[] = [],
-    registerExtraProps?: RegisterExtraProps<ExtraProps>
-  ) => {
-    const xFields = fieldsToXFields<ExtraProps>({
+    // Initialize and convert the given fields to xFields
+    // using the xFieldMap as catalyst - registerExtraProps
+    // lets the user send in a function which return statement
+    // will be merged on top of the returned xFields extraProps
+    const xFields = (this.xFields = initXFields({
       fields,
       registerExtraProps,
-      xFieldMap: this.xFieldMap,
-    })
+      xFieldMap,
+    }))
 
-    this.xFields = xFields
-  }
+    // Initialize and create the flat dot notated object holding
+    // all the xFields in the formalizer instance
+    const xFieldRefMap = (this.xFieldRefMap = initXFieldRefMap(xFields))
 
-  private initXFieldRefMap = (xFields?: Array<XFieldProps<ExtraProps>>) => {
-    const xFieldRefMap = xFieldsToRefMap<ExtraProps>(xFields || this.xFields)
+    // Enrich the xFields with dependency capabilities
+    initXFieldDependencies(xFieldRefMap)
 
-    this.xFieldRefMap = xFieldRefMap
-  }
+    // Enrich the xFields with valueType set to "object" with capabilities
+    // to handle child properties up and down the tree
+    initObjectXFields(xFieldRefMap)
 
-  private initXFieldDependencies = () => {
-    const { xFieldRefMap } = this
+    // Enrich the xFields with valueType set to "array" with capabilities
+    // to handle child properties in the array fields
+    // @TODO
 
-    Object.keys(xFieldRefMap).forEach(key => {
-      const xField = xFieldRefMap[key]
-
-      if (xField.dependencies) {
-        enhanceXFieldWithDependencies<ExtraProps>(xField, xFieldRefMap)
-      }
-    })
-  }
-
-  private initObjectXFields = () => {
-    const { xFieldRefMap } = this
-
-    Object.keys(xFieldRefMap).forEach(key => {
-      const xField = xFieldRefMap[key]
-
-      enhanceXFieldWithObjectValues<ExtraProps>(xField)
-    })
-  }
-
-  private registerXFieldMap = (
-    applicantMaps?: IXFieldMap<ExtraProps> | Array<IXFieldMap<ExtraProps>>
-  ) => {
-    const { registerXField } = this
-
-    const applicants = applicantMaps
-      ? isArray(applicantMaps)
-        ? applicantMaps
-        : [applicantMaps]
-      : []
-
-    const coreMaps: Array<IXFieldMap<ExtraProps>> = [
-      xFieldCoreMap as IXFieldMap<ExtraProps>,
-    ]
-
-    const maps = coreMaps.concat(applicants)
-
-    maps.forEach(applicantMap => {
-      Object.keys(applicantMap).forEach(key => {
-        const xField = applicantMap[key]
-
-        if (xField.type === key) {
-          registerXField(xField)
-        } else {
-          xFieldErrorMessage(
-            key,
-            `because the xField key <${key}> did not match the xField type <${
-              xField.type
-            }>`
-          )
-        }
-      })
-    })
-  }
-
-  private registerXField = (xField: XFieldProps<ExtraProps>) => {
-    const { xFieldMap } = this
-
-    if (xField.type && xField.valueType && !xFieldMap[xField.type]) {
-      // Straight up register where xField
-      this.xFieldMap[xField.type] = xField
-    } else if (xField.type && xField.valueType && xFieldMap[xField.type]) {
-      // Register already existing xField by deepmerging
-      this.xFieldMap[xField.type] = deepmerge(
-        this.xFieldMap[xField.type],
-        xField
-      )
-    } else {
-      let errorMessage = 'because something went wrong'
-      if (!xField.type) {
-        errorMessage = 'because the xField it is missing the property "type"'
-      } else if (xField.type && xFieldMap[xField.type]) {
-        errorMessage = 'since the xtype already exists'
-      } else if (!xField.valueType) {
-        errorMessage = 'because it is missing the property "valueType"'
-      }
-
-      xFieldErrorMessage(xField.type, errorMessage)
-    }
+    // Initialize and create the initialValue object in the formalizer instance
   }
 }

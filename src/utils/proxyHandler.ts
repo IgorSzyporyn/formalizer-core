@@ -1,11 +1,11 @@
 import { isEqual } from 'lodash'
-import { XFieldProps } from '../models'
+import { IXFieldProps } from '../models'
 import { OnXFieldChange, SafeXFieldKeys } from '../types'
 import { sanitizeValue } from './value'
 
 export function getProxyHandler<U>(onChange?: OnXFieldChange<U>) {
   return {
-    set(xField: XFieldProps<U>, propName: SafeXFieldKeys<U>, setValue: any) {
+    set(xField: IXFieldProps<U>, propName: SafeXFieldKeys<U>, setValue: any) {
       let value = setValue
 
       if (propName === 'value') {

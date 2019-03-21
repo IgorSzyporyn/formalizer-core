@@ -1,9 +1,9 @@
 import { isEqual } from 'lodash'
-import { XFieldProps } from '../models'
+import { IXFieldProps } from '../models'
 import { IXFieldRefMap } from '../types'
 
 export function enhanceXFieldWithDependencies<ExtraProps>(
-  xField: XFieldProps<ExtraProps> & { [key: string]: any },
+  xField: IXFieldProps<ExtraProps> & { [key: string]: any },
   refMap: IXFieldRefMap<ExtraProps>
 ) {
   xField.dependencies!.forEach(dependency => {

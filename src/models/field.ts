@@ -5,10 +5,10 @@ export interface IFieldProps {
   name: string
   value?: ValueTypes
   emptyValue?: ValueTypes
+  defaultValue?: ValueTypes
   fields?: IFieldProps[]
   dependencies?: IFieldDependencies[]
   title?: string
-  subTitle?: string
   description?: string
   disabled?: boolean
 }
