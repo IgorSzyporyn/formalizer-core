@@ -1,6 +1,6 @@
 # @formalizer/core
 
-## Standalone form model defined with JSON.
+## Standalone form model and state machine.
 
 ### The main purpose of Formalizer is to seperate the concerns encountered when dealing with dynamic form creation.
 
