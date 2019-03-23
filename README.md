@@ -1,13 +1,15 @@
 # @formalizer/core
 
-## Form standalone model defined through a JSON Schematic.
+## Standalone form model defined through a JSON Schematic.
 
-The instanciated Formalizer object (the "form") is fully self managing - meaning it keeps track of its fields, the fields internal relationships and the changes in properties and values, and what that may mean to the state across the "form" - and it does so without the use of methods.
+### The main purpose of Formalizer is to seperate the concerns encountered when dealing with dynamic form creation.
 
-This means that there is no API to look through to find out how to change the value of a field through some method as to not break the whole "system" keeping track of dirty states for both form and field etc...
+The model is basically a self managing state machine of a form and its fields, built by matching a given set of fields against a set of field models.
 
-All you do is access the field object of the Formalizer instance and change a property value **directly**, Formalizer will keep track of everything from there - and as mentioned let you attach a listener to be made aware for rendering purposes or whatever.
+Formalizer is meant to be consumed by other software, and to make interaction between consumer and provider as simple as possible.
 
-The schema has rich possibilities for having inter field relationships through a simple yet powerful dependencies feature which lets you describe any number of match criteria another field may encounter through changes in properties, and alter any property on the field with the dependency when the change occur.
+To achieve a transparent transaction layer between consumer and provider Formalizer lets the consumer **change properties on fields directly**, and offers a listener to let the consumer be made aware of changes in fields or the form.
 
-You can use @formalizer/core to build your own form tool viewer with whatever framework you prefer, the idea was to detach the logic and state managment from the actual form renderers and just let them be very simple functional bits that can ask to listen in on changes through the **addListener** method and just simple set property values directly when interacting with the Formalizer instance and its fields.
+Formalizer has built in support for field types of the basic value types available: "string", "number", "boolean", "array" and "object", which is enough for any scenario not involving any type of field rendering manifestation - and the willingness to write a lot of definitions.
+
+To provide extendability aimed at letting field models be versatile, and ultimately also suited for varying rendering technology, Formalizer provides field model extendability and lets you inject any number of other field models.
