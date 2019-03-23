@@ -1,4 +1,4 @@
-import { XFieldAddListener } from '../types'
+import { ValueTypes, XFieldAddListener } from '../types'
 import { IFieldProps } from './field'
 import { XValueTypes } from './xvalue'
 
@@ -10,6 +10,9 @@ export interface IXFieldProps<IExtraProps = {}> extends IFieldPropPicks {
   valueType: XValueTypes
   fields?: Array<IXFieldProps<IExtraProps>>
   extraProps: IExtraProps
+  dirty?: boolean
+  touched?: boolean
+  initialValue?: ValueTypes
 
   // Internally used props
   $id?: string

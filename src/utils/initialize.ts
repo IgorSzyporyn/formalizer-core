@@ -1,5 +1,4 @@
 import deepmerge from 'deepmerge'
-import flatten from 'flat'
 import { isArray, isEqual } from 'lodash'
 import { IFieldProps, IXFieldProps } from '../models'
 import {
@@ -160,61 +159,79 @@ export function initValue<E>({
   onChange,
   onDelete,
 }: IInitValueProps<E>): IObjectValue {
-  let valueRefMap: IObjectValue = {}
-
-  // @TODO - IF no initialValue provided, then go though
-  // xFieldRefMap and look for values to populate with
+  // First set initialValues on first level xFields
   if (initialValue) {
-    valueRefMap = flatten(initialValue)
-
-    Object.keys(valueRefMap).forEach(key => {
-      const xField = xFieldRefMap[key]
-
-      if (!xField) {
-        // No xField match - rinse off the key in the value ref map
-        delete valueRefMap[key]
-      } else if (!isEqual(xField.value, valueRefMap[key])) {
-        // XField found and values are not equal - set this
-        // value on the xField as the initial value
-        xField.value = valueRefMap[key]
-      }
-    })
-
     Object.keys(xFieldRefMap).forEach(key => {
       const xField = xFieldRefMap[key]
+      const isObjectChild = xField.$id!.includes('.')
 
-      // Remove xField value if not in the initial values
-      // since passed initial values (here valueRefMap) has
-      // superiority over definition values (to be considered
-      // default values really)
-      if (valueRefMap[xField.$id!] === undefined) {
-        xField.value = undefined
+      if (!isObjectChild) {
+        xField.value =
+          initialValue[key] !== undefined ? initialValue[key] : undefined
       }
     })
   }
 
+  let valueMap: IObjectValue = {}
+
+  // Do a run through the xFieldRefMap and build the valueMap
+  Object.keys(xFieldRefMap).forEach(key => {
+    const xField = xFieldRefMap[key]
+    const isObjectChild = xField.$id!.includes('.')
+
+    if (!isObjectChild && xField.value !== undefined) {
+      valueMap[xField.name!] = xField.value
+    }
+  })
+
   const handler = getValueProxyHandler(onChange, onDelete)
 
-  valueRefMap = new Proxy(valueRefMap, handler)
+  valueMap = new Proxy(valueMap, handler)
 
-  // With the proxy object now in place we attach a listener to
-  // each of the xFields in xFieldRefMap for fast $id/key lookup
-  // and comparison
+  // Do a final run through the xFieldRefMap and attach listeners
+  // to keep valueRepMap updated now it is a proxy
   Object.keys(xFieldRefMap).forEach(key => {
-    const xFieldRef = xFieldRefMap[key]
+    const xField = xFieldRefMap[key]
+    const isObjectChild = xField.$id!.includes('.')
 
-    if (xFieldRef.addListener) {
-      xFieldRef.addListener(({ propName, value, xField }) => {
-        if (propName === 'value') {
-          if (value === undefined) {
-            delete valueRefMap[xField.$id!]
-          } else {
-            valueRefMap[xField.$id!] = value
-          }
+    if (!isObjectChild) {
+      xField.addListener!(({ propName, value }) => {
+        if (propName === 'value' && value === undefined) {
+          delete valueMap[key]
+        } else if (propName === 'value' && value !== undefined) {
+          valueMap[key] = value
         }
       })
     }
   })
 
-  return valueRefMap
+  return valueMap
+}
+
+export function initXFieldStateHandlers<E>(xFieldRefMap: IXFieldRefMap<E>) {
+  xFieldRefMapEach<E>(xFieldRefMap, xField => {
+    xField.initialValue = xField.value
+
+    xField.addListener!(({ propName, value }) => {
+      if (propName === 'value') {
+        xField.dirty = !isEqual(value, xField.initialValue)
+
+        if (xField.dirty) {
+          xField.touched = true
+        }
+      }
+    })
+  })
+}
+
+export type XFieldRefMapEachFn<E> = (xField: IXFieldProps<E>) => void
+
+export function xFieldRefMapEach<E>(
+  xFieldRefMap: IXFieldRefMap<E>,
+  fn: XFieldRefMapEachFn<E>
+) {
+  Object.keys(xFieldRefMap).forEach(key => {
+    const xField = xFieldRefMap[key]
+    fn(xField)
+  })
 }

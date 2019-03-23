@@ -25,7 +25,6 @@
     "@babel/core": "^7.3.4",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
-    "@types/flat": "^0.0.28",
     "@types/jest": "^24.0.11",
     "@types/lodash": "^4.14.123",
     "@types/lodash-es": "^4.17.3",
@@ -61,7 +60,6 @@
   },
   "dependencies": {
     "deepmerge": "^3.2.0",
-    "flat": "^4.1.0",
     "lodash": "^4.17.11",
     "lodash-es": "^4.17.11"
   },
@@ -71,7 +69,7 @@
     "build": "cross-env NODE_ENV=production tsc -p tsconfig.base.json  && rollup -c && rimraf compiled && cp-cli ./index.js ./dist/index.js",
     "prepublish": "npm run build",
     "lint": "tslint --config ./tslint.json --project '.' --format stylish",
-    "test": "jest",
+    "test": "cross-env NODE_ENV=test jest",
     "test:watch": "npm run test -- --watch",
     "format": "prettier --config ./.prettierrc --write 'src/**/*' 'README.md'",
     "size": "size-limit"

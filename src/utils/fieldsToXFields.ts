@@ -64,10 +64,6 @@ export function fieldToXField<ExtraProps = {}>({
   // property changes
   xField = enhanceXFieldWithListener<ExtraProps>(xField)
 
-  /*xField.addListener!(() => {
-    // Run formalizer listener
-  })*/
-
   // Look for child fields that also needs to be converted
   if (field.fields) {
     const xFields = fieldsToXFields<ExtraProps>({

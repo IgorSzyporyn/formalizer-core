@@ -1,20 +1,18 @@
-// import { isEqual } from 'lodash'
+import { cloneDeep } from 'lodash'
 import { IFieldProps, IXFieldProps, xFieldMap as xFieldCoreMap } from './models'
 import {
   IFormalizerOptions,
   IObjectValue,
-  // IOnObjectValueChangeProps,
-  IValueRefMap,
   IXFieldMap,
   IXFieldRefMap,
 } from './types'
-// import { valueRefMapToValue } from './utils'
 import {
-  // initValue,
+  initValue,
   initXFieldDependencies,
   initXFieldMap,
   initXFieldObjectCapability,
   initXFieldRefMap,
+  initXFieldStateHandlers,
   initXFields,
 } from './utils/initialize'
 
@@ -29,7 +27,6 @@ export class Formalizer<ExtraProps = {}> {
 
   public value: IObjectValue = {}
   public initialValue: IObjectValue = {}
-  public valueRefMap: IValueRefMap = {}
 
   public dirty: boolean = false
   public touched: boolean = false
@@ -56,64 +53,52 @@ export class Formalizer<ExtraProps = {}> {
     // using the xFieldMap as catalyst - registerExtraProps
     // lets the user send in a function which return statement
     // will be merged on top of the returned xFields extraProps
-    const xFields = (this.xFields = initXFields({
+    this.xFields = initXFields({
       fields,
       registerExtraProps,
       xFieldMap,
-    }))
+    })
 
     // Initialize and create the flat dot notated object holding
     // all the xFields in the formalizer instance
-    const xFieldRefMap = (this.xFieldRefMap = initXFieldRefMap<ExtraProps>(
-      xFields
-    ))
+    this.xFieldRefMap = initXFieldRefMap<ExtraProps>(this.xFields)
 
     // Enrich the xFields with dependency capabilities
-    initXFieldDependencies<ExtraProps>(xFieldRefMap)
+    initXFieldDependencies<ExtraProps>(this.xFieldRefMap)
 
     // Enrich the xFields with valueType set to "object" with capabilities
     // to handle child properties up and down the tree
-    initXFieldObjectCapability<ExtraProps>(xFieldRefMap)
+    initXFieldObjectCapability<ExtraProps>(this.xFieldRefMap)
 
     // Enrich the xFields with valueType set to "array" with capabilities
     // to handle child properties in the array fields
     // @TODO
 
-    // Initialize and create the initialValue object in the formalizer instance
-    // MOCK VALUE FROM OPTIONS AS DEFAULT - SHOULD BE EMPTY STRING
-    // @TODO
-    /*
+    // Initialize and create the value object in the formalizer instance
     const { handleValueChange } = this
 
-    const valueRefMap = initValue<ExtraProps>({
+    this.value = initValue<ExtraProps>({
       initialValue: options.value,
-      xFieldRefMap,
+      xFieldRefMap: this.xFieldRefMap,
       onChange: handleValueChange,
       onDelete: handleValueChange,
     })
 
-    // { myOtherField: 2, jsonField: {
-      // jsonField2: { text2InJsonField2: 'bb' } } }
+    this.initialValue = cloneDeep(this.value)
 
-    const value = (this.value = valueRefMapToValue(valueRefMap))
-    this.valueRefMap = valueRefMap
-    this.initialValue = { ...value }
-    */
-
-    // Make sure each xField in xFieldRefMap keeps valueRefMap updated
+    // Now relationships and values have been established we also need to
+    // introduce dirty and touched states on our fields
+    initXFieldStateHandlers<ExtraProps>(this.xFieldRefMap)
   }
 
   // Keep value object updated, keep xValue object updated and
   // keep dirty, valid and touched updated
-  /*
-  private handleValueChange = ({ valueRefMap }: IOnObjectValueChangeProps) => {
-    const value = valueRefMapToValue(valueRefMap)
+  private handleValueChange = () => {
+    this.dirty =
+      JSON.stringify(this.value) !== JSON.stringify(this.initialValue)
 
-    this.value = value
-
-    if (!isEqual(value, this.initialValue)) {
-      this.dirty = true
+    if (this.dirty) {
+      this.touched = true
     }
   }
-  */
 }

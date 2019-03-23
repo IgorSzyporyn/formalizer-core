@@ -5,7 +5,6 @@ import {
   isNumber,
   isObject,
   isString,
-  set,
 } from 'lodash'
 import { IXFieldProps } from '../models'
 import { IObjectValue, ValueTypes } from '../types'
@@ -176,16 +175,6 @@ export function sanitizeValue<ExtraProps = {}>(
     default:
       break
   }
-
-  return value
-}
-
-export function valueRefMapToValue(valueRefMap: IObjectValue) {
-  const value: IObjectValue = {}
-
-  Object.keys(valueRefMap).forEach(key => {
-    set(value, key, valueRefMap[key])
-  })
 
   return value
 }
