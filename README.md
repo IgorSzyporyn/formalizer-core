@@ -31,7 +31,7 @@ But in order for anything to happen, you have to send in as a minimum an array o
 ```typescript
 const myFields: IFieldProps[] = [{ type: 'string', name: 'myField' }]
 
-const formalizer = new Formalizer() < ExtraProps > { fields: myFields }
+const formalizer = new Formalizer<ExtraProps>(){ fields: myFields }
 ```
 
 #### Configuration Options
