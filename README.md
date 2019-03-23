@@ -20,7 +20,9 @@ To provide extendability aimed at letting field models be versatile, and ultimat
 
 #### Configuration
 
-In its simplest form (pun intended) you can just instanciate with no configuration - ExtraProps type here is optional, but provided by model provider if you are sending along any model(s).
+In its simplest form (pun intended) you can just instanciate with no configuration.
+
+Note: The TypeScript type (ExtraProps) here is optional, but provided by model provider if you are sending along any model(s).
 
 ```typescript
 const formalizer = new Formalizer<ExtraProps>()
