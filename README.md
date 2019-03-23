@@ -13,3 +13,10 @@ To achieve a transparent interaction layer between consumer and provider Formali
 Formalizer has built in support for field types of the basic value types available: "string", "number", "boolean", "array" and "object", which is enough for any scenario not involving any type of field rendering manifestation - and the willingness to write a lot of definitions.
 
 To provide extendability aimed at letting field models be versatile, and ultimately also suited for varying rendering technology, Formalizer provides field model extendability and lets you inject any number of other field models with custom field properties.
+
+#### How is it used?
+
+Formalizer also sponsors 2 other projects that lets you see how Formalizer can be implemented for React
+
+- [@formalizer/react-form](https://github.com/IgorSzyporyn/formalizer-react-form)
+- [@formalizer/react-xfields](https://github.com/IgorSzyporyn/formalizer-react-xfields)
