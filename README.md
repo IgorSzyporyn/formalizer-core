@@ -8,7 +8,7 @@ The model is basically a self managing state machine of a form and its fields, b
 
 Formalizer is meant to be consumed by other software, and to make interaction between consumer and provider as simple as possible.
 
-To achieve a transparent transaction layer between consumer and provider Formalizer lets the consumer **change properties on fields directly**, and offers a listener to let the consumer be made aware of changes in fields or the form.
+To achieve a transparent interaction layer between consumer and provider Formalizer lets the consumer **change properties on fields directly**, and offers a listener to let the consumer be made aware of changes in fields or the form.
 
 Formalizer has built in support for field types of the basic value types available: "string", "number", "boolean", "array" and "object", which is enough for any scenario not involving any type of field rendering manifestation - and the willingness to write a lot of definitions.
 
