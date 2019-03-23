@@ -1,4 +1,4 @@
-import {Formalizer} from '../../src/formalizer'
+import { Formalizer } from '../../src/formalizer'
 import { fieldToXField, fieldsToXFields } from '../../src/utils/fieldsToXFields'
 
 let formalizer: Formalizer

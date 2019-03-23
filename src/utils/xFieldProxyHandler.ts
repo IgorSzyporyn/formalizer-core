@@ -3,7 +3,7 @@ import { IXFieldProps } from '../models'
 import { OnXFieldChange, SafeXFieldKeys } from '../types'
 import { sanitizeValue } from './value'
 
-export function getProxyHandler<U>(onChange?: OnXFieldChange<U>) {
+export function getXFieldProxyHandler<U>(onChange?: OnXFieldChange<U>) {
   return {
     set(xField: IXFieldProps<U>, propName: SafeXFieldKeys<U>, setValue: any) {
       let value = setValue
@@ -14,17 +14,11 @@ export function getProxyHandler<U>(onChange?: OnXFieldChange<U>) {
         // Fields with object values needs to set child values also
         if (xField.valueType === 'object' && xField.fields) {
           xField.fields.forEach(field => {
-            // To prevent a recursive chain of calls up and down between
-            // child and parent we need some specific logic here
-            if (value) {
-              // If parent has value - then only change if there is a
-              // difference between the values
+            if (value !== undefined) {
               if (!isEqual(value[field.name!], field.value)) {
                 field.value = value[field.name!]
               }
             } else if (field.value !== undefined) {
-              // Our parents value is undefined, so this field must set
-              // its value to undefined
               field.value = undefined
             }
           })

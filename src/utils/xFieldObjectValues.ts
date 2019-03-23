@@ -1,67 +1,54 @@
-import { isEmpty } from 'lodash'
+import { isEqual } from 'lodash'
 import { IXFieldProps } from '../models'
-import { IObjectValue } from '../types'
+import { IObjectValue, ValueTypes } from '../types'
 
 export function enhanceXFieldWithObjectValues<E>(xField: IXFieldProps<E>) {
-  if (xField.valueType === 'object') {
-    // Check if value is set - if not initialize it as an empty array
-    if (!xField.value) {
-      xField.value = {}
+  const fields = xField.fields || []
+  const fieldValue = xField.value as IObjectValue
+
+  if (fieldValue === undefined) {
+    const shadowValue: IObjectValue = {}
+
+    fields.forEach(childField => {
+      if (childField.value != null) {
+        shadowValue[childField.name!] = childField.value
+      }
+    })
+
+    if (fields.length) {
+      xField.value = shadowValue
     }
-
-    // Run through each child field in the xField to build the key value
-    // store in our value object
-    // But do not set keys that has undefined values
-    if (xField.fields) {
-      xField.fields.forEach(field => {
-        if (field.name && field.value !== undefined) {
-          xField.value = {
-            ...(xField.value as IObjectValue),
-            [field.name]: field.value,
-          }
-        }
-        // For test
-
-        // Make sure we listen in on the childs value changes as
-        // we need to update the key value in our xField value object
-        if (field.addListener) {
-          field.addListener(({ propName, value }) => {
-            let objectValue = xField.value as IObjectValue
-
-            if (propName === 'value' && field.name) {
-              // If our parent value is undefined and we have a value to set
-              // we have to initialize objectValue as empty object
-              if (objectValue === undefined && value !== undefined) {
-                objectValue = (xField.emptyValue as IObjectValue) || {}
-              }
-
-              if (value !== undefined) {
-                // For object mergeability we do not add undefined keys
-                // to our xField value object
-                objectValue = {
-                  ...objectValue,
-                  [field.name]: value,
-                }
-              } else if (
-                objectValue !== undefined &&
-                objectValue[field.name] !== undefined
-              ) {
-                // Likewise we remember to rinse off again if we are
-                // encountering a undefined value set on the child
-                delete objectValue[field.name]
-              }
-
-              xField.value = objectValue
-            }
-          })
-        }
-      })
-    }
-
-    // If object is still empty then set to xFields emptyValue, which is by
-    // default undefined if not set
-    if (isEmpty(xField.value)) {
-      xField.value = xField.emptyValue
-    }
+  } else {
+    fields.forEach(childField => {
+      if (!isEqual(childField.name, fieldValue[childField.name!])) {
+        childField.value = fieldValue[childField.name!]
+      }
+    })
   }
+
+  fields.forEach(childField => {
+    childField.addListener!(({ propName, value }) => {
+      const setValue: ValueTypes = value
+
+      if (propName === 'value' && xField.value == null) {
+        const shadowValue: IObjectValue = {}
+
+        if (setValue !== undefined) {
+          shadowValue[childField.name!] = setValue
+        }
+
+        xField.value = shadowValue
+      } else if (propName === 'value' && xField.value != null) {
+        const shadowValue: IObjectValue = xField.value as IObjectValue
+
+        if (setValue === undefined) {
+          delete shadowValue[childField.name!]
+        } else {
+          shadowValue[childField.name!] = setValue
+        }
+
+        xField.value = shadowValue
+      }
+    })
+  })
 }

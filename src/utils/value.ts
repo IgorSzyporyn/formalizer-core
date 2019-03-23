@@ -5,6 +5,7 @@ import {
   isNumber,
   isObject,
   isString,
+  set,
 } from 'lodash'
 import { IXFieldProps } from '../models'
 import { IObjectValue, ValueTypes } from '../types'
@@ -46,7 +47,6 @@ export function sanitizeValue<ExtraProps = {}>(
   xField: IXFieldProps<ExtraProps>,
   setValue: any
 ) {
-  const { emptyValue } = xField
   let value = setValue
 
   switch (xField.valueType) {
@@ -59,25 +59,16 @@ export function sanitizeValue<ExtraProps = {}>(
           value = undefined
         }
 
-        // If value is undefined we make a check for an emptyValue and set,
-        // since emptyValue is undefined if not specifically set, we can
-        // use it as a safe fallback
-        if (value === undefined) {
-          value = emptyValue
-        }
-
         // We can't safely convert this value - set back to original and
         // display an error message
         if (!isString(value) && value !== undefined) {
           value = setValue
           errorMsg(
-            `Tried to set non convertable value as string on xField: ${
-              xField.$id
-            }`
+            `Tried to convert ${value} as string on xField: ${xField.$id}`
           )
         }
       } else if (setValue === '') {
-        value = emptyValue
+        value = undefined
       }
       break
     case 'number':
@@ -91,21 +82,12 @@ export function sanitizeValue<ExtraProps = {}>(
           value = undefined
         }
 
-        // If value is undefined we make a check for an emptyValue and set,
-        // since emptyValue is undefined if not specifically set, we can
-        // use it as a safe fallback
-        if (value === undefined) {
-          value = emptyValue
-        }
-
         // We can't safely convert this value - set back to original and
         // display an error message
         if (!isNumber(value) && value !== undefined) {
           value = setValue
           errorMsg(
-            `Tried to set non convertable value as number on xField: ${
-              xField.$id
-            }`
+            `Tried to convert ${value} as number on xField: ${xField.$id}`
           )
         }
       }
@@ -120,22 +102,13 @@ export function sanitizeValue<ExtraProps = {}>(
           value = setValue > 0 ? true : false
         }
 
-        // If value is undefined we make a check for an emptyValue and set,
-        // since emptyValue is undefined if not specifically set, we can
-        // use it as a safe fallback
-        if (value === undefined) {
-          value = emptyValue
-        }
-
         // We can't safely convert this value - set back to original and
         // display an error message
         if (!isBoolean(value) && value !== undefined) {
           value = setValue
           errorMsg(
             // tslint:disable-next-line max-line-length
-            `Tried to set non convertable value ${value} as boolean on xField: ${
-              xField.$id
-            }`
+            `Tried to convert ${value} as boolean on xField: ${xField.$id}`
           )
         }
       }
@@ -147,21 +120,12 @@ export function sanitizeValue<ExtraProps = {}>(
           value = stringToValue(setValue)
         }
 
-        // If value is undefined we make a check for an emptyValue and set,
-        // since emptyValue is undefined if not specifically set, we can
-        // use it as a safe fallback
-        if (value === undefined) {
-          value = emptyValue
-        }
-
         // We can't safely convert this value - set back to original and
         // display an error message
         if (!isObject(value) && value !== undefined) {
           value = setValue
           errorMsg(
-            `Tried to set non convertable value as object on xField: ${
-              xField.$id
-            }`
+            `Tried to convert ${value} as as object on xField: ${xField.$id}`
           )
         }
       }
@@ -169,6 +133,8 @@ export function sanitizeValue<ExtraProps = {}>(
       // Populated value object will need to have its potential children
       // examined and gone through recursivly through fields, and have
       // those values sanitized and brought back up
+      // @TODO - Examine what happens here - proxy it out probably to function
+      // which will also be used in file:xFieldObjectValues.ts
       if (xField.fields) {
         value = value || {}
 
@@ -187,7 +153,7 @@ export function sanitizeValue<ExtraProps = {}>(
       }
 
       if (isObject(value) && isEmpty(value)) {
-        value = emptyValue
+        value = undefined
       }
       break
     case 'array':
@@ -197,32 +163,29 @@ export function sanitizeValue<ExtraProps = {}>(
           value = stringToValue(setValue)
         }
 
-        // If value is undefined we make a check for an emptyValue and set,
-        // since emptyValue is undefined if not specifically set, we can
-        // use it as a safe fallback
-        if (value === undefined) {
-          value = emptyValue
-        }
-
         // We can't safely convert this value - set back to original and
         // display an error message
         if (!isArray(value) && value !== undefined) {
           value = setValue
           errorMsg(
-            `Tried to set non convertable value as array on xField: ${
-              xField.$id
-            }`
+            `Tried to convert ${value} as array on xField: ${xField.$id}`
           )
-        }
-      } else {
-        if (isEmpty(value)) {
-          value = emptyValue
         }
       }
       break
     default:
       break
   }
+
+  return value
+}
+
+export function valueRefMapToValue(valueRefMap: IObjectValue) {
+  const value: IObjectValue = {}
+
+  Object.keys(valueRefMap).forEach(key => {
+    set(value, key, valueRefMap[key])
+  })
 
   return value
 }

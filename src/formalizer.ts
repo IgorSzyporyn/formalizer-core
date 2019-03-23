@@ -1,36 +1,39 @@
-import deepmerge from 'deepmerge'
+// import { isEqual } from 'lodash'
 import { IFieldProps, IXFieldProps, xFieldMap as xFieldCoreMap } from './models'
 import {
   IFormalizerOptions,
   IObjectValue,
+  // IOnObjectValueChangeProps,
   IValueRefMap,
   IXFieldMap,
   IXFieldRefMap,
 } from './types'
+// import { valueRefMapToValue } from './utils'
 import {
-  initObjectXFields,
+  // initValue,
   initXFieldDependencies,
   initXFieldMap,
+  initXFieldObjectCapability,
   initXFieldRefMap,
   initXFields,
 } from './utils/initialize'
 
 export class Formalizer<ExtraProps = {}> {
-  public static xFieldCoreMap: IXFieldMap = xFieldCoreMap
-
-  public static registerXFieldCoreMap = <E>(xFieldMap: IXFieldMap<E>) => {
-    Formalizer.xFieldCoreMap = deepmerge(Formalizer.xFieldCoreMap, xFieldMap)
-  }
-
   public config: IFormalizerOptions<ExtraProps> = {}
 
   public fields: IFieldProps[] = []
+
   public xFields: Array<IXFieldProps<ExtraProps>> = []
   public xFieldMap: IXFieldMap<ExtraProps> = {}
   public xFieldRefMap: IXFieldRefMap<ExtraProps> = {}
 
-  public values: IObjectValue = {}
-  public valuesRefMap: IValueRefMap = {}
+  public value: IObjectValue = {}
+  public initialValue: IObjectValue = {}
+  public valueRefMap: IValueRefMap = {}
+
+  public dirty: boolean = false
+  public touched: boolean = false
+  public valid: boolean = false
 
   protected formalizer = '1.0.0'
 
@@ -46,7 +49,7 @@ export class Formalizer<ExtraProps = {}> {
     // string, number, boolean, object and array
     const xFieldMap = (this.xFieldMap = initXFieldMap({
       applicantMaps: config.xFieldMap,
-      xFieldCoreMap: Formalizer.xFieldCoreMap,
+      xFieldCoreMap,
     }))
 
     // Initialize and convert the given fields to xFields
@@ -61,19 +64,56 @@ export class Formalizer<ExtraProps = {}> {
 
     // Initialize and create the flat dot notated object holding
     // all the xFields in the formalizer instance
-    const xFieldRefMap = (this.xFieldRefMap = initXFieldRefMap(xFields))
+    const xFieldRefMap = (this.xFieldRefMap = initXFieldRefMap<ExtraProps>(
+      xFields
+    ))
 
     // Enrich the xFields with dependency capabilities
-    initXFieldDependencies(xFieldRefMap)
+    initXFieldDependencies<ExtraProps>(xFieldRefMap)
 
     // Enrich the xFields with valueType set to "object" with capabilities
     // to handle child properties up and down the tree
-    initObjectXFields(xFieldRefMap)
+    initXFieldObjectCapability<ExtraProps>(xFieldRefMap)
 
     // Enrich the xFields with valueType set to "array" with capabilities
     // to handle child properties in the array fields
     // @TODO
 
     // Initialize and create the initialValue object in the formalizer instance
+    // MOCK VALUE FROM OPTIONS AS DEFAULT - SHOULD BE EMPTY STRING
+    // @TODO
+    /*
+    const { handleValueChange } = this
+
+    const valueRefMap = initValue<ExtraProps>({
+      initialValue: options.value,
+      xFieldRefMap,
+      onChange: handleValueChange,
+      onDelete: handleValueChange,
+    })
+
+    // { myOtherField: 2, jsonField: {
+      // jsonField2: { text2InJsonField2: 'bb' } } }
+
+    const value = (this.value = valueRefMapToValue(valueRefMap))
+    this.valueRefMap = valueRefMap
+    this.initialValue = { ...value }
+    */
+
+    // Make sure each xField in xFieldRefMap keeps valueRefMap updated
   }
+
+  // Keep value object updated, keep xValue object updated and
+  // keep dirty, valid and touched updated
+  /*
+  private handleValueChange = ({ valueRefMap }: IOnObjectValueChangeProps) => {
+    const value = valueRefMapToValue(valueRefMap)
+
+    this.value = value
+
+    if (!isEqual(value, this.initialValue)) {
+      this.dirty = true
+    }
+  }
+  */
 }

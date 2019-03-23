@@ -47,10 +47,6 @@ export function fieldToXField<ExtraProps = {}>({
     $id,
   }
 
-  if (xField.value === undefined && xField.emptyValue !== undefined) {
-    xField.value = xField.emptyValue
-  }
-
   // If a registerExtraProps function was sent along then we
   // need to give that a chance to return some additional
   // extraProps to extend with
@@ -68,9 +64,9 @@ export function fieldToXField<ExtraProps = {}>({
   // property changes
   xField = enhanceXFieldWithListener<ExtraProps>(xField)
 
-  xField.addListener!(() => {
+  /*xField.addListener!(() => {
     // Run formalizer listener
-  })
+  })*/
 
   // Look for child fields that also needs to be converted
   if (field.fields) {

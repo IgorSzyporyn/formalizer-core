@@ -1,8 +1,17 @@
 import deepmerge from 'deepmerge'
-import { isArray } from 'lodash'
+import flatten from 'flat'
+import { isArray, isEqual } from 'lodash'
 import { IFieldProps, IXFieldProps } from '../models'
-import { IXFieldMap, IXFieldRefMap, RegisterExtraProps } from '../types'
+import {
+  IObjectValue,
+  IXFieldMap,
+  IXFieldRefMap,
+  OnObjectValueChange,
+  OnObjectValueDelete,
+  RegisterExtraProps,
+} from '../types'
 import { fieldsToXFields } from './fieldsToXFields'
+import { getValueProxyHandler } from './valueProxyHandler'
 import { enhanceXFieldWithDependencies } from './xFieldDependencies'
 import { xFieldErrorMessage } from './xFieldErrorMessage'
 import { enhanceXFieldWithObjectValues } from './xFieldObjectValues'
@@ -53,10 +62,10 @@ export function initXFieldMap<E>({
       const xField = applicantMap[key]
 
       if (xField.type === key) {
-        xFieldMap = {
-          ...registerXField<E>({ xField, xFieldMap }),
-          ...xFieldMap,
-        }
+        xFieldMap = deepmerge(
+          registerXField<E>({ xField, xFieldMap }),
+          xFieldMap
+        )
       } else {
         xFieldErrorMessage(
           key,
@@ -71,7 +80,7 @@ export function initXFieldMap<E>({
   return xFieldMap
 }
 
-interface IRegisterXField<E> {
+export interface IRegisterXField<E> {
   xField: IXFieldProps<E>
   xFieldMap: IXFieldMap<E>
 }
@@ -123,10 +132,89 @@ export function initXFieldDependencies<E>(xFieldRefMap: IXFieldRefMap<E>) {
   })
 }
 
-export function initObjectXFields<E>(xFieldRefMap: IXFieldRefMap<E>) {
-  Object.keys(xFieldRefMap).forEach(key => {
-    const xField = xFieldRefMap[key]
+export function initXFieldObjectCapability<E>(xFieldRefMap: IXFieldRefMap<E>) {
+  // Keys are first sorted by length with shortest first, in order to ensure
+  // that we go parent -> child when we have dot notation at play for object
+  // enveloped fields
+  Object.keys(xFieldRefMap)
+    .sort((a, b) => b.length - a.length)
+    .forEach(key => {
+      const xField = xFieldRefMap[key]
 
-    enhanceXFieldWithObjectValues<E>(xField)
+      if (xField.valueType === 'object') {
+        enhanceXFieldWithObjectValues<E>(xField)
+      }
+    })
+}
+
+export interface IInitValueProps<E> {
+  initialValue?: IObjectValue
+  xFieldRefMap: IXFieldRefMap<E>
+  onChange: OnObjectValueChange
+  onDelete: OnObjectValueDelete
+}
+
+export function initValue<E>({
+  initialValue,
+  xFieldRefMap,
+  onChange,
+  onDelete,
+}: IInitValueProps<E>): IObjectValue {
+  let valueRefMap: IObjectValue = {}
+
+  // @TODO - IF no initialValue provided, then go though
+  // xFieldRefMap and look for values to populate with
+  if (initialValue) {
+    valueRefMap = flatten(initialValue)
+
+    Object.keys(valueRefMap).forEach(key => {
+      const xField = xFieldRefMap[key]
+
+      if (!xField) {
+        // No xField match - rinse off the key in the value ref map
+        delete valueRefMap[key]
+      } else if (!isEqual(xField.value, valueRefMap[key])) {
+        // XField found and values are not equal - set this
+        // value on the xField as the initial value
+        xField.value = valueRefMap[key]
+      }
+    })
+
+    Object.keys(xFieldRefMap).forEach(key => {
+      const xField = xFieldRefMap[key]
+
+      // Remove xField value if not in the initial values
+      // since passed initial values (here valueRefMap) has
+      // superiority over definition values (to be considered
+      // default values really)
+      if (valueRefMap[xField.$id!] === undefined) {
+        xField.value = undefined
+      }
+    })
+  }
+
+  const handler = getValueProxyHandler(onChange, onDelete)
+
+  valueRefMap = new Proxy(valueRefMap, handler)
+
+  // With the proxy object now in place we attach a listener to
+  // each of the xFields in xFieldRefMap for fast $id/key lookup
+  // and comparison
+  Object.keys(xFieldRefMap).forEach(key => {
+    const xFieldRef = xFieldRefMap[key]
+
+    if (xFieldRef.addListener) {
+      xFieldRef.addListener(({ propName, value, xField }) => {
+        if (propName === 'value') {
+          if (value === undefined) {
+            delete valueRefMap[xField.$id!]
+          } else {
+            valueRefMap[xField.$id!] = value
+          }
+        }
+      })
+    }
   })
+
+  return valueRefMap
 }

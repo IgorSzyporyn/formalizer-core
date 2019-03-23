@@ -1,6 +1,6 @@
 import { IXFieldProps } from '../models'
 import { XFieldListenerCallback } from '../types'
-import { getProxyHandler } from './proxyHandler'
+import { getXFieldProxyHandler } from './xFieldproxyHandler'
 
 export function enhanceXFieldWithListener<ExtraProps>(
   xField: IXFieldProps<ExtraProps>
@@ -11,7 +11,7 @@ export function enhanceXFieldWithListener<ExtraProps>(
     listeners.push(callback)
   }
 
-  const handler = getProxyHandler<ExtraProps>(args => {
+  const handler = getXFieldProxyHandler<ExtraProps>(args => {
     listeners.forEach(listener => {
       listener(args)
     })
