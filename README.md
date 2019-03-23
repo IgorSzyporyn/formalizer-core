@@ -1,6 +1,6 @@
 # @formalizer/core
 
-## A standalone model of a form and its fields defined through a JSON Schema.
+## A standalone model of a form and its fields defined through a JSON Schematic.
 
 The instanciated Formalizer object (the "form") is fully self managing - meaning it keeps track of its fields, the fields internal relationships and the changes in properties and values, and what that may mean to the state across the "form" - and it does so without the use of methods.
 
