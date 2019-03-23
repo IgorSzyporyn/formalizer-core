@@ -11,7 +11,7 @@ import { IObjectValue, ValueTypes } from '../types'
 import { errorMsg } from './messages'
 
 export function stringToValue(stringValue?: string): ValueTypes {
-  let value
+  let value: ValueTypes = stringValue === null ? null : undefined
 
   if (stringValue) {
     try {
@@ -30,7 +30,7 @@ export function stringToValue(stringValue?: string): ValueTypes {
 export function valueToString(value: ValueTypes) {
   let stringValue
 
-  if (typeof value !== 'string') {
+  if (typeof value !== 'string' && value !== null) {
     try {
       stringValue = JSON.stringify(value)
       // tslint:disable-next-line no-empty
@@ -174,6 +174,10 @@ export function sanitizeValue<ExtraProps = {}>(
       break
     default:
       break
+  }
+
+  if (value === undefined && xField.nullable) {
+    value = null
   }
 
   return value

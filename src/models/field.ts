@@ -11,4 +11,5 @@ export interface IFieldProps {
   title?: string
   description?: string
   disabled?: boolean
+  nullable?: boolean
 }

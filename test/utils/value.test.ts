@@ -5,6 +5,7 @@ import { sanitizeValue, stringToValue, valueToString } from '../../src/utils/val
 describe('valueToString = (ValueTypes) => string', () => {
   test.each([
     [undefined, undefined],
+    [null, null],
     ["", ""], ["Hello World", "Hello World"],
     [-1, "-1"], [0, "0"], [1,"1"],
     [true, "true"], [false, "false"],
@@ -21,6 +22,7 @@ describe('valueToString = (ValueTypes) => string', () => {
 describe('stringToValue = (string) => ValueTypes', () => {
   test.each([
     [undefined, undefined],
+    [null, null],
     ["", undefined], ["Hello World", "Hello World"],
     ["-1", -1], ["0", 0], ["1", 1],  
     ["true", true], ["false", false],
@@ -39,6 +41,7 @@ describe('sanitizeValue = (IXFieldProps, ValueTypes) => ValueTypes', () => {
   describe('valueType = "string"', () => {
     test.each([
       [undefined, undefined],
+      [null, null],
       ["", undefined],
       ["Hello World", "Hello World"],
       [1, "1"],
@@ -58,6 +61,7 @@ describe('sanitizeValue = (IXFieldProps, ValueTypes) => ValueTypes', () => {
   describe('valueType = "number"', () => {
     test.each([
       [undefined, undefined],
+      [null, null],
       ["", undefined],
       [1, 1],
       ["1", 1],
@@ -75,6 +79,7 @@ describe('sanitizeValue = (IXFieldProps, ValueTypes) => ValueTypes', () => {
   describe('valueType = "boolean"', () => {
     test.each([
       [undefined, undefined],
+      [null, null],
       ["", undefined],
       ["true", true],
       ["false", false],
