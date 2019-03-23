@@ -4,7 +4,6 @@ export interface IFormalizerOptions<E = {}> {
   fields?: IFieldProps[]
   xFieldMap?: IXFieldMap<E> | Array<IXFieldMap<E>>
   registerExtraProps?: RegisterExtraProps<E>
-  valueAsString?: boolean
   value?: IObjectValue
 }
 
