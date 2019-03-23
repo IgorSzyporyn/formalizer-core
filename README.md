@@ -20,7 +20,7 @@ To provide extendability aimed at letting field models be versatile, and ultimat
 
 #### Configuration
 
-In its simplest form (pun intended) you can just instanciate with no configuration
+In its simplest form (pun intended) you can just instanciate with no configuration - ExtraProps type here is optional, but provided by model provider if you are sending along any model(s).
 
 ```typescript
 const formalizer = new Formalizer<ExtraProps>()
@@ -42,7 +42,7 @@ const formalizer = new Formalizer<ExtraProps>({ fields: myFields })
 | model  | Single model or collection of models used to convert a field into a xField                                                          | Array or Object |
 | value  | If provided will be used as the initial value of the form and its xFields                                                           |          Object |
 
-### Field Configuration Options
+#### Field Configuration Options
 
 | Property        | Description                                                                                            |      Type |
 | --------------- | ------------------------------------------------------------------------------------------------------ | --------: |
