@@ -23,15 +23,15 @@ To provide extendability aimed at letting field models be versatile, and ultimat
 In its simplest form (pun intended) you can just instanciate with no configuration
 
 ```javascript
-const formalizer = new Formalizer()
+const formalizer = new Formalizer<ExtraProps>()
 ```
 
 But in order for anything to happen, you have to send in as a minimum an array of fields.
 
 ```javascript
-const myFields = [{ type: 'string', name: 'myField' }]
+const myFields: IFieldProps[] = [{ type: 'string', name: 'myField' }]
 
-const formalizer = new Formalizer({ fields: myFields })
+const formalizer = new Formalizer() < ExtraProps > { fields: myFields }
 ```
 
 #### Configuration Options
