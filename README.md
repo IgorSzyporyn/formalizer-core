@@ -1,8 +1,10 @@
-# @formalizer/core
+![New Project](https://user-images.githubusercontent.com/6172338/54886582-c9860380-4e89-11e9-8b71-ba4e9462fa34.png)
 
 [![Build Status](https://travis-ci.com/IgorSzyporyn/formalizer-core.svg?branch=master)](https://travis-ci.com/IgorSzyporyn/formalizer-core)
 [![Greenkeeper badge](https://badges.greenkeeper.io/IgorSzyporyn/formalizer-core.svg)](https://greenkeeper.io/)
 [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
+
+# @formalizer/core
 
 ## Standalone form model and state machine.
 
