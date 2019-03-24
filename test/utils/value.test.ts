@@ -95,4 +95,50 @@ describe('sanitizeValue = (IXFieldProps, ValueTypes) => ValueTypes', () => {
       },
     )
   })
+
+  describe('valueType = "array"', () => {
+    test.each([
+      [undefined, undefined],
+      [null, null],
+      ["", undefined],
+      [false, false],
+      [0, 0],
+      [1, 1],
+      [[], undefined],
+      ["[]", undefined],
+      [[1, 2, 3], [1, 2, 3]],
+      ["[1, 2, 3]", [1, 2, 3]]
+    ])(
+      'should sanitize %p => %p',
+      (a: any, expected) => {
+        expect(sanitizeValue(
+          ({ valueType: 'array'} as IXFieldProps), a)
+        )
+          .toEqual(expected)
+      },
+    )
+  })
+
+  describe('valueType = "object"', () => {
+    test.each([
+      [undefined, undefined],
+      [null, null],
+      ["", undefined],
+      [false, false],
+      [0, 0],
+      [1, 1],
+      [[], []],
+      ["{}", undefined],
+      [{}, undefined],
+      [{foo: "bar"}, {foo: "bar"}]
+    ])(
+      'should sanitize %p => %p',
+      (a: any, expected) => {
+        expect(sanitizeValue(
+          ({ valueType: 'object'} as IXFieldProps), a)
+        )
+          .toEqual(expected)
+      },
+    )
+  })
 })

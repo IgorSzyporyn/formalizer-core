@@ -3,7 +3,7 @@ import {
   isBoolean,
   isEmpty,
   isNumber,
-  isObject,
+  isPlainObject,
   isString,
 } from 'lodash'
 import { IXFieldProps } from '../models'
@@ -113,7 +113,7 @@ export function sanitizeValue<ExtraProps = {}>(
       }
       break
     case 'object':
-      if (!isObject(setValue)) {
+      if (!isPlainObject(setValue)) {
         // We only try to convert from string
         if (isString(setValue)) {
           value = stringToValue(setValue)
@@ -121,7 +121,7 @@ export function sanitizeValue<ExtraProps = {}>(
 
         // We can't safely convert this value - set back to original and
         // display an error message
-        if (!isObject(value) && value !== undefined) {
+        if (!isPlainObject(value) && value !== undefined) {
           value = setValue
           errorMsg(
             `Tried to convert ${value} as as object on xField: ${xField.$id}`
@@ -151,7 +151,7 @@ export function sanitizeValue<ExtraProps = {}>(
         })
       }
 
-      if (isObject(value) && isEmpty(value)) {
+      if (isPlainObject(value) && isEmpty(value)) {
         value = undefined
       }
       break
@@ -170,6 +170,10 @@ export function sanitizeValue<ExtraProps = {}>(
             `Tried to convert ${value} as array on xField: ${xField.$id}`
           )
         }
+      }
+
+      if (isArray(value) && isEmpty(value)) {
+        value = undefined
       }
       break
     default:
