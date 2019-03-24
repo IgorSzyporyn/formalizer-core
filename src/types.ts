@@ -5,6 +5,10 @@ export interface IFormalizerOptions<E = {}> {
   xFieldMap?: IXFieldMap<E> | Array<IXFieldMap<E>>
   registerExtraProps?: RegisterExtraProps<E>
   value?: IObjectValue
+  onChange?: () => void
+  onDirtyChange?: (dirty: boolean) => void
+  onTouchedChange?: (touched: boolean) => void
+  onValidChange?: (valid: boolean) => void
 }
 
 export interface IXFieldMap<E = {}> {

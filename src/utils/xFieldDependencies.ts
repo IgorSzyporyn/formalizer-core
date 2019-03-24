@@ -1,6 +1,29 @@
-import { isEqual } from 'lodash'
+import { isEqual, isString } from 'lodash'
 import { IXFieldProps } from '../models'
 import { IFieldDependency, IXFieldRefMap, SafeXFieldKeys } from '../types'
+
+function processTpl<E>(input: any, xFieldRefMap: IXFieldRefMap<E>) {
+  let output = input
+
+  if (isString(input)) {
+    const invoker = input.substr(0, 1)
+
+    if (invoker === '$') {
+      let path = input.substr(1)
+
+      const propName: any = path.split('.').pop()
+      path = path.replace(`.${propName}`, '')
+
+      const matchField = xFieldRefMap[path]
+
+      if (matchField && propName) {
+        output = matchField[propName as SafeXFieldKeys<E>]
+      }
+    }
+  }
+
+  return output
+}
 
 export interface IDependencyXFieldProps<E> extends IXFieldProps<E> {
   [key: string]: any
@@ -10,7 +33,8 @@ function invokeDependency<E>(
   xField: IDependencyXFieldProps<E>,
   dependency: IFieldDependency,
   propName: SafeXFieldKeys,
-  value: any
+  value: any,
+  xFieldRefMap: IXFieldRefMap<E>
 ) {
   const {
     failureValue,
@@ -45,20 +69,22 @@ function invokeDependency<E>(
           : true
     }
 
-    xField[targetProp] = success ? successValue : failureValue
+    xField[targetProp] = success
+      ? processTpl<E>(successValue, xFieldRefMap)
+      : processTpl<E>(failureValue, xFieldRefMap)
   }
 }
 
 export function enhanceXFieldWithDependencies<ExtraProps>(
   xField: IDependencyXFieldProps<ExtraProps>,
-  refMap: IXFieldRefMap<ExtraProps>
+  xFieldRefMap: IXFieldRefMap<ExtraProps>
 ) {
   xField.dependencies!.forEach(dependency => {
-    const depXField = refMap[dependency.name]
+    const depXField = xFieldRefMap[dependency.name]
 
     if (depXField.addListener) {
       depXField.addListener(({ propName, value }) => {
-        invokeDependency(xField, dependency, propName, value)
+        invokeDependency(xField, dependency, propName, value, xFieldRefMap)
       })
 
       if (!dependency.preventInitOnLoad) {
@@ -66,7 +92,8 @@ export function enhanceXFieldWithDependencies<ExtraProps>(
           xField,
           dependency,
           dependency.matchProp,
-          depXField[dependency.matchProp]
+          depXField[dependency.matchProp],
+          xFieldRefMap
         )
       }
     }
