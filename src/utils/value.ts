@@ -50,9 +50,9 @@ export function sanitizeValue<ExtraProps = {}>(
 
   switch (xField.valueType) {
     case 'string':
-      if (!isString(setValue)) {
+      if (!isString(value)) {
         // Any value can become a string
-        value = valueToString(setValue)
+        value = valueToString(value)
 
         if (value === '') {
           value = undefined
@@ -60,21 +60,21 @@ export function sanitizeValue<ExtraProps = {}>(
 
         // We can't safely convert this value - set back to original and
         // display an error message
-        if (!isString(value) && value !== undefined) {
+        if (!isString(value) && value != null) {
           value = setValue
           errorMsg(
             `Tried to convert ${value} as string on xField: ${xField.$id}`
           )
         }
-      } else if (setValue === '') {
+      } else if (value === '') {
         value = undefined
       }
       break
     case 'number':
-      if (!isNumber(setValue)) {
+      if (!isNumber(value)) {
         // We only try to convert from string
-        if (isString(setValue)) {
-          value = stringToValue(setValue)
+        if (isString(value)) {
+          value = stringToValue(value)
         }
 
         if (value === '') {
@@ -83,7 +83,7 @@ export function sanitizeValue<ExtraProps = {}>(
 
         // We can't safely convert this value - set back to original and
         // display an error message
-        if (!isNumber(value) && value !== undefined) {
+        if (!isNumber(value) && value != null) {
           value = setValue
           errorMsg(
             `Tried to convert ${value} as number on xField: ${xField.$id}`
@@ -92,18 +92,18 @@ export function sanitizeValue<ExtraProps = {}>(
       }
       break
     case 'boolean':
-      if (!isBoolean(setValue)) {
-        if (isString(setValue)) {
-          value = stringToValue(setValue)
+      if (!isBoolean(value)) {
+        if (isString(value)) {
+          value = stringToValue(value)
         }
 
-        if (isNumber(setValue)) {
-          value = setValue > 0 ? true : false
+        if (isNumber(value)) {
+          value = value > 0 ? true : false
         }
 
         // We can't safely convert this value - set back to original and
         // display an error message
-        if (!isBoolean(value) && value !== undefined) {
+        if (!isBoolean(value) && value != null) {
           value = setValue
           errorMsg(
             // tslint:disable-next-line max-line-length
@@ -113,18 +113,18 @@ export function sanitizeValue<ExtraProps = {}>(
       }
       break
     case 'object':
-      if (!isPlainObject(setValue)) {
+      if (!isPlainObject(value)) {
         // We only try to convert from string
-        if (isString(setValue)) {
-          value = stringToValue(setValue)
+        if (isString(value)) {
+          value = stringToValue(value)
         }
 
         // We can't safely convert this value - set back to original and
         // display an error message
-        if (!isPlainObject(value) && value !== undefined) {
+        if (!isPlainObject(value) && value != null) {
           value = setValue
           errorMsg(
-            `Tried to convert ${value} as as object on xField: ${xField.$id}`
+            `Tried to convert ${value} as object on xField: ${xField.$id}`
           )
         }
       }
@@ -156,15 +156,15 @@ export function sanitizeValue<ExtraProps = {}>(
       }
       break
     case 'array':
-      if (!isArray(setValue)) {
+      if (!isArray(value)) {
         // We only try to convert from string
-        if (isString(setValue)) {
-          value = stringToValue(setValue)
+        if (isString(value)) {
+          value = stringToValue(value)
         }
 
         // We can't safely convert this value - set back to original and
         // display an error message
-        if (!isArray(value) && value !== undefined) {
+        if (!isArray(value) && value != null) {
           value = setValue
           errorMsg(
             `Tried to convert ${value} as array on xField: ${xField.$id}`

@@ -10,7 +10,7 @@ export function fieldToXField<ExtraProps = {}>({
   registerExtraProps,
   parent,
 }: {
-  field: IFieldProps
+  field: IFieldProps<ExtraProps>
   xFieldMap: IXFieldMap<ExtraProps>
   registerExtraProps?: RegisterExtraProps<ExtraProps>
   parent?: IXFieldProps<ExtraProps>
@@ -35,7 +35,8 @@ export function fieldToXField<ExtraProps = {}>({
   if (
     parent &&
     xFieldMap[parent.type] &&
-    xFieldMap[parent.type].valueType === 'object'
+    (xFieldMap[parent.type].valueType === 'object' ||
+      xFieldMap[parent.type].valueType === 'array')
   ) {
     $id = `${parent.$id || parent.name}.${field.name}`
   }
@@ -52,11 +53,7 @@ export function fieldToXField<ExtraProps = {}>({
   // extraProps to extend with
   if (registerExtraProps) {
     const extraProps = registerExtraProps(xField)
-
-    xField = {
-      ...xField,
-      extraProps: deepmerge(extraProps, xField.extraProps),
-    }
+    xField.extraProps = deepmerge(xField.extraProps, extraProps)
   }
 
   // Empower xField with the ability for added
@@ -87,7 +84,7 @@ export function fieldsToXFields<ExtraProps = {}>({
   registerExtraProps,
   parent,
 }: {
-  fields: IFieldProps[]
+  fields: Array<IFieldProps<ExtraProps>>
   xFieldMap: IXFieldMap<ExtraProps>
   registerExtraProps?: RegisterExtraProps<ExtraProps>
   parent?: IXFieldProps<ExtraProps>

@@ -8,6 +8,7 @@ import {
 } from './types'
 import {
   initValue,
+  initXFieldArrayCapability,
   initXFieldDependencies,
   initXFieldMap,
   initXFieldObjectCapability,
@@ -19,7 +20,7 @@ import {
 export class Formalizer<ExtraProps = {}> {
   public config: IFormalizerOptions<ExtraProps> = {}
 
-  public fields: IFieldProps[] = []
+  public fields: Array<IFieldProps<ExtraProps>> = []
 
   public xFields: Array<IXFieldProps<ExtraProps>> = []
   public xFieldMap: IXFieldMap<ExtraProps> = {}
@@ -69,6 +70,10 @@ export class Formalizer<ExtraProps = {}> {
     // Enrich the xFields with valueType set to "object" with capabilities
     // to handle child properties up and down the tree
     initXFieldObjectCapability<ExtraProps>(this.xFieldRefMap)
+
+    // Enrich the xFields with valueType set to "array" with capabilities
+    // to handle child properties and values
+    initXFieldArrayCapability<ExtraProps>(this.xFieldRefMap)
 
     // Enrich the xFields with valueType set to "array" with capabilities
     // to handle child properties in the array fields

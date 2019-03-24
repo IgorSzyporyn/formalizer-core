@@ -1,7 +1,7 @@
 import { IFieldProps, IXFieldProps } from './models'
 
 export interface IFormalizerOptions<E = {}> {
-  fields?: IFieldProps[]
+  fields?: Array<IFieldProps<E>>
   xFieldMap?: IXFieldMap<E> | Array<IXFieldMap<E>>
   registerExtraProps?: RegisterExtraProps<E>
   value?: IObjectValue
@@ -70,6 +70,8 @@ export type XFieldAddListener<E = {}> = (
 export interface IObjectValue {
   [key: string]: ValueTypes
 }
+
+export type ArrayValue = ValueTypes[]
 
 export type ValueTypes =
   | string

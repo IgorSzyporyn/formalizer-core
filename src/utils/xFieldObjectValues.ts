@@ -6,11 +6,11 @@ export function enhanceXFieldWithObjectValues<E>(xField: IXFieldProps<E>) {
   const fields = xField.fields || []
   const fieldValue = xField.value as IObjectValue
 
-  if (fieldValue === undefined) {
+  if (fieldValue == null) {
     const shadowValue: IObjectValue = {}
 
     fields.forEach(childField => {
-      if (childField.value != null) {
+      if (childField.value !== undefined) {
         shadowValue[childField.name!] = childField.value
       }
     })
@@ -20,7 +20,7 @@ export function enhanceXFieldWithObjectValues<E>(xField: IXFieldProps<E>) {
     }
   } else {
     fields.forEach(childField => {
-      if (!isEqual(childField.name, fieldValue[childField.name!])) {
+      if (!isEqual(childField.value, fieldValue[childField.name!])) {
         childField.value = fieldValue[childField.name!]
       }
     })

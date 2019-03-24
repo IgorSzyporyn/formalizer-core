@@ -11,13 +11,14 @@ import {
 } from '../types'
 import { fieldsToXFields } from './fieldsToXFields'
 import { getValueProxyHandler } from './valueProxyHandler'
+import { enhanceXFieldWithArrayValues } from './xFieldArrayValues'
 import { enhanceXFieldWithDependencies } from './xFieldDependencies'
 import { xFieldErrorMessage } from './xFieldErrorMessage'
 import { enhanceXFieldWithObjectValues } from './xFieldObjectValues'
 import { xFieldsToRefMap } from './xFieldsToRefMap'
 
 export interface IInitXFields<E> {
-  fields?: IFieldProps[]
+  fields?: Array<IFieldProps<E>>
   registerExtraProps?: RegisterExtraProps<E>
   xFieldMap: IXFieldMap<E>
 }
@@ -144,6 +145,17 @@ export function initXFieldObjectCapability<E>(xFieldRefMap: IXFieldRefMap<E>) {
         enhanceXFieldWithObjectValues<E>(xField)
       }
     })
+}
+
+export function initXFieldArrayCapability<E>(xFieldRefMap: IXFieldRefMap<E>) {
+  // Keys are first sorted by length with shortest first, in order to ensure
+  // that we go parent -> child when we have dot notation at play for object
+  // enveloped fields
+  xFieldRefMapEach(xFieldRefMap, xField => {
+    if (xField.valueType === 'array') {
+      enhanceXFieldWithArrayValues<E>(xField)
+    }
+  })
 }
 
 export interface IInitValueProps<E> {

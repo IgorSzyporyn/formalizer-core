@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash'
+import { isArray, isEqual, isPlainObject } from 'lodash'
 import { IXFieldProps } from '../models'
 import { OnXFieldChange, SafeXFieldKeys } from '../types'
 import { sanitizeValue } from './value'
@@ -14,11 +14,24 @@ export function getXFieldProxyHandler<U>(onChange?: OnXFieldChange<U>) {
         // Fields with object values needs to set child values also
         if (xField.valueType === 'object' && xField.fields) {
           xField.fields.forEach(field => {
-            if (value !== undefined) {
+            if (isPlainObject(value)) {
               if (!isEqual(value[field.name!], field.value)) {
                 field.value = value[field.name!]
               }
-            } else if (field.value !== undefined) {
+            } else {
+              field.value = undefined
+            }
+          })
+        }
+
+        // Fields with array values needs to set child values also
+        if (xField.valueType === 'array' && xField.fields) {
+          xField.fields.forEach((field, index) => {
+            if (isArray(value)) {
+              if (!isEqual(value[index], field.value)) {
+                field.value = value[index]
+              }
+            } else {
               field.value = undefined
             }
           })
