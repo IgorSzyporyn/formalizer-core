@@ -11,7 +11,7 @@ cache:
 before_script:
   - yarn install
   - yarn build
-  - yarn typedoc
+  - yarn docs
 
 script:
   - yarn test
