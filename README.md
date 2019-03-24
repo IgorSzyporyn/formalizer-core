@@ -1,5 +1,7 @@
 # @formalizer/core
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/IgorSzyporyn/formalizer-core.svg)](https://greenkeeper.io/)
+
 ## Standalone form model and state machine.
 
 ### Purpose
