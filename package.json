@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/IgorSzyporyn/core#readme",
   "engines": {
-    "node": "^8 || ^10"
+    "node": "^8 || ^10 || ^11"
   },
   "main": "dist/index.js",
   "module": "dist/core.esm.js",
