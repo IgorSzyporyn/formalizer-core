@@ -41,6 +41,7 @@ const myFields: IFieldProps<ExtraProps>[] = [
 const formalizer = new Formalizer<ExtraProps>({
   fields: myFields,
   model: formalizerFieldModel,
+  value: { myField: 'Hello World' },
 })
 ```
 
