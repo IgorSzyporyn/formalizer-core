@@ -11,12 +11,12 @@ cache:
 before_script:
   - yarn install
   - yarn build
+  - yarn typedoc
 
 script:
   - yarn test
 
 after_success:
-  - yarn typedoc
   - npm pack
 
 deploy:
