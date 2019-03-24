@@ -32,13 +32,13 @@ Note: The TypeScript generic (ExtraProps) here is optional, but will be made ava
 
 ```typescript
 import { IFieldProps } from '@formalizer/core'
-import { IExtraProps, fieldModel } from '@formalizer/field-model'
+import { IExtraProps, formalizerFieldModel } from '@formalizer/field-model'
 
 const myFields: IFieldProps<ExtraProps>[] = [
   { type: 'string', name: 'myField' },
 ]
 
-const formalizer = new Formalizer<ExtraProps>({ fields: myFields: model: fieldModel })
+const formalizer = new Formalizer<ExtraProps>({ fields: myFields: model: formalizerFieldModel })
 ```
 
 #### Configuration Options
