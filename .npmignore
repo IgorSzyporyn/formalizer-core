@@ -1,0 +1,9 @@
+tsconfig.json
+.travis.yml
+.nojekyll
+src/
+docs/
+.npmignore
+
+// npm pack
+{YOUR_LIB}-*.tgz

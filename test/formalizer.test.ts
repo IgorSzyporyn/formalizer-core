@@ -1,5 +1,5 @@
 import { Formalizer } from '../src/formalizer'
-import { xFieldMap as xFieldCoreMap } from '../src/models'
+import { xFieldMap as xFieldCoreMap } from '../src/xFieldMap'
 
 const fields = [
   {
