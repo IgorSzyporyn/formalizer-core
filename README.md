@@ -2,6 +2,8 @@
 
 ## Standalone form model and state machine.
 
+[![Build Status](https://travis-ci.com/IgorSzyporyn/formalizer-core.svg?branch=master)](https://travis-ci.com/IgorSzyporyn/formalizer-core)
+
 ### Purpose
 
 > The main purpose of Formalizer is to seperate the concerns encountered when dealing with dynamic form creation.

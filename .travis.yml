@@ -1,21 +1,38 @@
 language: node_js
 node_js:
-  - '9'
-  - '8'
+  - 'stable'
+cache:
+  directories:
+    - 'node_modules'
 
-script: echo "Running tests against $(node -v) ...
+before_script:
+  - yarn
 
-jobs:
-  include:
-    - stage: npm release
-      if: tag IS present
-      node_js:
-        - '8.10.0'
-      script: yarn build
-      deploy:
-        provider: npm
-        email: '$NPM_EMAIL'
-        api_key: '$NPM_TOKEN'
-        skip_cleanup: true
-        on:
-          tags: true
+script:
+  - echo "Running tests against $(node -v) ...
+  - yarn test
+
+after_success:
+  - yarn typedoc
+  - npm pack
+
+deploy:
+  - provider: pages
+    skip_cleanup: true
+    local_dir: docs/
+    github_token: $GITHUB_TOKEN
+    on:
+      tags: true
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file: '{YOURLIB}-*.tgz'
+    skip_cleanup: true
+    on:
+      tags: true
+  - provider: npm
+    skip_cleanup: true
+    email: '$NPM_EMAIL'
+    api_key: $NPM_TOKEN
+    on:
+      tags: true
