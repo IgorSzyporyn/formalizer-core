@@ -1,8 +1,9 @@
 # @formalizer/core
 
-## Standalone form model and state machine.
-
 [![Build Status](https://travis-ci.com/IgorSzyporyn/formalizer-core.svg?branch=master)](https://travis-ci.com/IgorSzyporyn/formalizer-core)
+[![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
+
+## Standalone form model and state machine.
 
 ### Purpose
 
