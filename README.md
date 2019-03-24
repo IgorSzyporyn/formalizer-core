@@ -1,13 +1,9 @@
+# @formalizer/core
+
 [![Build Status](https://travis-ci.com/IgorSzyporyn/formalizer-core.svg?branch=master)](https://travis-ci.com/IgorSzyporyn/formalizer-core)
 [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 
-# @formalizer/core
-
-## Standalone form model and state machine.
-
-### Purpose
-
-> The main purpose of Formalizer is to seperate the concerns encountered when dealing with dynamic form creation.
+The main purpose of Formalizer is to seperate the concerns encountered when dealing with dynamic form creation, to function as a standalone form model and state machine.
 
 The model is basically a self managing state machine of a form and its fields, built by matching a given set of fields against a set of field models.
 
@@ -19,9 +15,7 @@ Formalizer has built in support for field types of the basic value types availab
 
 To provide extendability aimed at letting field models be versatile, and ultimately also suited for varying rendering technology, Formalizer provides field model extendability and lets you inject any number of other field models with custom field properties.
 
-### How is it used?
-
-#### Configuration
+## Configuration
 
 In its simplest form (pun intended) you can just instanciate with no configuration.
 
@@ -48,7 +42,7 @@ const formalizer = new Formalizer<ExtraProps>({
 })
 ```
 
-#### Configuration Options
+### Configuration Options
 
 | Option | Description                                                                                                                         |            Type |
 | :----- | :---------------------------------------------------------------------------------------------------------------------------------- | --------------: |
@@ -56,7 +50,7 @@ const formalizer = new Formalizer<ExtraProps>({
 | model  | Single model or collection of models used to convert a field into a xField                                                          | Array or Object |
 | value  | If provided will be used as the initial value of the form and its xFields                                                           |          Object |
 
-#### Field Configuration Options (\* means required)
+### Field Configuration Options (\* means required)
 
 Please note that the values for **type** can vary depending on what model you supply, as does the properties available in **extraProps**
 
@@ -71,7 +65,7 @@ Please note that the values for **type** can vary depending on what model you su
 | nullable     | If true then the fields value will be null when undefined                                                        |    Boolean |
 | value        | If supplied will work as the initial value of the field (will be overriden by initial value set on form if any)  |  ValueType |
 
-#### Formalizer Instance
+## Formalizer Instance
 
 Formalizer will return an instance with the following properties
 
