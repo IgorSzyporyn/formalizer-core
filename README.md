@@ -4,8 +4,6 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/IgorSzyporyn/formalizer-core.svg)](https://greenkeeper.io/)
 [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 
-# @formalizer/core
-
 The main purpose of Formalizer is to seperate the concerns encountered when dealing with dynamic form creation, to function as a standalone form model and state machine.
 
 The model is basically a self managing state machine of a form and its fields, built by matching a given set of fields against a set of field models.
