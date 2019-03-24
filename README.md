@@ -38,7 +38,10 @@ const myFields: IFieldProps<ExtraProps>[] = [
   { type: 'string', name: 'myField' },
 ]
 
-const formalizer = new Formalizer<ExtraProps>({ fields: myFields: model: formalizerFieldModel })
+const formalizer = new Formalizer<ExtraProps>({
+  fields: myFields,
+  model: formalizerFieldModel,
+})
 ```
 
 #### Configuration Options
