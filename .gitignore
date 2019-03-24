@@ -66,4 +66,7 @@ compiled
 
 .DS_Store
 
+# TypeDocs output folder
+docs
+
 .size-snapshot.json
