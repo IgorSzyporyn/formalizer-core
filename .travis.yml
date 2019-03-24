@@ -1,24 +1,16 @@
 language: node_js
 node_js:
-  - '8.10.0'
+  - 8
+  - 9
+  - node
 cache:
   yarn: true
   directories:
     - node_modules
 
-install:
-  - yarn
-
 script:
   - echo "Running tests against $(node -v) ...
   - yarn test
-
-before_deploy:
-  - yarn build
-
-after_success:
-  - yarn typedoc
-  - npm pack
 
 deploy:
   - provider: pages
