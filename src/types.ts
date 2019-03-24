@@ -38,7 +38,7 @@ export interface IValueRefMap {
   [key: string]: ValueTypes
 }
 
-export interface IFieldDependencies {
+export interface IFieldDependency {
   name: string
   matchProp: SafeXFieldKeys
   matchValue?: any
@@ -48,7 +48,7 @@ export interface IFieldDependencies {
   targetProp: string
   successValue?: any
   failureValue?: any
-  initOnLoad?: boolean
+  preventInitOnLoad?: boolean
 }
 
 export interface IXFieldListenerCallbackProps<E = {}> {

@@ -123,9 +123,7 @@ export interface IInitXFieldDependencies<E> {
 }
 
 export function initXFieldDependencies<E>(xFieldRefMap: IXFieldRefMap<E>) {
-  Object.keys(xFieldRefMap).forEach(key => {
-    const xField = xFieldRefMap[key]
-
+  xFieldRefMapEach(xFieldRefMap, xField => {
     if (xField.dependencies) {
       enhanceXFieldWithDependencies<E>(xField, xFieldRefMap)
     }

@@ -1,4 +1,4 @@
-import { IFieldDependencies, ValueTypes } from '../types'
+import { IFieldDependency, ValueTypes } from '../types'
 
 export interface IFieldProps<ExtraProps = {}> {
   type: string
@@ -7,7 +7,7 @@ export interface IFieldProps<ExtraProps = {}> {
   emptyValue?: ValueTypes
   defaultValue?: ValueTypes
   fields?: Array<IFieldProps<ExtraProps>>
-  dependencies?: IFieldDependencies[]
+  dependencies?: IFieldDependency[]
   title?: string
   description?: string
   disabled?: boolean
