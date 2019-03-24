@@ -12,5 +12,4 @@ env:
   - NODE_ENV=development
 
 script:
-  - echo "Running tests against $(node -v) ...
   - yarn test
