@@ -22,18 +22,23 @@ To provide extendability aimed at letting field models be versatile, and ultimat
 
 In its simplest form (pun intended) you can just instanciate with no configuration.
 
+```typescript
+const formalizer = new Formalizer()
+```
+
+But in order for anything to happen, you have to send in as a minimum an array of fields (and maybe a model as in example).
+
 Note: The TypeScript generic (ExtraProps) here is optional, but will be made available by model provider if you are using any model(s).
 
 ```typescript
-const formalizer = new Formalizer<ExtraProps>()
-```
+import { IFieldProps } from '@formalizer/core'
+import { IExtraProps, fieldModel } from '@formalizer/field-model'
 
-But in order for anything to happen, you have to send in as a minimum an array of fields.
+const myFields: IFieldProps<ExtraProps>[] = [
+  { type: 'string', name: 'myField' },
+]
 
-```typescript
-const myFields: IFieldProps[] = [{ type: 'string', name: 'myField' }]
-
-const formalizer = new Formalizer<ExtraProps>({ fields: myFields })
+const formalizer = new Formalizer<ExtraProps>({ fields: myFields: model: fieldModel })
 ```
 
 #### Configuration Options
@@ -44,15 +49,15 @@ const formalizer = new Formalizer<ExtraProps>({ fields: myFields })
 | model  | Single model or collection of models used to convert a field into a xField                                                          | Array or Object |
 | value  | If provided will be used as the initial value of the form and its xFields                                                           |          Object |
 
-#### Field Configuration Options
+#### Field Configuration Options (\* means required)
 
-| Property        | Description                                                                                            |      Type |
-| --------------- | ------------------------------------------------------------------------------------------------------ | --------: |
-| type (required) | Core supports "string", "number", "boolean", "array" and "object" without any model supplied in config |    String |
-| name (required) | The name of the field - can be required if the field is to hold a value represented in the form value  |    String |
-| disabled        | If supplied the field will be disabled (value will no longer figure in form value etc...)              |   Boolean |
-| emptyValue      | If supplied will be as the value representation in form value when field value is undefined            | ValueType |
-| value           | If supplied will work as the initial value of the field                                                | ValueType |
+| Property   | Description                                                                                            |      Type |
+| ---------- | ------------------------------------------------------------------------------------------------------ | --------: |
+| type\*     | Core supports "string", "number", "boolean", "array" and "object" without any model supplied in config |    String |
+| name\*     | The name of the field - can be required if the field is to hold a value represented in the form value  |    String |
+| disabled   | If supplied the field will be disabled (value will no longer figure in form value etc...)              |   Boolean |
+| emptyValue | If supplied will be as the value representation in form value when field value is undefined            | ValueType |
+| value      | If supplied will work as the initial value of the field                                                | ValueType |
 
 #### Formalizer Instance
 
