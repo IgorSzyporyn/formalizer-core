@@ -48,7 +48,7 @@ const formalizer = new Formalizer<ExtraProps>({
 #### Configuration Options
 
 | Option | Description                                                                                                                         |            Type |
-| ------ | ----------------------------------------------------------------------------------------------------------------------------------- | --------------: |
+| :----- | :---------------------------------------------------------------------------------------------------------------------------------- | --------------: |
 | fields | A collection of field definitions, each definition is converted to a xField using field mapping based on the fields "type" property |           Array |
 | model  | Single model or collection of models used to convert a field into a xField                                                          | Array or Object |
 | value  | If provided will be used as the initial value of the form and its xFields                                                           |          Object |
@@ -58,7 +58,7 @@ const formalizer = new Formalizer<ExtraProps>({
 Please note that the values for **type** can vary depending on what model you supply, as does the properties available in **extraProps**
 
 | Property     | Description                                                                                                      |       Type |
-| ------------ | ---------------------------------------------------------------------------------------------------------------- | ---------: |
+| :----------- | :--------------------------------------------------------------------------------------------------------------- | ---------: |
 | type\*       | Core supports "string", "number", "boolean", "array" and "object" without any model supplied in config           |     String |
 | name\*       | The name of the field                                                                                            |     String |
 | dependencies | Collection of dependencies with match criteria to run agains another field upon changes in the fields properties |      Array |
@@ -73,7 +73,7 @@ Please note that the values for **type** can vary depending on what model you su
 Formalizer will return an instance with the following properties
 
 | Property      | Description                                                                                                 |     Type |
-| ------------- | ----------------------------------------------------------------------------------------------------------- | -------: |
+| :------------ | :---------------------------------------------------------------------------------------------------------- | -------: |
 | addListener   | Method that will execute a given function when a property changes on the form instance                      | Function |
 | configuration | The configuration options supplied when creating the instance                                               |   Object |
 | dirty         | The form dirty state - meaning if value is different than initialValue                                      |  Boolean |
