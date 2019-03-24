@@ -10,12 +10,12 @@
     "gzipped": 31184
   },
   "./dist/core.cjs.production.js": {
-    "bundled": 23948,
+    "bundled": 23901,
     "minified": 9752,
     "gzipped": 2871
   },
   "./dist/core.cjs.development.js": {
-    "bundled": 24177,
+    "bundled": 24130,
     "minified": 9901,
     "gzipped": 2920
   },
