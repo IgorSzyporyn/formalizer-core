@@ -1,4 +1,4 @@
-![New Project](https://user-images.githubusercontent.com/6172338/54886582-c9860380-4e89-11e9-8b71-ba4e9462fa34.png)
+![New Project (1)](https://user-images.githubusercontent.com/6172338/54886611-2bdf0400-4e8a-11e9-8eda-d81876297c4f.png)
 
 [![Build Status](https://travis-ci.com/IgorSzyporyn/formalizer-core.svg?branch=master)](https://travis-ci.com/IgorSzyporyn/formalizer-core)
 [![Greenkeeper badge](https://badges.greenkeeper.io/IgorSzyporyn/formalizer-core.svg)](https://greenkeeper.io/)
