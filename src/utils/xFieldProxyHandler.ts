@@ -1,6 +1,5 @@
 import { isArray, isEqual, isPlainObject } from 'lodash'
-import { IXFieldProps } from '../models'
-import { OnXFieldChange, SafeXFieldKeys } from '../types'
+import { IXFieldProps, OnXFieldChange, SafeXFieldKeys } from '../types'
 import { sanitizeValue } from './value'
 
 export function getXFieldProxyHandler<U>(onChange?: OnXFieldChange<U>) {

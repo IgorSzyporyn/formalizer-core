@@ -6,8 +6,7 @@ import {
   isPlainObject,
   isString,
 } from 'lodash'
-import { IXFieldProps } from '../models'
-import { IObjectValue, ValueTypes } from '../types'
+import { IObjectValue, IXFieldProps, ValueTypes } from '../types'
 import { errorMsg } from './messages'
 
 export function stringToValue(stringValue?: string): ValueTypes {

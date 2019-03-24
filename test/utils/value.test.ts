@@ -1,5 +1,5 @@
 // tslint:disable no-object-literal-type-assertion
-import { IXFieldProps } from '../../src/models'
+import { IXFieldProps } from '../../src/types'
 import { sanitizeValue, stringToValue, valueToString } from '../../src/utils/value'
 
 describe('valueToString = (ValueTypes) => string', () => {

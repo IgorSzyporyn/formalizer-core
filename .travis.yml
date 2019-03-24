@@ -13,6 +13,9 @@ script:
   - echo "Running tests against $(node -v) ...
   - yarn test
 
+before_deploy:
+  - yarn build
+
 after_success:
   - yarn typedoc
   - npm pack

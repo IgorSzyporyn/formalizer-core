@@ -1,9 +1,10 @@
 import deepmerge from 'deepmerge'
 import { isArray, isEqual } from 'lodash'
-import { IFieldProps, IXFieldProps } from '../models'
 import {
+  IFieldProps,
   IObjectValue,
   IXFieldMap,
+  IXFieldProps,
   IXFieldRefMap,
   OnObjectValueChange,
   OnObjectValueDelete,

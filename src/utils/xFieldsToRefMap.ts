@@ -1,5 +1,4 @@
-import { IXFieldProps } from '../models'
-import { IXFieldRefMap } from '../types'
+import { IXFieldProps, IXFieldRefMap } from '../types'
 import { errorMsg } from './messages'
 
 export const xFieldsToRefMap = <ExtraProps>(

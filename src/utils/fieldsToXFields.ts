@@ -1,6 +1,10 @@
 import deepmerge from 'deepmerge'
-import { IFieldProps, IXFieldProps } from '../models'
-import { IXFieldMap, RegisterExtraProps } from '../types'
+import {
+  IFieldProps,
+  IXFieldMap,
+  IXFieldProps,
+  RegisterExtraProps,
+} from '../types'
 import { warningMsg } from './messages'
 import { enhanceXFieldWithListener } from './xFieldListener'
 

@@ -1,5 +1,4 @@
-import { IXFieldProps } from '../models'
-import { XFieldListenerCallback } from '../types'
+import { IXFieldProps, XFieldListenerCallback } from '../types'
 import { getXFieldProxyHandler } from './xFieldproxyHandler'
 
 export function enhanceXFieldWithListener<ExtraProps>(

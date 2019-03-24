@@ -1,6 +1,10 @@
 import { isEqual, isString } from 'lodash'
-import { IXFieldProps } from '../models'
-import { IFieldDependency, IXFieldRefMap, SafeXFieldKeys } from '../types'
+import {
+  IFieldDependency,
+  IXFieldProps,
+  IXFieldRefMap,
+  SafeXFieldKeys,
+} from '../types'
 
 function processTpl<E>(input: any, xFieldRefMap: IXFieldRefMap<E>) {
   let output = input

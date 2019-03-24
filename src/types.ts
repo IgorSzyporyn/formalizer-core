@@ -1,5 +1,3 @@
-import { IFieldProps, IXFieldProps } from './models'
-
 export interface IFormalizerOptions<E = {}> {
   fields?: Array<IFieldProps<E>>
   xFieldMap?: IXFieldMap<E> | Array<IXFieldMap<E>>
@@ -101,3 +99,69 @@ export interface IOnObjectValueDeleteProps {
 }
 
 export type OnObjectValueDelete = (props: IOnObjectValueDeleteProps) => void
+
+export interface IFieldProps<ExtraProps = {}> {
+  type: string
+  name: string
+  value?: ValueTypes
+  emptyValue?: ValueTypes
+  defaultValue?: ValueTypes
+  fields?: Array<IFieldProps<ExtraProps>>
+  dependencies?: IFieldDependency[]
+  title?: string
+  description?: string
+  disabled?: boolean
+  nullable?: boolean
+  extraProps?: ExtraProps
+}
+
+export interface IFieldPropPicks
+  extends Pick<IFieldProps, Exclude<keyof IFieldProps, 'name' | 'fields'>> {}
+
+export interface IXFieldProps<ExtraProps = {}> extends IFieldPropPicks {
+  name?: string
+  valueType: XValueTypes
+  fields?: Array<IXFieldProps<ExtraProps>>
+  extraProps: ExtraProps
+  dirty?: boolean
+  touched?: boolean
+  initialValue?: ValueTypes
+
+  // Internally used props
+  $id?: string
+  addListener?: XFieldAddListener<ExtraProps>
+}
+
+export interface IFieldPropPicks
+  extends Pick<IFieldProps, Exclude<keyof IFieldProps, 'name' | 'fields'>> {}
+
+export interface IXFieldProps<ExtraProps = {}> extends IFieldPropPicks {
+  name?: string
+  valueType: XValueTypes
+  fields?: Array<IXFieldProps<ExtraProps>>
+  extraProps: ExtraProps
+  dirty?: boolean
+  touched?: boolean
+  initialValue?: ValueTypes
+
+  // Internally used props
+  $id?: string
+  addListener?: XFieldAddListener<ExtraProps>
+}
+
+export type XValueTypes =
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'array'
+  | 'object'
+  | 'none'
+
+export interface IXValue {
+  type: XValueTypes
+  value: string
+}
+
+export interface IXValues {
+  [key: string]: IXValue
+}
