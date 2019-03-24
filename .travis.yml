@@ -2,10 +2,11 @@ language: node_js
 node_js:
   - 'stable'
 cache:
+  yarn: true
   directories:
-    - 'node_modules'
+    - node_modules
 
-before_script:
+install:
   - yarn
 
 script:
