@@ -1,1 +1,7 @@
-language: node_js
+deploy:
+  provider: npm
+  email: 'igor.szyporyn@gmail.com'
+  api_key: '98530931-525b-4dc8-b39f-bbc54d81bdb0'
+  on:
+    tags: true
+    branch: master
