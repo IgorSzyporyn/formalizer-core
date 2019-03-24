@@ -1,7 +1,10 @@
 # @formalizer/core
 
 [![Build Status](https://travis-ci.com/IgorSzyporyn/formalizer-core.svg?branch=master)](https://travis-ci.com/IgorSzyporyn/formalizer-core)
+[![Greenkeeper badge](https://badges.greenkeeper.io/IgorSzyporyn/formalizer-core.svg)](https://greenkeeper.io/)
 [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
+
+## Standalone form model and state machine.
 
 The main purpose of Formalizer is to seperate the concerns encountered when dealing with dynamic form creation, to function as a standalone form model and state machine.
 
