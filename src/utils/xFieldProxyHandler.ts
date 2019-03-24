@@ -2,7 +2,7 @@ import { isArray, isEqual, isPlainObject } from 'lodash'
 import { IXFieldProps, OnXFieldChange, SafeXFieldKeys } from '../types'
 import { sanitizeValue } from './value'
 
-export function getXFieldProxyHandler<U>(onChange?: OnXFieldChange<U>) {
+export const getXFieldProxyHandler = <U>(onChange?: OnXFieldChange<U>) => {
   return {
     set(xField: IXFieldProps<U>, propName: SafeXFieldKeys<U>, setValue: any) {
       let value = setValue
