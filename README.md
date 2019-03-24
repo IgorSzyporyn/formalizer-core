@@ -55,13 +55,18 @@ const formalizer = new Formalizer<ExtraProps>({
 
 #### Field Configuration Options (\* means required)
 
-| Property   | Description                                                                                            |      Type |
-| ---------- | ------------------------------------------------------------------------------------------------------ | --------: |
-| type\*     | Core supports "string", "number", "boolean", "array" and "object" without any model supplied in config |    String |
-| name\*     | The name of the field - can be required if the field is to hold a value represented in the form value  |    String |
-| disabled   | If supplied the field will be disabled (value will no longer figure in form value etc...)              |   Boolean |
-| emptyValue | If supplied will be as the value representation in form value when field value is undefined            | ValueType |
-| value      | If supplied will work as the initial value of the field                                                | ValueType |
+Please note that the values for **type** can vary depending on what model you supply, as does the properties available in **extraProps**
+
+| Property     | Description                                                                                                      |       Type |
+| ------------ | ---------------------------------------------------------------------------------------------------------------- | ---------: |
+| type\*       | Core supports "string", "number", "boolean", "array" and "object" without any model supplied in config           |     String |
+| name\*       | The name of the field                                                                                            |     String |
+| dependencies | Collection of dependencies with match criteria to run agains another field upon changes in the fields properties |      Array |
+| disabled     | If supplied the field will be disabled (value will no longer figure in form value etc...)                        |    Boolean |
+| emptyValue   | If supplied will be as the value representation in form value when field value is undefined                      |  ValueType |
+| extraProps   | An object of extra property definitions for this field                                                           | ExtraProps |
+| nullable     | If true then the fields value will be null when undefined                                                        |    Boolean |
+| value        | If supplied will work as the initial value of the field (will be overriden by initial value set on form if any)  |  ValueType |
 
 #### Formalizer Instance
 
