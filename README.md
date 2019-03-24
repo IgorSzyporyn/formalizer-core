@@ -6,8 +6,6 @@
 
 # @formalizer/core
 
-## Standalone form model and state machine.
-
 The main purpose of Formalizer is to seperate the concerns encountered when dealing with dynamic form creation, to function as a standalone form model and state machine.
 
 The model is basically a self managing state machine of a form and its fields, built by matching a given set of fields against a set of field models.
