@@ -32,13 +32,6 @@ test(
 )
 
 test(
-  'should have empty fields array if instanciated with no fields in options',
-  () => {
-    expect(new Formalizer().fields).toEqual([])
-  }
-)
-
-test(
   'should have empty xFields array if instanciated with no fields in options',
   () => {
     expect(new Formalizer().xFields).toEqual([])
