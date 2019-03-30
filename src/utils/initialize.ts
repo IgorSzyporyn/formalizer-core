@@ -2,7 +2,7 @@ import deepmerge from 'deepmerge'
 import { isArray, isEqual } from 'lodash'
 import {
   IFieldProps,
-  IObjectValue,
+  IValue,
   IXFieldMap,
   IXFieldProps,
   IXFieldRefMap,
@@ -11,6 +11,7 @@ import {
   RegisterExtraProps,
 } from '../types'
 import { fieldsToXFields } from './fieldsToXFields'
+import { mapEach } from './mapEach'
 import { getValueProxyHandler } from './valueProxyHandler'
 import { enhanceXFieldWithArrayValues } from './xFieldArrayValues'
 import { enhanceXFieldWithDependencies } from './xFieldDependencies'
@@ -124,7 +125,7 @@ export interface IInitXFieldDependencies<E> {
 }
 
 export function initXFieldDependencies<E>(xFieldRefMap: IXFieldRefMap<E>) {
-  xFieldRefMapEach(xFieldRefMap, xField => {
+  mapEach<IXFieldRefMap<E>, IXFieldProps<E>>(xFieldRefMap, xField => {
     if (xField.dependencies) {
       enhanceXFieldWithDependencies<E>(xField, xFieldRefMap)
     }
@@ -150,7 +151,7 @@ export function initXFieldArrayCapability<E>(xFieldRefMap: IXFieldRefMap<E>) {
   // Keys are first sorted by length with shortest first, in order to ensure
   // that we go parent -> child when we have dot notation at play for object
   // enveloped fields
-  xFieldRefMapEach(xFieldRefMap, xField => {
+  mapEach<IXFieldRefMap<E>, IXFieldProps<E>>(xFieldRefMap, xField => {
     if (xField.valueType === 'array') {
       enhanceXFieldWithArrayValues<E>(xField)
     }
@@ -158,7 +159,7 @@ export function initXFieldArrayCapability<E>(xFieldRefMap: IXFieldRefMap<E>) {
 }
 
 export interface IInitValueProps<E> {
-  initialValue?: IObjectValue
+  initialValue?: IValue
   xFieldRefMap: IXFieldRefMap<E>
   onChange: OnObjectValueChange
   onDelete: OnObjectValueDelete
@@ -169,7 +170,7 @@ export function initValue<E>({
   xFieldRefMap,
   onChange,
   onDelete,
-}: IInitValueProps<E>): IObjectValue {
+}: IInitValueProps<E>): IValue {
   // First set initialValues on first level xFields
   if (initialValue) {
     Object.keys(xFieldRefMap).forEach(key => {
@@ -183,12 +184,11 @@ export function initValue<E>({
     })
   }
 
-  let valueMap: IObjectValue = {}
+  let valueMap: IValue = {}
 
   // Do a run through the xFieldRefMap and build the valueMap
-  Object.keys(xFieldRefMap).forEach(key => {
-    const xField = xFieldRefMap[key]
-    const isObjectChild = xField.$id!.includes('.')
+  mapEach<IXFieldRefMap<E>, IXFieldProps<E>>(xFieldRefMap, (xField, key) => {
+    const isObjectChild = key.includes('.')
 
     if (!isObjectChild && xField.value !== undefined) {
       valueMap[xField.name!] = xField.value
@@ -201,8 +201,7 @@ export function initValue<E>({
 
   // Do a final run through the xFieldRefMap and attach listeners
   // to keep valueRepMap updated now it is a proxy
-  Object.keys(xFieldRefMap).forEach(key => {
-    const xField = xFieldRefMap[key]
+  mapEach<IXFieldRefMap<E>, IXFieldProps<E>>(xFieldRefMap, (xField, key) => {
     const isObjectChild = xField.$id!.includes('.')
 
     if (!isObjectChild) {
@@ -220,7 +219,7 @@ export function initValue<E>({
 }
 
 export function initXFieldStateHandlers<E>(xFieldRefMap: IXFieldRefMap<E>) {
-  xFieldRefMapEach<E>(xFieldRefMap, xField => {
+  mapEach<IXFieldRefMap<E>, IXFieldProps<E>>(xFieldRefMap, xField => {
     xField.initialValue = xField.value
 
     xField.addListener!(({ propName, value }) => {
@@ -232,17 +231,5 @@ export function initXFieldStateHandlers<E>(xFieldRefMap: IXFieldRefMap<E>) {
         }
       }
     })
-  })
-}
-
-export type XFieldRefMapEachFn<E> = (xField: IXFieldProps<E>) => void
-
-export function xFieldRefMapEach<E>(
-  xFieldRefMap: IXFieldRefMap<E>,
-  fn: XFieldRefMapEachFn<E>
-) {
-  Object.keys(xFieldRefMap).forEach(key => {
-    const xField = xFieldRefMap[key]
-    fn(xField)
   })
 }

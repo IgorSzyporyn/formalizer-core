@@ -1,12 +1,12 @@
 import { isEqual } from 'lodash'
-import { IObjectValue, IXFieldProps, ValueTypes } from '../types'
+import { IValue, IXFieldProps, ValueTypes } from '../types'
 
 export function enhanceXFieldWithObjectValues<E>(xField: IXFieldProps<E>) {
   const fields = xField.fields || []
-  const fieldValue = xField.value as IObjectValue
+  const fieldValue = xField.value as IValue
 
   if (fieldValue == null) {
-    const shadowValue: IObjectValue = {}
+    const shadowValue: IValue = {}
 
     fields.forEach(childField => {
       if (childField.value !== undefined) {
@@ -30,7 +30,7 @@ export function enhanceXFieldWithObjectValues<E>(xField: IXFieldProps<E>) {
       const setValue: ValueTypes = value
 
       if (propName === 'value' && xField.value == null) {
-        const shadowValue: IObjectValue = {}
+        const shadowValue: IValue = {}
 
         if (setValue !== undefined) {
           shadowValue[childField.name!] = setValue
@@ -38,7 +38,7 @@ export function enhanceXFieldWithObjectValues<E>(xField: IXFieldProps<E>) {
 
         xField.value = shadowValue
       } else if (propName === 'value' && xField.value != null) {
-        const shadowValue: IObjectValue = xField.value as IObjectValue
+        const shadowValue: IValue = xField.value as IValue
 
         if (setValue === undefined) {
           delete shadowValue[childField.name!]

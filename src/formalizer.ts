@@ -1,11 +1,14 @@
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
 import {
   IFormalizerOptions,
-  IObjectValue,
+  IValidationErrors,
+  IValue,
   IXFieldMap,
   IXFieldProps,
   IXFieldRefMap,
+  ValidateFn,
 } from './types'
+import { initXFieldValidation, mapEach } from './utils'
 import {
   initValue,
   initXFieldArrayCapability,
@@ -25,8 +28,11 @@ export class Formalizer<ExtraProps = {}> {
   public xFieldMap: IXFieldMap<ExtraProps> = {}
   public xFieldRefMap: IXFieldRefMap<ExtraProps> = {}
 
-  public value: IObjectValue = {}
-  public initialValue: IObjectValue = {}
+  public value: IValue = {}
+  public initialValue: IValue = {}
+
+  public validate: ValidateFn
+  public validation: IValidationErrors = {}
 
   public dirty: boolean = false
   public touched: boolean = false
@@ -41,9 +47,9 @@ export class Formalizer<ExtraProps = {}> {
     // Initialize the xFieldMap with core as safeguard
     // for ability to handle the core types
     // string, number, boolean, object and array
-    const xFieldMap = (this.xFieldMap = initXFieldMap({
+    const xFieldMap = (this.xFieldMap = initXFieldMap<ExtraProps>({
       applicantMaps: config.xFieldMap,
-      xFieldCoreMap,
+      xFieldCoreMap: xFieldCoreMap as IXFieldMap<ExtraProps>,
     }))
 
     // Initialize and convert the given fields to xFields
@@ -71,10 +77,6 @@ export class Formalizer<ExtraProps = {}> {
     // to handle child properties and values
     initXFieldArrayCapability<ExtraProps>(this.xFieldRefMap)
 
-    // Enrich the xFields with valueType set to "array" with capabilities
-    // to handle child properties in the array fields
-    // @TODO
-
     // Initialize and create the value object in the formalizer instance
     const { handleValueChange } = this
 
@@ -90,16 +92,51 @@ export class Formalizer<ExtraProps = {}> {
     // Now relationships and values have been established we also need to
     // introduce dirty and touched states on our fields
     initXFieldStateHandlers<ExtraProps>(this.xFieldRefMap)
+
+    // And handle validation
+    this.validate = initXFieldValidation(this.xFields)
   }
 
   // Keep value object updated, keep xValue object updated and
   // keep dirty, valid and touched updated
   private handleValueChange = () => {
-    this.dirty =
+    const { onDirtyChange, onTouchedChange } = this.config
+    const dirty =
       JSON.stringify(this.value) !== JSON.stringify(this.initialValue)
+    const dirtyChange = dirty !== this.dirty
+
+    this.dirty = dirty
+
+    if (!this.touched && onTouchedChange) {
+      onTouchedChange(true)
+    }
 
     if (this.dirty) {
       this.touched = true
     }
+
+    if (dirtyChange && onDirtyChange) {
+      onDirtyChange(dirty)
+    }
+
+    this.handleValidation()
+  }
+
+  private handleValidation = async () => {
+    const { onValidChange } = this.config
+    const validation = (this.validation = await this.validate(this.value))
+    const valid = isEmpty(validation)
+    const validChange = valid !== this.valid
+
+    this.valid = valid
+
+    if (validChange && onValidChange) {
+      onValidChange(valid)
+    }
+
+    mapEach<IXFieldRefMap, IXFieldProps>(this.xFieldRefMap, xField => {
+      const error = validation[xField.$id!]
+      xField.error = error || undefined
+    })
   }
 }

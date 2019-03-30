@@ -6,7 +6,7 @@ import {
   isPlainObject,
   isString,
 } from 'lodash'
-import { IObjectValue, IXFieldProps, ValueTypes } from '../types'
+import { IValue, IXFieldProps, ValueTypes } from '../types'
 import { errorMsg } from './messages'
 
 export function stringToValue(stringValue?: string): ValueTypes {
@@ -138,7 +138,7 @@ export function sanitizeValue<ExtraProps = {}>(
 
         xField.fields.forEach(childField => {
           if (childField.name) {
-            const parentsChildValue = value[childField.name] as IObjectValue
+            const parentsChildValue = value[childField.name] as IValue
             const childValue = sanitizeValue(childField, parentsChildValue)
 
             if (childValue !== undefined) {
