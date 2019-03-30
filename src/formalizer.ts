@@ -1,6 +1,5 @@
 import { cloneDeep } from 'lodash'
 import {
-  IFieldProps,
   IFormalizerOptions,
   IObjectValue,
   IXFieldMap,
@@ -22,8 +21,6 @@ import { xFieldMap as xFieldCoreMap } from './xFieldMap'
 export class Formalizer<ExtraProps = {}> {
   public config: IFormalizerOptions<ExtraProps> = {}
 
-  public fields: Array<IFieldProps<ExtraProps>> = []
-
   public xFields: Array<IXFieldProps<ExtraProps>> = []
   public xFieldMap: IXFieldMap<ExtraProps> = {}
   public xFieldRefMap: IXFieldRefMap<ExtraProps> = {}
@@ -38,11 +35,8 @@ export class Formalizer<ExtraProps = {}> {
   protected formalizer = '1.0.0'
 
   constructor(options: IFormalizerOptions<ExtraProps> = {}) {
-    const { registerExtraProps } = options
+    const { registerExtraProps, fields = [] } = options
     const config = (this.config = options)
-
-    // Initialize the given fields from options and safeguard
-    const fields = (this.fields = options.fields || [])
 
     // Initialize the xFieldMap with core as safeguard
     // for ability to handle the core types

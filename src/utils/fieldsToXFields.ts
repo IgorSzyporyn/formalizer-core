@@ -79,6 +79,11 @@ export function fieldToXField<ExtraProps = {}>({
     }
   }
 
+  // Ensure default value of null if nullable
+  if (xField.nullable && xField.value === undefined) {
+    xField.value = null
+  }
+
   return xField
 }
 
