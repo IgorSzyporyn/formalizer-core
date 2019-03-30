@@ -8,17 +8,15 @@
 
 ## Standalone form model and state machine.
 
-The main purpose of Formalizer is to seperate the concerns encountered when dealing with dynamic form creation, to function as a standalone form model and state machine.
-
-The model is basically a self managing state machine of a form and its fields, built by matching a given set of fields against a set of field models.
+The main purpose of Formalizer is to alleviate the concerns encountered when dealing with dynamic form creation, to function as a standalone form model and state machine.
 
 Formalizer is meant to be consumed by other software, and to make interaction between consumer and provider as simple as possible.
 
 To achieve a transparent interaction layer between consumer and provider Formalizer lets the consumer **change properties on fields directly**, and offers a listener to let the consumer be made aware of changes in fields or the form.
 
-Formalizer has built in support for field types of the basic value types available: "string", "number", "boolean", "array" and "object", which is enough for any scenario not involving any type of field rendering manifestation - and the willingness to write a lot of definitions.
+Formalizer has built in support for the most basic fields available "string", "number", "boolean", "array" and "object", but can easily be extended to build custom field types of any kind to provide a versatile model setup.
 
-To provide extendability aimed at letting field models be versatile, and ultimately also suited for varying rendering technology, Formalizer provides field model extendability and lets you inject any number of other field models with custom field properties.
+Ultimately also suited for varying rendering technology, Formalizers field model extendability lets you inject any number of other field models with custom field properties.
 
 ## Configuration
 
