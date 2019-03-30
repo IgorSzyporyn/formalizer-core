@@ -1,7 +1,8 @@
-![New Project (1)](https://user-images.githubusercontent.com/6172338/54886611-2bdf0400-4e8a-11e9-8eda-d81876297c4f.png)
+![Formalizer Core](https://user-images.githubusercontent.com/6172338/54886646-9f811100-4e8a-11e9-94b1-4c1ee1182565.png)
 
 [![Build Status](https://travis-ci.com/IgorSzyporyn/formalizer-core.svg?branch=master)](https://travis-ci.com/IgorSzyporyn/formalizer-core)
 [![Greenkeeper badge](https://badges.greenkeeper.io/IgorSzyporyn/formalizer-core.svg)](https://greenkeeper.io/)
+[![dependencies](https://david-dm.org/IgorSzyporyn/formalizer-core.svg)](https://david-dm.org/IgorSzyporyn/formalizer-core)
 [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 
 # @formalizer/core

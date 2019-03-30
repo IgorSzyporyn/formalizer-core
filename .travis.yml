@@ -11,12 +11,12 @@ cache:
 before_script:
   - yarn install
   - yarn build
+  - yarn docs
 
 script:
   - yarn test
 
 after_success:
-  - yarn typedoc
   - npm pack
 
 deploy:
@@ -26,16 +26,9 @@ deploy:
     github_token: $GITHUB_TOKEN
     on:
       tags: true
-  - provider: releases
-    api_key: $GITHUB_TOKEN
-    file_glob: true
-    file: '{YOURLIB}-*.tgz'
-    skip_cleanup: true
-    on:
-      tags: true
   - provider: npm
     skip_cleanup: true
-    email: 'youremail@example.com'
+    email: '$NPM_EMAIL'
     api_key: $NPM_TOKEN
     on:
       tags: true
