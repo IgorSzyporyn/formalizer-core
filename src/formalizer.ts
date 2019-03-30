@@ -47,9 +47,9 @@ export class Formalizer<ExtraProps = {}> {
     // Initialize the xFieldMap with core as safeguard
     // for ability to handle the core types
     // string, number, boolean, object and array
-    const xFieldMap = (this.xFieldMap = initXFieldMap({
+    const xFieldMap = (this.xFieldMap = initXFieldMap<ExtraProps>({
       applicantMaps: config.xFieldMap,
-      xFieldCoreMap,
+      xFieldCoreMap: xFieldCoreMap as IXFieldMap<ExtraProps>,
     }))
 
     // Initialize and convert the given fields to xFields

@@ -1,4 +1,4 @@
-import { SafeXFieldProps } from '../../src/types'
+import { SafeXFieldProps, IXFieldProps } from '../../src/types'
 import {
   createMessagesFromFields,
   createSchemaFromFields,
@@ -333,9 +333,74 @@ describe('initXFieldValidation: (fields: XFieldProps[] => ValidateFn', () => {
     expect(validation).toBeDefined()
   })
 
-  test('should be able to validate a simple single field', () => {
-    const validation = initXFieldValidation()
+  test('should be able to create a validator with fields given', () => {
+    const fields: IXFieldProps[] = [
+      {
+        type: 'string',
+        name: 'a',
+        valueType: 'string',
+        extraProps: {},
+        validation: { mandatory: true },
+        validationMessages: { mandatory: 'hit' },
+      },
+    ]
+
+    const validation = initXFieldValidation(fields)
 
     expect(validation).toBeDefined()
+  })
+})
+
+describe('validateFn: (value: IValue) => Promise<IValidationErrors>', () => {
+  test('should be able to validate a field with no error', () => {
+    const fields: IXFieldProps[] = [
+      {
+        type: 'string',
+        name: 'a',
+        valueType: 'string',
+        extraProps: {},
+        validation: { mandatory: true },
+        validationMessages: { mandatory: 'hit' },
+      },
+    ]
+    const validate = initXFieldValidation(fields)
+    const valid = validate({ a: 'hello' })
+
+    expect(valid).toMatchObject({})
+  })
+
+  test('should be able to validate a field with error and no custom message', async () => {
+    const fields: IXFieldProps[] = [
+      {
+        type: 'string',
+        name: 'a',
+        $id: 'a',
+        valueType: 'string',
+        extraProps: {},
+        validation: { mandatory: true },
+      },
+    ]
+    const validate = initXFieldValidation(fields)
+    const valid = await validate({})
+
+    expect(valid).toMatchObject({ a: "should have required property 'a'" })
+  })
+
+  test('should be able to validate a field with error and custom message', async () => {
+    const fields: IXFieldProps[] = [
+      {
+        type: 'string',
+        name: 'a',
+        $id: 'a',
+        valueType: 'string',
+        extraProps: {},
+        validation: { mandatory: true },
+        validationMessages: { mandatory: 'hit mandatory' },
+      },
+    ]
+    const validate = initXFieldValidation(fields)
+    const valid = await validate({})
+
+    expect(valid).toMatchObject({ a: 'hit mandatory' })
   })
 })
