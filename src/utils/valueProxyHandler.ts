@@ -1,6 +1,6 @@
 import { isArray } from 'lodash'
 import {
-  IObjectValue,
+  IValue,
   OnObjectValueChange,
   OnObjectValueDelete,
   ValueTypes,
@@ -28,7 +28,7 @@ export function getValueProxyHandler(
   onDelete?: OnObjectValueDelete
 ) {
   return {
-    set(valueRefMap: IObjectValue, propName: string, setValue: ValueTypes) {
+    set(valueRefMap: IValue, propName: string, setValue: ValueTypes) {
       let value = setValue
 
       // Arrays needs to have their undefined rinsed off - undefined are
@@ -46,7 +46,7 @@ export function getValueProxyHandler(
 
       return true
     },
-    deleteProperty: (valueRefMap: IObjectValue, propName: string) => {
+    deleteProperty: (valueRefMap: IValue, propName: string) => {
       const value = valueRefMap[propName]
       delete valueRefMap[propName]
 
