@@ -1,21 +1,21 @@
 {
   "./dist/core.umd.production.js": {
-    "bundled": 894066,
+    "bundled": 894027,
     "minified": 212110,
     "gzipped": 60098
   },
   "./dist/core.umd.development.js": {
-    "bundled": 894305,
+    "bundled": 894266,
     "minified": 212665,
     "gzipped": 60279
   },
   "./dist/core.cjs.production.js": {
-    "bundled": 30145,
+    "bundled": 29487,
     "minified": 12137,
     "gzipped": 3652
   },
   "./dist/core.cjs.development.js": {
-    "bundled": 30374,
+    "bundled": 29716,
     "minified": 12286,
     "gzipped": 3700
   },
