@@ -62,21 +62,13 @@
 					<a href="_utils_initialize_.iinitvalueprops.html">IInitValueProps</a>
 				</li>
 			</ul>
-			<h1>Interface IInitValueProps&lt;E&gt;</h1>
+			<h1>Interface IInitValueProps</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-type-parameters">
-				<h3>Type parameters</h3>
-				<ul class="tsd-type-parameters">
-					<li>
-						<h4>E</h4>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -92,9 +84,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_initialize_.iinitvalueprops.html#initialvalue" class="tsd-kind-icon">initial<wbr>Value</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_initialize_.iinitvalueprops.html#onchange" class="tsd-kind-icon">on<wbr>Change</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_initialize_.iinitvalueprops.html#ondelete" class="tsd-kind-icon">on<wbr>Delete</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_initialize_.iinitvalueprops.html#value" class="tsd-kind-icon">value</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_initialize_.iinitvalueprops.html#xfieldrefmap" class="tsd-kind-icon">x<wbr>Field<wbr>Ref<wbr>Map</a></li>
 							</ul>
 						</section>
@@ -104,22 +96,12 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="initialvalue" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> initial<wbr>Value</h3>
-					<div class="tsd-signature tsd-kind-icon">initial<wbr>Value<span class="tsd-signature-symbol">:</span> <a href="_types_.ivalue.html" class="tsd-signature-type">IValue</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/IgorSzyporyn/formalizer-core/blob/5bc1d7d/src/utils/initialize.ts#L162">utils/initialize.ts:162</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="onchange" class="tsd-anchor"></a>
 					<h3>on<wbr>Change</h3>
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Change<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_.html#onobjectvaluechange" class="tsd-signature-type">OnObjectValueChange</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/IgorSzyporyn/formalizer-core/blob/5bc1d7d/src/utils/initialize.ts#L164">utils/initialize.ts:164</a></li>
+							<li>Defined in <a href="https://github.com/IgorSzyporyn/formalizer-core/blob/b134ac9/src/utils/initialize.ts#L179">utils/initialize.ts:179</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -129,17 +111,27 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Delete<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_.html#onobjectvaluedelete" class="tsd-signature-type">OnObjectValueDelete</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/IgorSzyporyn/formalizer-core/blob/5bc1d7d/src/utils/initialize.ts#L165">utils/initialize.ts:165</a></li>
+							<li>Defined in <a href="https://github.com/IgorSzyporyn/formalizer-core/blob/b134ac9/src/utils/initialize.ts#L180">utils/initialize.ts:180</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="value" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> value</h3>
+					<div class="tsd-signature tsd-kind-icon">value<span class="tsd-signature-symbol">:</span> <a href="_types_.ivalue.html" class="tsd-signature-type">IValue</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/IgorSzyporyn/formalizer-core/blob/b134ac9/src/utils/initialize.ts#L177">utils/initialize.ts:177</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="xfieldrefmap" class="tsd-anchor"></a>
 					<h3>x<wbr>Field<wbr>Ref<wbr>Map</h3>
-					<div class="tsd-signature tsd-kind-icon">x<wbr>Field<wbr>Ref<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="_types_.ixfieldrefmap.html" class="tsd-signature-type">IXFieldRefMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">x<wbr>Field<wbr>Ref<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="_types_.ixfieldrefmap.html" class="tsd-signature-type">IXFieldRefMap</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/IgorSzyporyn/formalizer-core/blob/5bc1d7d/src/utils/initialize.ts#L163">utils/initialize.ts:163</a></li>
+							<li>Defined in <a href="https://github.com/IgorSzyporyn/formalizer-core/blob/b134ac9/src/utils/initialize.ts#L178">utils/initialize.ts:178</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -211,17 +203,17 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_utils_initialize_.iinitvalueprops.html" class="tsd-kind-icon">IInit<wbr>Value<wbr>Props</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_utils_initialize_.iinitvalueprops.html#initialvalue" class="tsd-kind-icon">initial<wbr>Value</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_utils_initialize_.iinitvalueprops.html#onchange" class="tsd-kind-icon">on<wbr>Change</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_utils_initialize_.iinitvalueprops.html#ondelete" class="tsd-kind-icon">on<wbr>Delete</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_utils_initialize_.iinitvalueprops.html#value" class="tsd-kind-icon">value</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_utils_initialize_.iinitvalueprops.html#xfieldrefmap" class="tsd-kind-icon">x<wbr>Field<wbr>Ref<wbr>Map</a>
@@ -242,10 +234,10 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_utils_initialize_.iregisterxfield.html" class="tsd-kind-icon">IRegisterXField</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="../modules/_utils_initialize_.html#initvalue" class="tsd-kind-icon">init<wbr>Value</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="../modules/_utils_initialize_.html#initxfieldarraycapability" class="tsd-kind-icon">initXField<wbr>Array<wbr>Capability</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
@@ -254,13 +246,13 @@
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../modules/_utils_initialize_.html#initxfieldmap" class="tsd-kind-icon">initXField<wbr>Map</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="../modules/_utils_initialize_.html#initxfieldobjectcapability" class="tsd-kind-icon">initXField<wbr>Object<wbr>Capability</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../modules/_utils_initialize_.html#initxfieldrefmap" class="tsd-kind-icon">initXField<wbr>Ref<wbr>Map</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="../modules/_utils_initialize_.html#initxfieldstatehandlers" class="tsd-kind-icon">initXField<wbr>State<wbr>Handlers</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
