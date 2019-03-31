@@ -57,7 +57,7 @@ export function initXFieldMap<E>({
   const coreMaps: Array<IXFieldMap<E>> = [xFieldCoreMap]
   const maps = coreMaps.concat(applicants)
 
-  let xFieldMap = {}
+  let xFieldMap: IXFieldMap<E> = {}
 
   maps.forEach(applicantMap => {
     Object.keys(applicantMap).forEach(key => {
