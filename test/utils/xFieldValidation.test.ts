@@ -1,4 +1,4 @@
-import { SafeXFieldProps, IXFieldProps } from '../../src/types'
+import { IXFieldProps, SafeXFieldProps } from '../../src/types'
 import {
   createMessagesFromFields,
   createSchemaFromFields,
