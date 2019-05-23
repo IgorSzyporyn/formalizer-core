@@ -552,10 +552,15 @@
   dependencies:
     "@types/lodash" "*"
 
-"@types/lodash@*", "@types/lodash@^4.14.110", "@types/lodash@^4.14.123":
+"@types/lodash@*", "@types/lodash@^4.14.110":
   version "4.14.123"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.123.tgz#39be5d211478c8dd3bdae98ee75bb7efe4abfe4d"
   integrity sha512-pQvPkc4Nltyx7G1Ww45OjVqUsJP4UsZm+GWJpigXgkikZqJgRm4c48g027o6tdgubWHwFRF15iFd+Y4Pmqv6+Q==
+
+"@types/lodash@^4.14.131":
+  version "4.14.131"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.131.tgz#24a5471054de864a467586d5ec007a188f510005"
+  integrity sha512-N5Jrj0vI8nViKxZ0raEp1ku95JrrC6i/eF/s1wgPsW354QSIC7tonlk9spm5IFjcWTOvdCKqGhV+A8nxsj/Mog==
 
 "@types/marked@^0.4.0":
   version "0.4.2"
