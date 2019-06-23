@@ -77,7 +77,7 @@ Formalizer will return an instance with the following properties
 | xFieldMap     | The map of field models, created by merging any given supplied field model maps on to the core field models |   Object |
 | xFieldRefMap  | A flat dot notation map of xFields for fast and easy access                                                 |   Object |
 
-Formalizer also sponsors 2 other projects that lets you see how Formalizer can be implemented for React
+Formalizer also sponsors 2 other projects that lets you see how Formalizer can be implemented for React.
 
 - [@formalizer/react-form](https://github.com/IgorSzyporyn/formalizer-react-form)
 - [@formalizer/react-xfields](https://github.com/IgorSzyporyn/formalizer-react-xfields)
