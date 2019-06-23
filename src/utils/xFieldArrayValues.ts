@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash'
 import { ArrayValueType, IXFieldProps, ValueTypes } from '../types'
 
-export function enhanceXFieldWithArrayValues<E>(xField: IXFieldProps<E>) {
+export function enhanceXFieldWithArrayValues(xField: IXFieldProps) {
   const fields = xField.fields || []
   const fieldValue = xField.value as ArrayValueType
 

@@ -4,14 +4,14 @@
   "description": "Core for the formalizer framework",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IgorSzyporyn/core.git"
+    "url": "git+https://github.com/IgorSzyporyn/formalizer-core.git"
   },
   "author": "Igor Szyporyn Jørgensen <igor.szyporyn@gmail.com> (https://twitter.com/IgorSzyporyn)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/IgorSzyporyn/core/issues"
+    "url": "https://github.com/IgorSzyporyn/formalizer-core/issues"
   },
-  "homepage": "https://github.com/IgorSzyporyn/core#readme",
+  "homepage": "https://github.com/IgorSzyporyn/formalizer-core#readme",
   "engines": {
     "node": "^8 || ^10 || ^11"
   },

@@ -22,26 +22,6 @@ const babelOptions = {
   ],
 }
 
-const jsonOptions = {
-  // All JSON files will be parsed by default,
-  // but you can also specifically include/exclude files
-  include: 'node_modules/**',
-
-  // for tree-shaking, properties will be declared as
-  // variables, using either `var` or `const`
-  preferConst: true, // Default: false
-
-  // specify indentation for the generated default export —
-  // defaults to '\t'
-  indent: '  ',
-
-  // ignores indent and generates the smallest code
-  compact: true, // Default: false
-
-  // generate a named export for every property of the JSON object
-  namedExports: true, // Default: true
-}
-
 const buildUmd = ({ env }) => ({
   input,
   external: ['react'],
@@ -55,10 +35,9 @@ const buildUmd = ({ env }) => ({
       react: 'React',
     },
   },
-
   plugins: [
     resolve(),
-    json(jsonOptions),
+    json(),
     babel(babelOptions),
     replace({
       exclude: 'node_modules/**',
@@ -105,7 +84,7 @@ const buildCjs = ({ env }) => ({
   },
   plugins: [
     resolve(),
-    json(jsonOptions),
+    json(),
     replace({
       exclude: 'node_modules/**',
       'process.env.NODE_ENV': JSON.stringify(env),
@@ -146,15 +125,7 @@ export default [
     ],
     plugins: [
       resolve(),
-      json(jsonOptions),
-      babel(babelOptions),
-      sizeSnapshot(),
-      sourceMaps(),
       json({
-        // All JSON files will be parsed by default,
-        // but you can also specifically include/exclude files
-        include: 'node_modules/**',
-
         // for tree-shaking, properties will be declared as
         // variables, using either `var` or `const`
         preferConst: true, // Default: false
@@ -169,6 +140,9 @@ export default [
         // generate a named export for every property of the JSON object
         namedExports: true, // Default: true
       }),
+      babel(babelOptions),
+      sizeSnapshot(),
+      sourceMaps(),
     ],
   },
 ]
