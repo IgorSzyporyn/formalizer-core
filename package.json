@@ -34,7 +34,7 @@
     "babel-plugin-transform-rename-import": "^2.3.0",
     "cp-cli": "^2.0.0",
     "cross-env": "^5.2.0",
-    "eslint": "^5.15.1",
+    "eslint": "^6.0.0",
     "gh-pages": "^2.0.1",
     "husky": "^2.0.0",
     "jest": "^24.5.0",
