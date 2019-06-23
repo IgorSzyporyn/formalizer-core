@@ -32,5 +32,25 @@
         "code": 1145
       }
     }
+  },
+  "dist/core.umd.production.js": {
+    "bundled": 414144,
+    "minified": 145809,
+    "gzipped": 37388
+  },
+  "dist/core.umd.development.js": {
+    "bundled": 414701,
+    "minified": 146559,
+    "gzipped": 37628
+  },
+  "dist/core.cjs.production.js": {
+    "bundled": 29064,
+    "minified": 11936,
+    "gzipped": 3558
+  },
+  "dist/core.cjs.development.js": {
+    "bundled": 29617,
+    "minified": 12280,
+    "gzipped": 3692
   }
 }
