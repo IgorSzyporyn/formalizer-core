@@ -1,11 +1,9 @@
-![Formalizer Core](https://user-images.githubusercontent.com/6172338/54886646-9f811100-4e8a-11e9-94b1-4c1ee1182565.png)
+# @formalizer/core
 
 [![Build Status](https://travis-ci.com/IgorSzyporyn/formalizer-core.svg?branch=master)](https://travis-ci.com/IgorSzyporyn/formalizer-core)
 [![Greenkeeper badge](https://badges.greenkeeper.io/IgorSzyporyn/formalizer-core.svg)](https://greenkeeper.io/)
 [![dependencies](https://david-dm.org/IgorSzyporyn/formalizer-core.svg)](https://david-dm.org/IgorSzyporyn/formalizer-core)
 [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
-
-# @formalizer/core
 
 ## Standalone form model and state machine.
 
@@ -13,46 +11,40 @@ The main purpose of Formalizer is to alleviate the concerns encountered when dea
 
 Formalizer is meant to be consumed by other software, and to make interaction between consumer and provider as simple as possible.
 
-To achieve a transparent interaction layer between consumer and provider Formalizer lets the consumer **change properties on fields directly**, and offers a listener to let the consumer be made aware of changes in fields or the form.
+There is built in support for the most basic fields available "string", "number", "boolean", "array" and "object", but can easily be extended to build custom field types of any kind to provide a versatile model setup.
 
-Formalizer has built in support for the most basic fields available "string", "number", "boolean", "array" and "object", but can easily be extended to build custom field types of any kind to provide a versatile model setup.
+Formalizer also provides validation through JSON Schema and AJV, and a dependency feature which lets you listen in on changes of other fields - setup criteria for a match and update any own property value either by setting it directly or using properties from any field in the tree.
 
-Ultimately also suited for varying rendering technology, Formalizers field model extendability lets you inject any number of other field models with custom field properties.
+Ultimately aimed at varying rendering technology, Formalizers field model extendability lets you inject any number of other field models with custom field properties.
 
 ## Configuration
 
-In its simplest form (pun intended) you can just instanciate with no configuration.
+In its simplest form you can just instanciate with no configuration.
 
 ```typescript
 const formalizer = new Formalizer()
 ```
 
-But in order for anything to happen, you have to send in as a minimum an array of fields (and maybe a model as in example).
-
-Note: The TypeScript generic (ExtraProps) here is optional, but will be made available by model provider if you are using any model(s).
+But in order for anything to happen, you have to send in as a minimum an array of fields.
 
 ```typescript
 import { IFieldProps } from '@formalizer/core'
-import { IExtraProps, formalizerFieldModel } from '@formalizer/field-model'
 
-const myFields: IFieldProps<ExtraProps>[] = [
-  { type: 'string', name: 'myField' },
-]
+const fields: IFieldProps[] = [{ type: 'string', name: 'myField' }]
 
-const formalizer = new Formalizer<ExtraProps>({
-  fields: myFields,
-  model: formalizerFieldModel,
-  value: { myField: 'Hello World' },
-})
+const formalizer = new Formalizer({ fields })
 ```
 
 ### Configuration Options
 
-| Option | Description                                                                                                                         |            Type |
-| :----- | :---------------------------------------------------------------------------------------------------------------------------------- | --------------: |
-| fields | A collection of field definitions, each definition is converted to a xField using field mapping based on the fields "type" property |           Array |
-| model  | Single model or collection of models used to convert a field into a xField                                                          | Array or Object |
-| value  | If provided will be used as the initial value of the form and its xFields                                                           |          Object |
+| Option          | Description                                                                    |            Type |
+| :-------------- | :----------------------------------------------------------------------------- | --------------: |
+| fields          | A collection of field definitions                                              |           Array |
+| model           | Single model or collection of models used to convert a definition into a field | Array or Object |
+| value           | If provided will be used as the initial value of the form and its fields       |          Object |
+| onDirtyChange   | Callback that will fire when the value changes dirty state                     |        Function |
+| onTouchedChange | Callback that will fire once when a field has had a property change            |        Function |
+| onValidChange   | Callback that will fire when the validity of value changes                     |        Function |
 
 ### Field Configuration Options (\* means required)
 

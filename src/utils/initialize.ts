@@ -25,11 +25,11 @@ export interface IInitXFields<E> {
   xFieldMap: IXFieldMap<E>
 }
 
-export const initXFields = <E>({
+export function initXFields<E>({
   fields = [],
   registerExtraProps,
   xFieldMap,
-}: IInitXFields<E>) => {
+}: IInitXFields<E>) {
   const xFields = fieldsToXFields<E>({
     fields,
     registerExtraProps,
@@ -124,6 +124,12 @@ export interface IInitXFieldDependencies<E> {
   xFieldRefMap: IXFieldRefMap<E>
 }
 
+/**
+ * Initialize the required functionality to handle fields that has dependencies
+ * by filtering those fields out and run them through the
+ * `enhanceXFieldWithDependencies` function
+ *
+ */
 export function initXFieldDependencies<E>(xFieldRefMap: IXFieldRefMap<E>) {
   mapEach<IXFieldRefMap<E>, IXFieldProps<E>>(xFieldRefMap, xField => {
     if (xField.dependencies) {
@@ -132,7 +138,13 @@ export function initXFieldDependencies<E>(xFieldRefMap: IXFieldRefMap<E>) {
   })
 }
 
-export function initXFieldObjectCapability<E>(xFieldRefMap: IXFieldRefMap<E>) {
+/**
+ * Initialize the required functionality to handle fields with object values
+ * by filtering out those fields with valueType of `object` and run through
+ * the `enhanceXFieldWithObjectValues` function
+ *
+ */
+export function initXFieldObjectCapability(xFieldRefMap: IXFieldRefMap) {
   // Keys are first sorted by length with shortest first, in order to ensure
   // that we go parent -> child when we have dot notation at play for object
   // enveloped fields
@@ -142,44 +154,54 @@ export function initXFieldObjectCapability<E>(xFieldRefMap: IXFieldRefMap<E>) {
       const xField = xFieldRefMap[key]
 
       if (xField.valueType === 'object') {
-        enhanceXFieldWithObjectValues<E>(xField)
+        enhanceXFieldWithObjectValues(xField)
       }
     })
 }
 
-export function initXFieldArrayCapability<E>(xFieldRefMap: IXFieldRefMap<E>) {
-  // Keys are first sorted by length with shortest first, in order to ensure
-  // that we go parent -> child when we have dot notation at play for object
-  // enveloped fields
-  mapEach<IXFieldRefMap<E>, IXFieldProps<E>>(xFieldRefMap, xField => {
+/**
+ * Initialize the required functionality to handle fields with array values
+ * by filtering out those fields with valueType of `array` and run through
+ * the `enhanceXFieldWithArrayValues` function
+ *
+ */
+export function initXFieldArrayCapability(xFieldRefMap: IXFieldRefMap) {
+  mapEach<IXFieldRefMap, IXFieldProps>(xFieldRefMap, xField => {
     if (xField.valueType === 'array') {
-      enhanceXFieldWithArrayValues<E>(xField)
+      enhanceXFieldWithArrayValues(xField)
     }
   })
 }
 
-export interface IInitValueProps<E> {
-  initialValue?: IValue
-  xFieldRefMap: IXFieldRefMap<E>
+export interface IInitValueProps {
+  value?: IValue
+  xFieldRefMap: IXFieldRefMap
   onChange: OnObjectValueChange
   onDelete: OnObjectValueDelete
 }
 
-export function initValue<E>({
-  initialValue,
+/**
+ * Initialize the value for Formalizer instance and the fields
+ * using a given value from options as initial value.
+ *
+ * Will also initialize the update of the Formalizer value in case
+ * any field value changes.
+ *
+ */
+export function initValue({
+  value,
   xFieldRefMap,
   onChange,
   onDelete,
-}: IInitValueProps<E>): IValue {
-  // First set initialValues on first level xFields
-  if (initialValue) {
+}: IInitValueProps): IValue {
+  // First set values on first level xFields
+  if (value) {
     Object.keys(xFieldRefMap).forEach(key => {
       const xField = xFieldRefMap[key]
       const isObjectChild = xField.$id!.includes('.')
 
       if (!isObjectChild) {
-        xField.value =
-          initialValue[key] !== undefined ? initialValue[key] : undefined
+        xField.value = value[key] !== undefined ? value[key] : undefined
       }
     })
   }
@@ -187,7 +209,7 @@ export function initValue<E>({
   let valueMap: IValue = {}
 
   // Do a run through the xFieldRefMap and build the valueMap
-  mapEach<IXFieldRefMap<E>, IXFieldProps<E>>(xFieldRefMap, (xField, key) => {
+  mapEach<IXFieldRefMap, IXFieldProps>(xFieldRefMap, (xField, key) => {
     const isObjectChild = key.includes('.')
 
     if (!isObjectChild && xField.value !== undefined) {
@@ -201,15 +223,15 @@ export function initValue<E>({
 
   // Do a final run through the xFieldRefMap and attach listeners
   // to keep valueRepMap updated now it is a proxy
-  mapEach<IXFieldRefMap<E>, IXFieldProps<E>>(xFieldRefMap, (xField, key) => {
+  mapEach<IXFieldRefMap, IXFieldProps>(xFieldRefMap, (xField, key) => {
     const isObjectChild = xField.$id!.includes('.')
 
     if (!isObjectChild) {
-      xField.addListener!(({ propName, value }) => {
-        if (propName === 'value' && value === undefined) {
+      xField.addListener!(state => {
+        if (state.propName === 'value' && state.value === undefined) {
           delete valueMap[key]
-        } else if (propName === 'value' && value !== undefined) {
-          valueMap[key] = value
+        } else if (state.propName === 'value' && state.value !== undefined) {
+          valueMap[key] = state.value
         }
       })
     }
@@ -218,8 +240,12 @@ export function initValue<E>({
   return valueMap
 }
 
-export function initXFieldStateHandlers<E>(xFieldRefMap: IXFieldRefMap<E>) {
-  mapEach<IXFieldRefMap<E>, IXFieldProps<E>>(xFieldRefMap, xField => {
+/**
+ * Initialize the handling of each fields state (dirty, touched etc..)
+ *
+ */
+export function initXFieldStateHandlers(xFieldRefMap: IXFieldRefMap) {
+  mapEach<IXFieldRefMap, IXFieldProps>(xFieldRefMap, xField => {
     xField.initialValue = xField.value
 
     xField.addListener!(({ propName, value }) => {

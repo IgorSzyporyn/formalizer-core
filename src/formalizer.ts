@@ -71,17 +71,17 @@ export class Formalizer<ExtraProps = {}> {
 
     // Enrich the xFields with valueType set to "object" with capabilities
     // to handle child properties up and down the tree
-    initXFieldObjectCapability<ExtraProps>(this.xFieldRefMap)
+    initXFieldObjectCapability(this.xFieldRefMap)
 
     // Enrich the xFields with valueType set to "array" with capabilities
     // to handle child properties and values
-    initXFieldArrayCapability<ExtraProps>(this.xFieldRefMap)
+    initXFieldArrayCapability(this.xFieldRefMap)
 
     // Initialize and create the value object in the formalizer instance
     const { handleValueChange } = this
 
-    this.value = initValue<ExtraProps>({
-      initialValue: options.value,
+    this.value = initValue({
+      value: options.value,
       xFieldRefMap: this.xFieldRefMap,
       onChange: handleValueChange,
       onDelete: handleValueChange,
@@ -91,7 +91,7 @@ export class Formalizer<ExtraProps = {}> {
 
     // Now relationships and values have been established we also need to
     // introduce dirty and touched states on our fields
-    initXFieldStateHandlers<ExtraProps>(this.xFieldRefMap)
+    initXFieldStateHandlers(this.xFieldRefMap)
 
     // And handle validation
     this.validate = initXFieldValidation(this.xFields)

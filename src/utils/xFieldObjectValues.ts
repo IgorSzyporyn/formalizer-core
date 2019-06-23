@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash'
 import { IValue, IXFieldProps, ValueTypes } from '../types'
 
-export function enhanceXFieldWithObjectValues<E>(xField: IXFieldProps<E>) {
+export function enhanceXFieldWithObjectValues(xField: IXFieldProps) {
   const fields = xField.fields || []
   const fieldValue = xField.value as IValue
 
