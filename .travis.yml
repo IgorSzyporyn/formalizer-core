@@ -18,6 +18,9 @@ script:
 after_success:
   - npm pack
 
+env:
+  - NODE_ENV=production
+
 deploy:
   - provider: pages
     skip_cleanup: true
