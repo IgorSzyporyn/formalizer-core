@@ -59,7 +59,7 @@
     "tsc-watch": "^2.1.2",
     "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",
-    "typedoc": "^0.14.2",
+    "typedoc": "^0.15.3",
     "typescript": "^3.3.3333"
   },
   "dependencies": {
