@@ -22,7 +22,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@babel/core": "^7.3.4",
+    "@babel/core": "^7.8.4",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@types/ajv": "^1.0.0",
