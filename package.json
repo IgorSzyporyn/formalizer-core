@@ -64,7 +64,7 @@
   },
   "dependencies": {
     "ajv": "^6.10.0",
-    "deepmerge": "^3.2.0",
+    "deepmerge": "^4.0.0",
     "lodash": "^4.17.11",
     "lodash-es": "^4.17.11"
   },
